@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ethan Long — Basketball film that gets players seen</title>
+<meta name="description" content="Ethan Long Media — basketball film that gets players seen. 1.2M views on Instagram, 934.8K on TikTok. Northwood University, REAL Basketball, and the kit behind every frame.">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23070709'/%3E%3Ctext x='32' y='42' font-family='Helvetica,Arial,sans-serif' font-size='24' font-weight='bold' fill='%238B7FE8' text-anchor='middle'%3EEL%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#070709;
+  --ink-2:#0c0c11;
+  --ink-3:#131319;
+  --cream:#F4EFE6;
+  --cream-dim:#9C978D;
+  --cream-faint:#524F4A;
+
+  --violet:#8B7FE8;
+  --violet-lo:#6F61DC;
+  --violet-hi:#B5ABF5;
+
+  --display:'Inter',-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;
+
+  --pad:clamp(20px,5vw,72px);
+  --maxw:1440px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);color:var(--cream);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+canvas{display:block}
+::selection{background:var(--violet);color:#fff}
+
+.u-wrap{width:min(var(--maxw),100%);margin-inline:auto;padding-inline:var(--pad)}
+.eyebrow{
+  font:600 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;
+  color:var(--violet-hi);display:flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--violet);flex:none}
+
+/* ================= GRAIN + VIGNETTE ================= */
+#grain{
+  position:fixed;inset:-120%;z-index:120;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grainShift .55s steps(1) infinite;will-change:transform;
+}
+@keyframes grainShift{
+  0%{transform:translate(0,0)}      20%{transform:translate(-6%,3%)}
+  40%{transform:translate(4%,-5%)}  60%{transform:translate(-3%,-2%)}
+  80%{transform:translate(5%,4%)}   100%{transform:translate(0,0)}
+}
+#vignette{
+  position:fixed;inset:0;z-index:110;pointer-events:none;
+  background:radial-gradient(ellipse 80% 68% at 50% 45%,transparent 42%,rgba(0,0,0,.5) 88%,rgba(0,0,0,.82) 100%);
+}
+
+/* ================= NAV ================= */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 0}
+nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nv-logo{font:800 13px/1 var(--display);letter-spacing:.22em;text-transform:uppercase;color:var(--cream)}
+.nv-logo b{font-weight:800;color:var(--violet)}
+.nv-links{display:flex;gap:28px;font:600 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim)}
+.nv-links a{position:relative;padding-bottom:3px;transition:color .35s}
+.nv-links a:hover{color:var(--cream)}
+.nv-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--violet);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.nv-links a:hover::after{width:100%}
+@media(max-width:760px){.nv-links{display:none}}
+
+/* ================= HERO ================= */
+/* Exactly one screen, no sticky hold. Nothing animates on scroll, so pinning
+   the hero would just mean scrolling with nothing happening — this way the
+   hero scrolls away like every other section. */
+#hero{height:100svh;position:relative;background:var(--ink);overflow:hidden}
+.hero-stick{position:relative;height:100%;overflow:hidden}
+#particles{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+/* Hero reel sits behind the wordmark, dimmed hard so the type stays readable.
+   If the file isn't there the element just stays hidden and the hero is
+   exactly as it was. */
+#heroReel{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  opacity:0;transition:opacity 1.4s ease;
+  filter:grayscale(.4) contrast(1.06) brightness(.62);
+}
+#heroReel.on{opacity:.34}
+.hero-scrim{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 62% 48% at 50% 44%,rgba(7,7,9,.82),rgba(7,7,9,.55) 60%,transparent 80%),
+    linear-gradient(180deg,rgba(7,7,9,.75),rgba(7,7,9,.25) 35%,rgba(7,7,9,.88));
+}
+.hero-glow{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 52% 40% at 50% 44%,rgba(139,127,232,.16),transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%,rgba(139,127,232,.07),transparent 70%);
+}
+
+/* pulled up tight under the wordmark — the old bottom gap read as unfinished */
+.hero-ui{
+  position:absolute;inset:0;z-index:5;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding-bottom:clamp(120px,25vh,280px);
+}
+.hero-tag{text-align:center;padding-inline:6vw}
+.hero-tag .rule{
+  width:44px;height:1px;background:var(--violet);margin:0 auto clamp(18px,3vh,28px);
+  transform:scaleX(0);transform-origin:center;
+}
+.hero-tag .ln{
+  display:block;overflow:hidden;
+  font:800 clamp(15px,2.4vw,32px)/1.28 var(--display);
+  text-transform:uppercase;letter-spacing:.15em;color:var(--cream);
+}
+.hero-tag .ln em{font-style:normal;color:var(--violet)}
+.hero-tag .ln.thin{
+  font-weight:500;color:var(--cream-dim);letter-spacing:.3em;
+  font-size:clamp(9.5px,1.1vw,12.5px);margin-top:16px;
+}
+.hero-tag .ln.thin em{font-style:normal;color:var(--violet)}
+.hero-tag .ch{display:inline-block;will-change:transform,opacity}
+.hero-tag .ch.sp{width:.34em}
+
+.hero-meta{
+  position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(22px,4vh,46px);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:18px;z-index:6;
+  font:500 10px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);
+}
+.hero-meta .col{display:flex;flex-direction:column;gap:6px}
+.hero-meta .col.r{text-align:right;align-items:flex-end}
+.hero-meta b{color:var(--violet);font-weight:700;letter-spacing:.2em}
+
+.scroll-cue{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:clamp(20px,4vh,42px);z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  font:500 9px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--cream-faint);
+  transition:opacity .45s ease;
+}
+.scroll-cue i{display:block;width:1px;height:42px;background:linear-gradient(var(--violet),transparent);transform-origin:top;animation:cueDrop 1.9s ease-in-out infinite}
+@keyframes cueDrop{0%,100%{transform:scaleY(.35);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+/* ================= SECTION SHELL ================= */
+.sec{position:relative;z-index:2;background:var(--ink);padding-block:clamp(90px,13vh,170px)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:clamp(40px,6vh,72px)}
+.sec-title{font:800 clamp(29px,5vw,72px)/1.02 var(--display);text-transform:uppercase;letter-spacing:-.005em;color:var(--cream)}
+.sec-title u{text-decoration:none;color:transparent;-webkit-text-stroke:1.2px var(--violet)}
+.sec-note{max-width:38ch;font:400 14px/1.7 var(--sans);color:var(--cream-dim)}
+
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ================= STATS ================= */
+#proof{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 55%,var(--ink) 100%)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(244,239,230,.09);border:1px solid rgba(244,239,230,.09)}
+.stat{background:var(--ink);padding:clamp(24px,3.4vw,44px) clamp(18px,2.4vw,32px);position:relative;overflow:hidden}
+.stat::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--violet);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.stat.in::after{width:100%}
+.stat .num{font:800 clamp(30px,4.4vw,60px)/1 var(--display);letter-spacing:-.03em;color:var(--cream);display:flex;align-items:baseline}
+.stat .num s{text-decoration:none;color:var(--violet)}
+.stat .lb{margin-top:13px;font:600 10px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim)}
+.stat .sub{margin-top:6px;font:400 11.5px/1.5 var(--sans);color:var(--cream-faint)}
+@media(max-width:900px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ================= WORK ================= */
+#work{background:var(--ink);overflow:hidden}
+.gallery-bg{position:absolute;inset:0;z-index:0;pointer-events:none;perspective:1000px;overflow:hidden;opacity:.45}
+.gallery-bg .rail{
+  position:absolute;top:50%;left:50%;width:200%;height:60vh;
+  transform:translate(-50%,-50%) rotateX(56deg) translateZ(-260px) translateY(var(--rail-y,0px));
+  display:flex;gap:44px;transform-style:preserve-3d;
+}
+.gallery-bg .pane{flex:1;border-radius:5px;background:linear-gradient(180deg,rgba(139,127,232,.32),rgba(139,127,232,.02));box-shadow:0 0 60px rgba(139,127,232,.18)}
+.gallery-bg .pane:nth-child(3n){background:linear-gradient(180deg,rgba(244,239,230,.12),transparent)}
+.gallery-bg .pane:nth-child(4n){background:linear-gradient(180deg,rgba(181,171,245,.2),transparent)}
+
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,26px);position:relative;z-index:2}
+@media(max-width:980px){.work-grid{grid-template-columns:1fr}}
+
+.card{
+  position:relative;border:1px solid rgba(244,239,230,.11);background:var(--ink-2);
+  padding:clamp(20px,2.4vw,30px);min-height:clamp(400px,50vh,540px);
+  display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;
+  transform-style:preserve-3d;will-change:transform;transition:border-color .5s,background .5s;
+}
+.card:hover{border-color:rgba(139,127,232,.5);background:var(--ink-3)}
+.card::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .6s;pointer-events:none;
+  background:radial-gradient(circle 300px at var(--mx,50%) var(--my,50%),rgba(139,127,232,.18),transparent 70%);
+}
+.card:hover::before{opacity:1}
+/* a violet rule draws across the top as each card lands */
+.card::after{
+  content:"";position:absolute;left:0;top:0;height:1px;width:0;z-index:4;
+  background:linear-gradient(90deg,var(--violet),rgba(139,127,232,0));
+  transition:width 1.2s cubic-bezier(.2,.8,.2,1);
+}
+.card.lit::after{width:100%}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;position:relative;z-index:2}
+.card-idx{font:700 10px/1 var(--sans);letter-spacing:.22em;color:var(--violet)}
+.card-kind{font:600 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);text-align:right}
+
+.card-vis{position:relative;z-index:2;flex:1;display:grid;place-items:center;padding:clamp(14px,2.4vw,26px) 0}
+.card-vis img{
+  width:clamp(112px,13vw,158px);height:auto;transform:translateZ(28px);
+  transition:transform .7s cubic-bezier(.2,.8,.2,1);
+  filter:drop-shadow(0 12px 30px rgba(0,0,0,.65));
+}
+.card:hover .card-vis img{transform:translateZ(48px) scale(1.06)}
+
+/* video sits on top of the logo; the logo is what you see until it loads,
+   and what you keep seeing if the file is missing */
+.card-vis{isolation:isolate}
+.card-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .6s ease;transform:translateZ(0);
+  border:1px solid rgba(244,239,230,.09);
+}
+.card-vis.playable .card-video{opacity:1}
+.card-vis.playable img,.card-vis.playable svg{opacity:0;transition:opacity .4s}
+.card-vis.playable::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 45%,rgba(12,12,17,.85));
+}
+.card-tape{
+  position:absolute;left:12px;top:12px;z-index:3;
+  display:none;align-items:center;gap:7px;
+  font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);
+  background:rgba(7,7,9,.6);padding:7px 10px;border-radius:100px;backdrop-filter:blur(6px);
+}
+.card-vis.playable .card-tape{display:inline-flex}
+.card-tape::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet)}
+.card-vis svg{width:clamp(140px,17vw,205px);height:auto;transform:translateZ(28px);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.card:hover .card-vis svg{transform:translateZ(48px) scale(1.06)}
+.gear-stroke{stroke:var(--cream-faint);transition:stroke .6s}
+.card:hover .gear-stroke{stroke:var(--violet-hi)}
+.gear-accent{fill:var(--violet);opacity:.85}
+
+.card-body{position:relative;z-index:2;transform:translateZ(20px)}
+.card-name{font:800 clamp(19px,2.1vw,28px)/1.12 var(--display);text-transform:uppercase;letter-spacing:.01em;color:var(--cream)}
+.card-name em{font-style:normal;display:block;color:var(--violet)}
+.card-pitch{margin-top:12px;font:400 13.5px/1.62 var(--sans);color:var(--cream-dim);max-width:34ch}
+.card-go{margin-top:17px;display:inline-flex;align-items:center;gap:9px;font:600 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);transition:color .4s}
+.card:hover .card-go{color:var(--violet-hi)}
+.card-go i{display:block;width:20px;height:1px;background:currentColor;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.card:hover .card-go i{width:38px}
+
+/* ================= PRICING ================= */
+#pricing{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 50%,var(--ink) 100%)}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px)}
+@media(max-width:900px){.price-grid{grid-template-columns:1fr}}
+.tier{
+  border:1px solid rgba(244,239,230,.11);background:var(--ink-2);
+  padding:clamp(24px,2.8vw,36px);display:flex;flex-direction:column;gap:18px;
+  position:relative;transition:border-color .5s,background .5s,transform .5s;
+}
+.tier:hover{border-color:rgba(139,127,232,.45);background:var(--ink-3);transform:translateY(-4px)}
+.tier.feature{border-color:rgba(139,127,232,.55);background:var(--ink-3)}
+.tier.feature::before{
+  content:"Most booked";position:absolute;top:-1px;right:-1px;
+  background:var(--violet);color:#0b0b10;padding:6px 13px;
+  font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;
+}
+.tier h3{font:800 clamp(15px,1.6vw,19px)/1.2 var(--display);text-transform:uppercase;letter-spacing:.14em;color:var(--cream)}
+.tier .amt{font:800 clamp(32px,4vw,52px)/1 var(--display);letter-spacing:-.03em;color:var(--cream);display:flex;align-items:baseline;gap:5px}
+.tier .amt s{text-decoration:none;color:var(--violet);font-size:.42em;letter-spacing:.04em}
+.tier .amt.quote{font-size:clamp(22px,2.4vw,30px);color:var(--violet-hi)}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:2px}
+.tier li{
+  font:400 13px/1.5 var(--sans);color:var(--cream-dim);
+  padding-left:20px;position:relative;
+}
+.tier li::before{
+  content:"";position:absolute;left:0;top:.52em;width:8px;height:1px;background:var(--violet);
+}
+.tier .go{
+  margin-top:auto;padding-top:8px;
+  font:700 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--violet-hi);
+  display:inline-flex;align-items:center;gap:9px;
+}
+.tier .go i{display:block;width:20px;height:1px;background:currentColor;transition:width .4s}
+.tier:hover .go i{width:36px}
+
+/* ================= GUARANTEE ================= */
+#guarantee{position:relative;z-index:2;background:var(--ink);padding-block:clamp(30px,5vh,60px)}
+.guarantee-band{
+  border:1px solid rgba(139,127,232,.34);background:var(--ink-2);
+  padding:clamp(30px,4.4vw,58px);position:relative;overflow:hidden;
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3.4vw,48px);align-items:center;
+}
+.guarantee-band::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 130% at 0% 50%,rgba(139,127,232,.16),transparent 70%);
+}
+@media(max-width:760px){.guarantee-band{grid-template-columns:1fr;gap:20px}}
+.guarantee-seal{
+  position:relative;z-index:2;width:clamp(66px,7vw,92px);height:clamp(66px,7vw,92px);
+  border:1px solid rgba(139,127,232,.5);border-radius:50%;
+  display:grid;place-items:center;flex:none;
+}
+.guarantee-seal svg{width:52%;height:52%;stroke:var(--violet-hi);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.guarantee-copy{position:relative;z-index:2}
+.guarantee-copy .eyebrow{margin-bottom:14px}
+.guarantee-copy h2{
+  font:800 clamp(21px,2.9vw,38px)/1.18 var(--display);
+  text-transform:uppercase;letter-spacing:.005em;color:var(--cream);text-wrap:balance;
+}
+.guarantee-copy h2 em{font-style:normal;color:var(--violet)}
+.guarantee-copy p{margin-top:14px;font:400 14px/1.7 var(--sans);color:var(--cream-dim);max-width:56ch}
+
+/* ================= PROCESS ================= */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(244,239,230,.09);border:1px solid rgba(244,239,230,.09)}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+.step{background:var(--ink);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:13px}
+.step .n{
+  font:700 10px/1 var(--sans);letter-spacing:.22em;color:var(--violet);
+}
+.step h3{font:800 clamp(16px,1.8vw,22px)/1.2 var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--cream)}
+.step p{font:400 13.5px/1.6 var(--sans);color:var(--cream-dim)}
+.turnaround{
+  margin-top:clamp(26px,4vh,44px);display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);
+}
+.turnaround b{
+  color:var(--violet-hi);font-weight:700;
+  border:1px solid rgba(139,127,232,.4);padding:9px 15px;border-radius:100px;
+}
+
+/* ================= CONTACT FORM ================= */
+.form-wrap{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,28px);
+  text-align:left;margin-top:clamp(30px,5vh,50px);
+}
+@media(max-width:760px){.form-wrap{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font:600 9.5px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint)}
+.field input,.field select,.field textarea{
+  background:var(--ink-2);border:1px solid rgba(244,239,230,.13);color:var(--cream);
+  padding:14px 15px;font:400 14px/1.4 var(--sans);border-radius:2px;
+  transition:border-color .35s,background .35s;width:100%;
+}
+.field textarea{resize:vertical;min-height:104px}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--violet);background:var(--ink-3);
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--cream-faint)}
+.field select{appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--cream-dim) 50%),linear-gradient(135deg,var(--cream-dim) 50%,transparent 50%);
+  background-position:calc(100% - 19px) 50%,calc(100% - 13px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;
+}
+.form-note{grid-column:1/-1;font:400 12px/1.6 var(--sans);color:var(--cream-faint);margin-top:-4px}
+
+/* ================= FINALE ================= */
+#finale{position:relative;background:var(--ink);padding-block:clamp(110px,19vh,220px);text-align:center;overflow:hidden;z-index:2}
+#finale::before{
+  content:"";position:absolute;top:50%;left:50%;width:min(1100px,120vw);aspect-ratio:1;
+  transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(circle,rgba(139,127,232,.14),transparent 62%);
+}
+.fin-line{position:relative;font:800 clamp(30px,6.6vw,96px)/1.04 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--cream)}
+.fin-line .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
+.fin-line .w i{display:inline-block;font-style:normal;will-change:transform}
+.fin-line u{text-decoration:none;color:transparent;-webkit-text-stroke:1.4px var(--violet)}
+.fin-sub{position:relative;margin:clamp(22px,3.4vh,34px) auto 0;max-width:52ch;font:400 clamp(13.5px,1.4vw,16.5px)/1.7 var(--sans);color:var(--cream-dim)}
+.fin-btns{position:relative;margin-top:clamp(28px,4.4vh,48px);display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:11px;padding:17px 32px;border-radius:100px;
+  font:700 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid transparent;cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,background .45s,color .45s,border-color .45s;
+}
+.btn-solid{background:var(--violet);color:#0b0b10;box-shadow:0 16px 40px -12px rgba(139,127,232,.7)}
+.btn-solid:hover{transform:translateY(-3px);box-shadow:0 24px 56px -12px rgba(139,127,232,.9);background:var(--violet-hi)}
+.btn-ghost{border-color:rgba(244,239,230,.24);color:var(--cream)}
+.btn-ghost:hover{transform:translateY(-3px);border-color:var(--cream);background:var(--cream);color:var(--ink)}
+
+/* ================= FOOTER ================= */
+footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rgba(244,239,230,.09);padding-block:clamp(38px,6vh,62px)}
+.ft-grid{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.ft-mark{font:800 clamp(15px,1.8vw,21px)/1 var(--display);letter-spacing:.26em;text-transform:uppercase}
+.ft-mark b{font-weight:800;color:var(--violet)}
+.ft-tag{margin-top:12px;font:400 12.5px/1.6 var(--sans);color:var(--cream-faint);max-width:30ch}
+.ft-links{display:flex;gap:clamp(26px,4vw,60px);flex-wrap:wrap}
+.ft-col h4{font:600 9.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:14px}
+.ft-col a{display:block;font:500 13.5px/1 var(--sans);color:var(--cream-dim);margin-bottom:11px;transition:color .35s,transform .35s;transform-origin:left}
+.ft-col a:hover{color:var(--violet-hi);transform:translateX(4px)}
+.ft-base{
+  margin-top:clamp(28px,4.6vh,50px);padding-top:20px;border-top:1px solid rgba(244,239,230,.07);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font:500 10px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream-faint);
+}
+
+@media (prefers-reduced-motion: reduce){ #grain{display:none} }
+</style>
+</head>
+<body>
+
+<div id="vignette"></div>
+<div id="grain"></div>
+
+<nav>
+  <div class="u-wrap">
+    <a href="#" class="nv-logo">Ethan Long <b>Media</b></a>
+    <div class="nv-links">
+      <a href="#work">Work</a>
+      <a href="#proof">Proof</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ HERO : scroll-scrubbed particle assembly ============ -->
+  <section id="hero">
+    <div class="hero-stick">
+      <video id="heroReel" muted loop playsinline preload="auto" aria-hidden="true"></video>
+      <div class="hero-scrim"></div>
+      <div class="hero-glow"></div>
+      <canvas id="particles"></canvas>
+
+      <div class="hero-ui">
+        <div class="hero-tag">
+          <div class="rule" id="tagRule"></div>
+          <span class="ln" data-line="BASKETBALL FILM"></span>
+          <span class="ln" data-line="THAT GETS PLAYERS SEEN" data-em="SEEN"></span>
+          <span class="ln thin" data-line="MID-MICHIGAN · SHOT + CUT BY ETHAN LONG" data-em="·"></span>
+        </div>
+      </div>
+
+      <div class="hero-meta">
+        <div class="col">
+          <div>Est. Ethan Long Media</div>
+          <div><b>Basketball film</b></div>
+        </div>
+        <div class="col r">
+          <div>ZV-E10 II · RS 3 Mini · External mic</div>
+          <div><b>1.2M / 934.8K views</b></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ PROOF / STATS ============ -->
+  <section class="sec" id="proof">
+    <div class="u-wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow rv">The receipts</div>
+          <h2 class="sec-title rv" style="margin-top:18px">It <u>travels</u><br>on every app.</h2>
+        </div>
+        <p class="sec-note rv">One cut. It went 1.2M on Instagram and 934.8K on TikTok — same film, two algorithms, same result. That's not a fluke, that's a formula.</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat rv">
+          <div class="num"><span data-count="1.2" data-dec="1">0.0</span><s>M</s></div>
+          <div class="lb">Instagram views</div>
+          <div class="sub">Single reel · @northwood_mbb</div>
+        </div>
+        <div class="stat rv">
+          <div class="num"><span data-count="934.8" data-dec="1">0.0</span><s>K</s></div>
+          <div class="lb">TikTok views</div>
+          <div class="sub">Same cut · cross-platform</div>
+        </div>
+        <div class="stat rv">
+          <div class="num"><span data-count="246" data-dec="0">0</span><s>K</s></div>
+          <div class="lb">Combined likes</div>
+          <div class="sub">106K Instagram · 140.6K TikTok</div>
+        </div>
+        <div class="stat rv">
+          <div class="num"><span data-count="6349" data-dec="0" data-comma>0</span></div>
+          <div class="lb">Saves</div>
+          <div class="sub">People kept it. That's the tell.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK ============ -->
+  <section class="sec" id="work">
+    <div class="gallery-bg"><div class="rail" id="rail"></div></div>
+    <div class="u-wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow rv">Selected work</div>
+          <h2 class="sec-title rv" style="margin-top:18px">Who I<br><u>shoot for</u>.</h2>
+        </div>
+        <p class="sec-note rv">Collegiate programs, grassroots travel ball, and a kit built to move. Every frame is handheld, graded and cut by me.</p>
+      </div>
+
+      <div class="work-grid">
+        <article class="card" data-tilt>
+          <div class="card-top"><span class="card-idx">01</span><span class="card-kind">NCAA D-II · Midland, MI</span></div>
+          <div class="card-vis" data-video="assets/video/northwood.mp4">
+            <video class="card-video" muted loop playsinline preload="metadata"></video>
+            <span class="card-tape">Gameday</span>
+            <img src="assets/brand/northwood-clean.png" alt="Northwood University Timberwolves logo">
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Northwood<em>University</em></h3>
+            <p class="card-pitch">Gameday film for the Timberwolves — the overtime cut against Lake Erie that broke a million views.</p>
+            <span class="card-go">Gameday film <i></i></span>
+          </div>
+        </article>
+
+        <article class="card" data-tilt>
+          <div class="card-top"><span class="card-idx">02</span><span class="card-kind">Travel program · 17U</span></div>
+          <div class="card-vis" data-video="assets/video/real.mp4">
+            <video class="card-video" muted loop playsinline preload="metadata"></video>
+            <span class="card-tape">Circuit</span>
+            <img src="assets/brand/real-clean.png" alt="REAL Basketball logo">
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">REAL<em>Basketball</em></h3>
+            <p class="card-pitch">Summer circuit with the travel program — exposure edits built so college coaches actually finish the tape.</p>
+            <span class="card-go">Exposure edits <i></i></span>
+          </div>
+        </article>
+
+        <article class="card" data-tilt>
+          <div class="card-top"><span class="card-idx">03</span><span class="card-kind">Player development</span></div>
+          <div class="card-vis" data-video="assets/video/lance.mp4">
+            <video class="card-video" muted loop playsinline preload="metadata"></video>
+            <span class="card-tape">Local</span>
+            <!-- Real state boundary, projected from GeoJSON and simplified.
+                 viewBox is cropped to the artwork's own bounds so the map sits
+                 centred in the card instead of floating in empty space. -->
+            <svg viewBox="0 24 200 202" fill="none" aria-label="Michigan">
+              <path d="M40.9 76.0 13.0 67.3 6.0 59.7 40.0 45.4 53.0 33.2 64.5 29.6 69.6 32.2 57.4 38.9 51.9 52.5 59.4 46.5 70.3 50.6 78.1 61.9 89.8 64.1 106.0 56.3 134.4 53.0 132.7 62.5 143.8 64.6 153.8 60.9 154.2 70.5 150.9 72.6 159.1 78.4 165.4 75.0 169.2 78.9 147.9 80.7 141.4 76.7 139.2 83.8 121.5 75.2 116.9 79.7 103.3 80.3 95.3 91.4 92.9 89.1 97.1 82.0 87.1 89.2 85.6 83.8 72.4 108.3 68.9 104.9 70.9 99.2 65.4 99.7 67.3 88.0 60.6 85.5 58.7 80.2Z"
+                    class="gear-stroke" stroke-width="2.4" stroke-linejoin="round"/>
+              <path d="M171.5 214.5 169.6 219.2 90.4 218.3 104.5 190.7 104.3 176.9 97.1 156.5 103.8 121.6 120.3 104.4 118.0 116.4 119.3 119.0 122.1 111.7 120.9 119.7 124.6 102.5 135.3 98.4 130.6 93.6 133.1 86.2 151.7 90.5 171.3 102.5 172.5 133.2 159.7 145.7 158.9 155.2 164.6 157.9 181.0 142.2 188.9 150.0 194.0 177.2 191.8 189.3 187.6 193.3 189.0 188.2 184.7 189.2Z"
+                    class="gear-stroke" stroke-width="2.4" stroke-linejoin="round"/>
+              <!-- centred on the Lower Peninsula's true area centroid -->
+              <circle cx="141.5" cy="161.5" r="10" class="gear-stroke" stroke-width="1" opacity=".45"/>
+              <circle cx="141.5" cy="161.5" r="4.5" class="gear-accent"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Michigan<em>trainers</em></h3>
+            <p class="card-pitch">Skills trainers and player development coaches — workout content that fills your gym. Based in Midland, travelling statewide.</p>
+            <span class="card-go">Get me to your gym <i></i></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section class="sec" id="pricing">
+    <div class="u-wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow rv">What it costs</div>
+          <h2 class="sec-title rv" style="margin-top:18px">No DMs<br>to find <u>the price</u>.</h2>
+        </div>
+        <p class="sec-note rv">Every package is shot, graded and cut by me — no second shooter, no outsourced edit. Travel inside mid-Michigan is included.</p>
+      </div>
+
+      <div class="price-grid">
+        <div class="tier rv">
+          <h3>Single training</h3>
+          <div class="amt">$100<s>/ session</s></div>
+          <ul>
+            <li>Your whole session filmed — you coach, I handle the camera</li>
+            <li>Gimbal-locked from multiple angles, not shaky phone footage</li>
+            <li>Only the reps that landed make the cut</li>
+            <li>Colour graded so it looks like film, not a phone clip</li>
+            <li>Vertical for Reels and TikTok, horizontal for everything else</li>
+            <li>Real audio off an external mic — the squeak, the contact, the coaching</li>
+            <li>Back in 72 hours, while the session still matters</li>
+          </ul>
+          <a class="go" href="#contact">Book a session <i></i></a>
+        </div>
+
+        <div class="tier feature rv">
+          <h3>Single game</h3>
+          <div class="amt">$150<s>/ game</s></div>
+          <ul>
+            <li>Full game covered — you never think about the camera</li>
+            <li>Every possession you're in, cut tight</li>
+            <li>30–60 seconds a coach will actually finish</li>
+            <li>Exported for every platform, correctly sized</li>
+            <li>Graded and ready to post — zero editing on your end</li>
+            <li>In your hands in 72 hours, while people are still talking about it</li>
+          </ul>
+          <a class="go" href="#contact">Book a game <i></i></a>
+        </div>
+
+        <div class="tier rv">
+          <h3>Season bundle</h3>
+          <div class="amt">$1,000<s>/ season</s></div>
+          <ul>
+            <li>Game list agreed up front — no booking scramble mid-season</li>
+            <li>A highlight from every game covered, not just the big one</li>
+            <li>A full season edit at the end, built for coaches</li>
+            <li>Individual player cuts pulled from the same footage</li>
+            <li>Priority scheduling when dates clash</li>
+            <li>Content on your feed all season, not one lucky post</li>
+            <li>Per game it lands well under booking them one at a time</li>
+          </ul>
+          <a class="go" href="#contact">Lock in a season <i></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GUARANTEE ============ -->
+  <section id="guarantee">
+    <div class="u-wrap">
+      <div class="guarantee-band rv">
+        <div class="guarantee-seal" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2 20 6v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z"/><path d="M8.6 12.2 11 14.6l4.6-4.8"/></svg>
+        </div>
+        <div class="guarantee-copy">
+          <div class="eyebrow">My guarantee</div>
+          <h2>If the cut isn't right,<br><em>I recut it. No charge.</em></h2>
+          <p>You tell me what's off — a moment I missed, a different song, a tighter edit — and I go back in and fix it. You're not stuck with a video you won't post.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="sec" id="process">
+    <div class="u-wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow rv">How it works</div>
+          <h2 class="sec-title rv" style="margin-top:18px">Three steps.<br><u>That's it</u>.</h2>
+        </div>
+        <p class="sec-note rv">You don't need to know anything about film. Tell me when and where, and what you want out of it.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step rv">
+          <span class="n">Step 01</span>
+          <h3>Send the game info</h3>
+          <p>Date, gym, tip-off time, and who you want featured. A jersey number is enough.</p>
+        </div>
+        <div class="step rv">
+          <span class="n">Step 02</span>
+          <h3>I shoot and cut</h3>
+          <p>Handheld and gimbal-locked on the ZV-E10 II, sound on an external mic. Colour graded by hand, cut to the moments that matter.</p>
+        </div>
+        <div class="step rv">
+          <span class="n">Step 03</span>
+          <h3>You get it back fast</h3>
+          <p>Delivered as a download, sized for Instagram, TikTok and Hudl. Ready to send to coaches the same day.</p>
+        </div>
+      </div>
+
+      <div class="turnaround rv">
+        <b>Highlights in 72 hours</b>
+        <span>Season packages and multi-player tape: 5–7 days</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINALE ============ -->
+  <section id="finale">
+    <div class="u-wrap" id="contact">
+      <h2 class="fin-line" id="finLine" data-words="LET'S GET|YOU|SEEN."></h2>
+      <p class="fin-sub rv">Tell me the date, the gym and who to watch. I'll come back with availability and a price — usually same day.</p>
+
+      <form class="form-wrap rv" id="bookForm" novalidate>
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" type="text" placeholder="First and last" required>
+        </div>
+        <div class="field">
+          <label for="f-team">Team or program</label>
+          <input id="f-team" name="team" type="text" placeholder="e.g. Northwood, REAL 17U">
+        </div>
+        <div class="field">
+          <label for="f-need">What you need</label>
+          <select id="f-need" name="need">
+            <option>Single game — $150</option>
+            <option>Single training — $100</option>
+            <option>Season bundle — $1,000</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-when">Date of the game</label>
+          <input id="f-when" name="when" type="text" placeholder="e.g. Fri 14 Nov, or a few options">
+        </div>
+        <div class="field full">
+          <label for="f-detail">Anything else</label>
+          <textarea id="f-detail" name="detail" placeholder="Gym, tip-off time, jersey number, what you want out of the tape."></textarea>
+        </div>
+        <p class="form-note">This opens your email app with everything filled in — you just hit send. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
+        <div class="fin-btns full" style="justify-content:flex-start;margin-top:4px">
+          <button class="btn btn-solid" type="submit"><span>Send enquiry</span></button>
+          <a class="btn btn-ghost" href="#work"><span>Watch the work</span></a>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="u-wrap">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-mark">Ethan Long <b>Media</b></div>
+        <p class="ft-tag">Basketball film that gets players seen. Mid-Michigan, travelling anywhere the run is.</p>
+      </div>
+      <div class="ft-links">
+        <div class="ft-col">
+          <h4>Follow</h4>
+          <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener">Instagram — ethan_long_media</a>
+          <a href="https://www.tiktok.com/@official_ethan_long" target="_blank" rel="noopener">TikTok — @official_ethan_long</a>
+        </div>
+        <div class="ft-col">
+          <h4>Work with me</h4>
+          <a href="mailto:ethanlongmedia@gmail.com">Book a shoot</a>
+          <a href="#proof">See the numbers</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-base">
+      <span>© <span id="yr">2026</span> Ethan Long Media</span>
+      <span>Sony ZV-E10 II · DJI RS 3 Mini · External mic</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+
+<script>
+/* Scoped in an IIFE on purpose: the minified vendor bundles leak bare globals
+   (one of them declares `W`), and a top-level `let W` here would collide and
+   kill this whole script at parse time. */
+(function(){
+if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0,0);
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const clamp = (v,a,b) => v < a ? a : v > b ? b : v;
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   1. TEXT BUILDERS
+   ============================================================ */
+document.querySelectorAll('.hero-tag .ln').forEach(ln=>{
+  const em = ln.dataset.em || '';
+  ln.innerHTML = [...ln.dataset.line].map(c=>{
+    if(c === ' ') return '<span class="ch sp"></span>';
+    return `<span class="ch">${c === '·' ? '<em>·</em>' : c}</span>`;
+  }).join('');
+  /* highlight a whole word if one was named — every character gets a .ch span,
+     spaces included, so span index maps straight onto string index */
+  if(em && em !== '·'){
+    const chars = ln.querySelectorAll('.ch');
+    const text = ln.dataset.line;
+    const at = text.indexOf(em);
+    if(at > -1){
+      for(let i = at; i < at + em.length; i++){
+        if(text[i] !== ' ') chars[i].innerHTML = `<em>${text[i]}</em>`;
+      }
+    }
+  }
+});
+const TAG_CHARS = document.querySelectorAll('.hero-tag .ch');
+
+const finLine = document.getElementById('finLine');
+finLine.innerHTML = finLine.dataset.words.split('|').map((w,i)=>
+  `<span class="w"><i>${i===2?`<u>${w}</u>`:w}</i></span>`
+).join('<br>');
+const FIN_WORDS = finLine.querySelectorAll('.w i');
+
+document.getElementById('rail').innerHTML =
+  Array.from({length:14},()=>'<div class="pane"></div>').join('');
+
+/* ============================================================
+   2. HERO — particles assemble into the wordmark
+   ============================================================ */
+const cv  = document.getElementById('particles');
+const ctx = cv.getContext('2d');
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+let W = 0, H = 0, P = [], N = 0;
+
+/* --- render the wordmark offscreen, then sample it into points --- */
+function drawTracked(c, text, cx, y, size, tracking, weight){
+  c.font = `${weight} ${size}px Inter, "Helvetica Neue", Helvetica, Arial, sans-serif`;
+  const widths = [...text].map(ch => c.measureText(ch).width);
+  const total = widths.reduce((a,b)=>a+b,0) + tracking*(text.length-1);
+  let x = cx - total/2;
+  [...text].forEach((ch,i)=>{ c.fillText(ch, x, y); x += widths[i] + tracking; });
+  return total;
+}
+
+let wordCanvas = null;      // the solid wordmark the particles resolve into
+
+function wordmarkPoints(){
+  /* Supersample: MEDIA is small type, so sampling at CSS resolution starves it
+     of points. Render at 2x, sample there, and reuse the same canvas as the
+     crisp solid layer once the particles land. */
+  const S = 2;
+  const ow = W*S, oh = H*S;
+  const off = document.createElement('canvas');
+  off.width = ow; off.height = oh;
+  const c = off.getContext('2d');
+  c.textBaseline = 'middle';
+
+  const cx = ow/2, cy = oh*0.44;
+  const big = clamp(ow * 0.098, 60, 260);          // ETHAN LONG
+  const small = big * 0.40;                        // MEDIA
+  const ruleY = cy + big*0.22;
+
+  c.fillStyle = '#F4EFE6';
+  const w1 = drawTracked(c, 'ETHAN LONG', cx, cy - big*0.36, big, big*0.045, 800);
+
+  c.fillStyle = '#B5ABF5';
+  drawTracked(c, 'MEDIA', cx, cy + big*0.70, small, small*0.58, 800);
+  const rw = w1 * 0.30, rh = Math.max(2, big*0.030);
+  c.fillRect(cx - rw/2, ruleY, rw, rh);
+
+  wordCanvas = off;
+
+  const step = 4;                                   // in supersampled px
+  const data = c.getImageData(0,0,ow,oh).data;
+  const pts = [];
+  for(let y=0; y<oh; y+=step){
+    for(let x=0; x<ow; x+=step){
+      if(data[(y*ow + x)*4 + 3] > 128){
+        pts.push({
+          x: (x + (Math.random()-0.5)*step*0.8)/S,
+          y: (y + (Math.random()-0.5)*step*0.8)/S,
+          /* the rule and MEDIA carry the purple */
+          v: y >= ruleY - big*0.04 ? 1 : 0
+        });
+      }
+    }
+  }
+  return pts;
+}
+
+function build(){
+  const A = wordmarkPoints();
+
+  /* keep the count sane on very large displays */
+  const MAX = 5200;
+  if(A.length > MAX){
+    for(let i=A.length-1; i>0; i--){
+      const j = (Math.random()*(i+1))|0;
+      [A[i], A[j]] = [A[j], A[i]];
+    }
+    A.length = MAX;
+  }
+
+  N = A.length; P = [];
+  const R = Math.max(W,H);
+  for(let i=0;i<N;i++){
+    const a  = Math.random()*Math.PI*2;      // where it flies in from
+    const a2 = Math.random()*Math.PI*2;      // where it blows out to
+    const r  = R*(0.22 + Math.random()*0.55);
+    P.push({
+      ax:A[i].x, ay:A[i].y, av:A[i].v,
+      sx: W/2 + Math.cos(a)*r,
+      sy: H/2 + Math.sin(a)*r*0.72,
+      ox: Math.cos(a2), oy: Math.sin(a2),
+      ph: Math.random()*Math.PI*2,
+      sp: 0.6 + Math.random()*0.9,
+      d:  Math.random()
+    });
+  }
+}
+
+function size(){
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W*DPR; cv.height = H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  build();
+}
+
+let beat = 0;
+const intro = { t: 0 };            // 0 -> 1 once, on load
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  const ie = intro.t;
+
+  /* particles land -> crisp solid type takes over */
+  const landed = clamp((ie - 0.55)/0.45, 0, 1);
+
+  /* The wordmark builds once and then simply stays on screen — no scroll
+     transform, no fade. It leaves naturally when the sticky section ends. */
+  const sweepX = ((beat*0.16) % 1.6 - 0.3) * W;
+
+  for(let i=0;i<N;i++){
+    const q = P[i];
+
+    /* load-in: converge from a soft scatter onto the letterforms */
+    const e = ie < 1 ? 1 - Math.pow(1 - clamp(ie*1.5 - q.d*0.5, 0, 1), 3) : 1;
+
+    let x = q.sx + (q.ax - q.sx)*e;
+    let y = q.sy + (q.ay - q.sy)*e;
+
+    /* swirl while still flying in */
+    const flight = 1 - e;
+    if(flight > 0.001){
+      x += Math.cos(q.ph + beat*q.sp)*flight*52;
+      y += Math.sin(q.ph + beat*q.sp)*flight*52;
+    }
+    /* settled breathing keeps it alive without smearing the letterforms */
+    x += Math.cos(q.ph*2 + beat*0.55);
+    y += Math.sin(q.ph*2 + beat*0.55);
+
+    let alpha = (0.18 + e*0.79) * (1 - landed*0.78);
+    if(alpha <= 0.004) continue;
+
+    let r = 1.0;
+    let violet = q.av;
+
+    /* violet charge sweeping across the settled wordmark */
+    if(e > 0.9){
+      const d = Math.abs(x - sweepX);
+      if(d < W*0.11){
+        const k = 1 - d/(W*0.11);
+        alpha = Math.min(1, alpha + k*0.45);
+        r += k*0.9;
+        violet = 1;
+      }
+    }
+
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 6.283);
+    ctx.fillStyle = violet
+      ? 'rgba(181,171,245,' + alpha + ')'
+      : 'rgba(244,239,230,' + (alpha*0.86) + ')';
+    ctx.fill();
+  }
+
+  /* the solid wordmark, sitting exactly where the particles resolve */
+  if(landed > 0.004 && wordCanvas){
+    ctx.globalAlpha = landed;
+    ctx.drawImage(wordCanvas, 0, 0, W, H);
+    ctx.globalAlpha = 1;
+  }
+}
+
+function loop(){
+  beat += REDUCED ? 0 : 0.02;
+  draw();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', size);
+
+/* ============================================================
+   3. LENIS + SCROLLTRIGGER
+   ============================================================ */
+gsap.registerPlugin(ScrollTrigger);
+
+const lenis = new Lenis({
+  duration: 1.15,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t)),
+  smoothWheel: true, syncTouch: false, touchMultiplier: 1.6
+});
+window.lenis = lenis;
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(time => lenis.raf(time*1000));
+gsap.ticker.lagSmoothing(0);
+
+/* tagline tracks in on entry, lifts away as the wordmark locks */
+gsap.set(TAG_CHARS, { yPercent: 115, opacity: 0, filter:'blur(5px)' });
+function playIntro(){
+  /* snappy — the wordmark is together before you'd think to scroll */
+  gsap.to(intro, { t: 1, duration: 1.0, ease:'power2.out' });
+  gsap.to('#tagRule', { scaleX: 1, duration: 0.7, ease:'power3.inOut', delay: 0.2 });
+  gsap.to(TAG_CHARS, {
+    yPercent: 0, opacity: 1, filter:'blur(0px)',
+    duration: 0.7, ease:'power3.out', stagger: 0.010, delay: 0.32
+  });
+}
+
+
+/* ============================================================
+   4. REVEALS / STATS / TILT
+   ============================================================ */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+  });
+},{threshold:.18, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach((el,i)=>{
+  el.style.transitionDelay = ((i%4) * 0.07)+'s';
+  io.observe(el);
+});
+
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const to  = parseFloat(el.dataset.count);
+  const dec = parseInt(el.dataset.dec, 10);
+  const comma = el.hasAttribute('data-comma');
+  const obj = {v:0};
+  ScrollTrigger.create({
+    trigger: el, start:'top 88%', once:true,
+    onEnter: ()=> gsap.to(obj, {
+      v: to, duration: 2.1, ease:'power2.out',
+      onUpdate: ()=>{
+        let s = obj.v.toFixed(dec);
+        if(comma) s = Number(s).toLocaleString('en-US');
+        el.textContent = s;
+      }
+    })
+  });
+});
+
+gsap.fromTo(FIN_WORDS,
+  { yPercent: 115, rotate: 3 },
+  { yPercent: 0, rotate: 0, duration: 1.05, ease:'power4.out', stagger: 0.1,
+    scrollTrigger:{ trigger:'#finale', start:'top 68%' }});
+
+/* ============================================================
+   WORK CARDS — orchestrated reveal. Each card swings up from
+   below on its own hinge, the violet rule draws across the top,
+   then the copy cascades in behind it.
+   ============================================================ */
+(function(){
+  const cards = gsap.utils.toArray('.work-grid .card');
+  if(!cards.length) return;
+
+  gsap.set(cards, {
+    opacity: 0, yPercent: 14, rotateX: -16, scale: 0.94,
+    transformPerspective: 1200, transformOrigin: '50% 100%'
+  });
+
+  /* Driven by IntersectionObserver rather than ScrollTrigger: if the trigger
+     ever failed to fire, the cards would be stranded at opacity 0. A safety
+     timer guarantees they appear regardless. */
+  let played = false;
+  function reveal(){
+    if(played) return;
+    played = true;
+    {
+      cards.forEach((card, i) => {
+        const at = i * 0.15;
+        gsap.to(card, {
+          opacity: 1, yPercent: 0, rotateX: 0, scale: 1,
+          duration: 1.15, delay: at, ease: 'power3.out',
+          onStart(){ card.classList.add('lit'); },
+          /* hand the transform back so the hover tilt starts from clean */
+          onComplete(){ gsap.set(card, { clearProps: 'transform' }); }
+        });
+        /* copy only — the logo/video visual rides in with the card, so we
+           never write an inline opacity that would outrank .playable */
+        gsap.from(card.querySelectorAll('.card-top > *, .card-body > *'), {
+          opacity: 0, y: 20, duration: 0.75, delay: at + 0.22,
+          ease: 'power2.out', stagger: 0.07
+        });
+      });
+    }
+  }
+
+  const grid = document.querySelector('.work-grid');
+
+  /* The cards start at opacity 0, so a failure to fire would leave them
+     invisible. Four independent paths make that impossible. */
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ reveal(); obs.disconnect(); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  io.observe(grid);
+
+  // 2. plain scroll check, independent of both Lenis and IntersectionObserver
+  const onScrollCheck = () => {
+    if(played){ window.removeEventListener('scroll', onScrollCheck); return; }
+    if(grid.getBoundingClientRect().top < window.innerHeight * 0.9) reveal();
+  };
+  window.addEventListener('scroll', onScrollCheck, { passive: true });
+
+  // 3. a backgrounded tab throttles rAF and observers; re-check on return
+  document.addEventListener('visibilitychange', () => {
+    if(!document.hidden) onScrollCheck();
+  });
+
+  // 4. last resort
+  setTimeout(reveal, 6000);
+})();
+
+document.querySelectorAll('[data-tilt]').forEach(card=>{
+  card.addEventListener('pointermove', e=>{
+    const r = card.getBoundingClientRect();
+    const cx = (e.clientX - r.left)/r.width;
+    const cy = (e.clientY - r.top)/r.height;
+    card.style.setProperty('--mx', (cx*100)+'%');
+    card.style.setProperty('--my', (cy*100)+'%');
+    gsap.to(card,{ rotateY:(cx-.5)*16, rotateX:-(cy-.5)*16,
+      transformPerspective:900, duration:.6, ease:'power2.out' });
+  });
+  card.addEventListener('pointerleave', ()=>{
+    gsap.to(card,{rotateX:0, rotateY:0, duration:.9, ease:'elastic.out(1,.6)'});
+  });
+});
+
+ScrollTrigger.create({
+  trigger:'#work', start:'top bottom', end:'bottom top', scrub: 0.8,
+  onUpdate: self=>{
+    document.getElementById('rail').style
+      .setProperty('--rail-y', (self.progress*220 - 110).toFixed(1)+'px');
+  }
+});
+
+/* ============================================================
+   VIDEO — every clip is optional. A missing file leaves the
+   logo/icon in place rather than showing a broken player.
+   ============================================================ */
+(function(){
+  const reel = document.getElementById('heroReel');
+  reel.addEventListener('canplay', ()=>{
+    reel.classList.add('on');
+    reel.play().catch(()=>{});
+  }, { once:true });
+  reel.addEventListener('error', ()=> reel.remove());
+  reel.src = 'assets/video/hero.mp4';
+})();
+
+document.querySelectorAll('.card-vis[data-video]').forEach(vis=>{
+  const vid = vis.querySelector('.card-video');
+  const card = vis.closest('.card');
+  let ready = false;
+
+  vid.addEventListener('loadeddata', ()=>{
+    ready = true;
+    vis.classList.add('playable');
+  }, { once:true });
+  vid.addEventListener('error', ()=>{ vid.remove(); });
+
+  /* pointer devices: play on hover. touch: play while it's on screen. */
+  card.addEventListener('pointerenter', ()=>{ if(ready) vid.play().catch(()=>{}); });
+  card.addEventListener('pointerleave', ()=>{ if(ready){ vid.pause(); vid.currentTime = 0; } });
+
+  if(window.matchMedia('(hover: none)').matches){
+    new IntersectionObserver(es=>es.forEach(e=>{
+      if(!ready) return;
+      e.isIntersecting ? vid.play().catch(()=>{}) : vid.pause();
+    }),{threshold:.5}).observe(vis);
+  }
+
+  vid.src = vis.dataset.video;
+});
+
+/* ============================================================
+   BOOKING FORM — composes a pre-filled email
+   ============================================================ */
+document.getElementById('bookForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const f = e.target;
+  const val = n => (f.elements[n].value || '').trim();
+  const name = val('name');
+
+  if(!name){
+    f.elements['name'].focus();
+    f.elements['name'].style.borderColor = 'var(--violet)';
+    return;
+  }
+
+  const lines = [
+    'Name: '   + name,
+    'Team: '   + (val('team')   || '—'),
+    'Needs: '  + val('need'),
+    'Date: '   + (val('when')   || '—'),
+    '',
+    val('detail') || '(no extra detail)'
+  ];
+
+  window.location.href =
+    'mailto:ethanlongmedia@gmail.com' +
+    '?subject=' + encodeURIComponent('Booking — ' + name + ' (' + val('need') + ')') +
+    '&body='    + encodeURIComponent(lines.join('\n'));
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href');
+    e.preventDefault();
+    if(id.length < 2){ lenis.scrollTo(0); return; }
+    const el = document.querySelector(id);
+    if(el) lenis.scrollTo(el, {offset:0});
+  });
+});
+
+/* ============================================================
+   5. BOOT — no loader; the wordmark builds itself the moment it can
+   ============================================================ */
+let started = false;
+function start(){
+  if(started) return;
+  started = true;
+  size(); loop();
+  playIntro();
+  ScrollTrigger.refresh();
+}
+
+/* the wordmark is sampled from real type, so wait for the webfont —
+   with a fallback so a slow font never leaves the hero empty */
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(start);
+setTimeout(start, 2500);
+
+window.addEventListener('load', ()=>ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
