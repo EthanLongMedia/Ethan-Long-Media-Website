@@ -85,22 +85,7 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
    hero scrolls away like every other section. */
 #hero{height:100svh;position:relative;background:var(--ink);overflow:hidden}
 .hero-stick{position:relative;height:100%;overflow:hidden}
-#particles{position:absolute;inset:0;width:100%;height:100%;z-index:2}
-/* Hero reel sits behind the wordmark, dimmed hard so the type stays readable.
-   If the file isn't there the element just stays hidden and the hero is
-   exactly as it was. */
-#heroReel{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
-  opacity:0;transition:opacity 1.4s ease;
-  filter:grayscale(.4) contrast(1.06) brightness(.62);
-}
-#heroReel.on{opacity:.34}
-.hero-scrim{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:
-    radial-gradient(ellipse 62% 48% at 50% 44%,rgba(7,7,9,.82),rgba(7,7,9,.55) 60%,transparent 80%),
-    linear-gradient(180deg,rgba(7,7,9,.75),rgba(7,7,9,.25) 35%,rgba(7,7,9,.88));
-}
+#particles{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 .hero-glow{
   position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
@@ -173,6 +158,40 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .stat .sub{margin-top:6px;font:400 11.5px/1.5 var(--sans);color:var(--cream-faint)}
 @media(max-width:900px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
 
+/* ================= REEL ================= */
+#reel{background:var(--ink)}
+.reel-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.2vw,30px)}
+@media(max-width:700px){.reel-grid{grid-template-columns:1fr}}
+.reel-tile{
+  position:relative;aspect-ratio:9/16;overflow:hidden;background:var(--ink-2);
+  border:1px solid rgba(244,239,230,.11);
+  transition:border-color .5s,transform .6s cubic-bezier(.2,.8,.2,1);
+}
+.reel-tile:hover{border-color:rgba(139,127,232,.5);transform:translateY(-5px)}
+.reel-tile video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .8s ease;
+}
+.reel-tile.ready video{opacity:1}
+.reel-tile::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,7,9,.4) 0%,transparent 22%,transparent 62%,rgba(7,7,9,.9));
+}
+.reel-cap{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:clamp(16px,2vw,24px);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
+}
+.reel-cap b{font:800 clamp(13px,1.5vw,18px)/1.2 var(--display);text-transform:uppercase;letter-spacing:.05em;color:var(--cream)}
+.reel-cap span{font:600 9.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--violet-hi)}
+.reel-live{
+  position:absolute;top:clamp(14px,1.8vw,20px);left:clamp(14px,1.8vw,20px);z-index:2;
+  display:inline-flex;align-items:center;gap:7px;
+  font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);
+  background:rgba(7,7,9,.55);padding:7px 11px;border-radius:100px;backdrop-filter:blur(6px);
+}
+.reel-live::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet)}
+
 /* ================= WORK ================= */
 #work{background:var(--ink);overflow:hidden}
 .gallery-bg{position:absolute;inset:0;z-index:0;pointer-events:none;perspective:1000px;overflow:hidden;opacity:.45}
@@ -219,28 +238,6 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 }
 .card:hover .card-vis img{transform:translateZ(48px) scale(1.06)}
 
-/* video sits on top of the logo; the logo is what you see until it loads,
-   and what you keep seeing if the file is missing */
-.card-vis{isolation:isolate}
-.card-video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity .6s ease;transform:translateZ(0);
-  border:1px solid rgba(244,239,230,.09);
-}
-.card-vis.playable .card-video{opacity:1}
-.card-vis.playable img,.card-vis.playable svg{opacity:0;transition:opacity .4s}
-.card-vis.playable::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,transparent 45%,rgba(12,12,17,.85));
-}
-.card-tape{
-  position:absolute;left:12px;top:12px;z-index:3;
-  display:none;align-items:center;gap:7px;
-  font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);
-  background:rgba(7,7,9,.6);padding:7px 10px;border-radius:100px;backdrop-filter:blur(6px);
-}
-.card-vis.playable .card-tape{display:inline-flex}
-.card-tape::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet)}
 .card-vis svg{width:clamp(140px,17vw,205px);height:auto;transform:translateZ(28px);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 .card:hover .card-vis svg{transform:translateZ(48px) scale(1.06)}
 .gear-stroke{stroke:var(--cream-faint);transition:stroke .6s}
@@ -427,8 +424,6 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   <!-- ============ HERO : scroll-scrubbed particle assembly ============ -->
   <section id="hero">
     <div class="hero-stick">
-      <video id="heroReel" muted loop playsinline preload="auto" aria-hidden="true"></video>
-      <div class="hero-scrim"></div>
       <div class="hero-glow"></div>
       <canvas id="particles"></canvas>
 
@@ -491,6 +486,32 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
     </div>
   </section>
 
+  <!-- ============ REEL ============ -->
+  <section class="sec" id="reel">
+    <div class="u-wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow rv">The tape</div>
+          <h2 class="sec-title rv" style="margin-top:18px">Don't take<br>my <u>word</u> for it.</h2>
+        </div>
+        <p class="sec-note rv">Straight off the card — no stock, no filler. This is what your night looks like when I'm on the baseline.</p>
+      </div>
+
+      <div class="reel-grid">
+        <figure class="reel-tile rv">
+          <video src="assets/video/reel-1.mp4" muted loop playsinline preload="metadata"></video>
+          <span class="reel-live">Reel</span>
+          <figcaption class="reel-cap"><b>In the gym</b><span>Training</span></figcaption>
+        </figure>
+        <figure class="reel-tile rv">
+          <video src="assets/video/reel-2.mp4" muted loop playsinline preload="metadata"></video>
+          <span class="reel-live">Reel</span>
+          <figcaption class="reel-cap"><b>Under the lights</b><span>Gameday</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ WORK ============ -->
   <section class="sec" id="work">
     <div class="gallery-bg"><div class="rail" id="rail"></div></div>
@@ -506,11 +527,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       <div class="work-grid">
         <article class="card" data-tilt>
           <div class="card-top"><span class="card-idx">01</span><span class="card-kind">NCAA D-II · Midland, MI</span></div>
-          <div class="card-vis" data-video="assets/video/northwood.mp4">
-            <video class="card-video" muted loop playsinline preload="metadata"></video>
-            <span class="card-tape">Gameday</span>
-            <img src="assets/brand/northwood-clean.png" alt="Northwood University Timberwolves logo">
-          </div>
+          <div class="card-vis"><img src="assets/brand/northwood-clean.png" alt="Northwood University Timberwolves logo"></div>
           <div class="card-body">
             <h3 class="card-name">Northwood<em>University</em></h3>
             <p class="card-pitch">Gameday film for the Timberwolves — the overtime cut against Lake Erie that broke a million views.</p>
@@ -520,11 +537,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 
         <article class="card" data-tilt>
           <div class="card-top"><span class="card-idx">02</span><span class="card-kind">Travel program · 17U</span></div>
-          <div class="card-vis" data-video="assets/video/real.mp4">
-            <video class="card-video" muted loop playsinline preload="metadata"></video>
-            <span class="card-tape">Circuit</span>
-            <img src="assets/brand/real-clean.png" alt="REAL Basketball logo">
-          </div>
+          <div class="card-vis"><img src="assets/brand/real-clean.png" alt="REAL Basketball logo"></div>
           <div class="card-body">
             <h3 class="card-name">REAL<em>Basketball</em></h3>
             <p class="card-pitch">Summer circuit with the travel program — exposure edits built so college coaches actually finish the tape.</p>
@@ -534,9 +547,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 
         <article class="card" data-tilt>
           <div class="card-top"><span class="card-idx">03</span><span class="card-kind">Player development</span></div>
-          <div class="card-vis" data-video="assets/video/trainers.mp4">
-            <video class="card-video" muted loop playsinline preload="metadata"></video>
-            <span class="card-tape">Local</span>
+          <div class="card-vis">
             <!-- Real state boundary, projected from GeoJSON and simplified.
                  viewBox is cropped to the artwork's own bounds so the map sits
                  centred in the card instead of floating in empty space. -->
@@ -706,7 +717,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         <p class="form-note">This opens your email app with everything filled in — you just hit send. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
         <div class="fin-btns full" style="justify-content:flex-start;margin-top:4px">
           <button class="btn btn-solid" type="submit"><span>Send enquiry</span></button>
-          <a class="btn btn-ghost" href="#work"><span>Watch the work</span></a>
+          <a class="btn btn-ghost" href="#reel"><span>Watch the work</span></a>
         </div>
       </form>
     </div>
@@ -1123,42 +1134,15 @@ ScrollTrigger.create({
 });
 
 /* ============================================================
-   VIDEO — every clip is optional. A missing file leaves the
-   logo/icon in place rather than showing a broken player.
+   REEL — clips only run while they're on screen
    ============================================================ */
-(function(){
-  const reel = document.getElementById('heroReel');
-  reel.addEventListener('canplay', ()=>{
-    reel.classList.add('on');
-    reel.play().catch(()=>{});
-  }, { once:true });
-  reel.addEventListener('error', ()=> reel.remove());
-  reel.src = 'assets/video/hero.mp4';
-})();
-
-document.querySelectorAll('.card-vis[data-video]').forEach(vis=>{
-  const vid = vis.querySelector('.card-video');
-  const card = vis.closest('.card');
-  let ready = false;
-
-  vid.addEventListener('loadeddata', ()=>{
-    ready = true;
-    vis.classList.add('playable');
-  }, { once:true });
-  vid.addEventListener('error', ()=>{ vid.remove(); });
-
-  /* pointer devices: play on hover. touch: play while it's on screen. */
-  card.addEventListener('pointerenter', ()=>{ if(ready) vid.play().catch(()=>{}); });
-  card.addEventListener('pointerleave', ()=>{ if(ready){ vid.pause(); vid.currentTime = 0; } });
-
-  if(window.matchMedia('(hover: none)').matches){
-    new IntersectionObserver(es=>es.forEach(e=>{
-      if(!ready) return;
-      e.isIntersecting ? vid.play().catch(()=>{}) : vid.pause();
-    }),{threshold:.5}).observe(vis);
-  }
-
-  vid.src = vis.dataset.video;
+document.querySelectorAll('.reel-tile video').forEach(vid=>{
+  const tile = vid.closest('.reel-tile');
+  vid.addEventListener('loadeddata', ()=> tile.classList.add('ready'), { once:true });
+  vid.addEventListener('error', ()=> tile.remove());
+  new IntersectionObserver(es=>es.forEach(e=>{
+    e.isIntersecting ? vid.play().catch(()=>{}) : vid.pause();
+  }),{threshold:.25}).observe(tile);
 });
 
 /* ============================================================
