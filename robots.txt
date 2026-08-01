@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Add your sitemap once a domain is live, e.g.
+# Sitemap: https://ethanlongmedia.com/sitemap.xml
