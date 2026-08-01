@@ -183,9 +183,13 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 /* The clip is a real .card — same border, hover, cursor glow and tilt as the
    work grid. Only the visual slot differs: video fills it instead of a logo. */
 .proof-card{min-height:0}
+/* Aspect-locked. Previously it stretched to whatever height the card ended up
+   at, so the crop — and how much of the frame you saw — shifted with the
+   viewport. A fixed ratio keeps the framing identical at every width, and the
+   box never exceeds the clip's own 562px so it never upscales and softens. */
 .proof-vis{
-  position:relative;overflow:hidden;padding:0;
-  align-self:stretch;min-height:200px;background:#000;
+  position:relative;overflow:hidden;padding:0;flex:none;
+  width:100%;aspect-ratio:4/5;background:#000;
   /* breathing room so the label row isn't sitting on the video */
   margin-block:clamp(16px,2.2vw,24px);
 }
