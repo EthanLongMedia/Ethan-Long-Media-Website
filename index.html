@@ -470,6 +470,13 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   .guarantee-band{padding:26px 22px}
   .step{padding:24px 20px}
 
+  /* Tilt is disabled on touch, so the 3D context is pure cost: will-change
+     pins a compositor layer permanently, and preserve-3d wrapped around a
+     <video> is a known source of scroll jank on iOS. */
+  .card{transform-style:flat;will-change:auto}
+  .card-body,.card-vis img,.card-vis svg,
+  .card:hover .card-vis img,.card:hover .card-vis svg{transform:none}
+
   /* full-width tap targets read as buttons, not links */
   .fin-btns{width:100%}
   .fin-btns .btn{flex:1;justify-content:center;min-height:52px}
@@ -1237,9 +1244,16 @@ document.querySelectorAll('.proof-vis video').forEach(vid=>{
   /* if playback is unavailable the poster still shows, so hide only the
      video rather than tearing the whole visual out of the card */
   vid.addEventListener('error', ()=>{ vid.style.display = 'none'; });
+  /* A 25% threshold flips right as the card crosses the edge, so scrolling past
+     fired play()/pause() over and over — each one costs a decode hiccup, which
+     is what the jitter was. Trigger well outside the viewport instead, and only
+     act on an actual change of state. */
+  let playing = false;
   new IntersectionObserver(es=>es.forEach(e=>{
-    e.isIntersecting ? vid.play().catch(()=>{}) : vid.pause();
-  }),{threshold:.25}).observe(tile);
+    if(e.isIntersecting === playing) return;
+    playing = e.isIntersecting;
+    if(playing) vid.play().catch(()=>{}); else vid.pause();
+  }),{ threshold:0, rootMargin:'25% 0px 25% 0px' }).observe(tile);
 });
 
 /* ============================================================
