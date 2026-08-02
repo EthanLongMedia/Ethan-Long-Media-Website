@@ -116,6 +116,10 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
   display:flex;flex-direction:column;justify-content:flex-end;
   padding-bottom:clamp(120px,25vh,280px);
 }
+/* short-and-wide windows: pull the tagline down so it clears the wordmark */
+@media(max-height:680px){
+  .hero-ui{padding-bottom:clamp(64px,12vh,110px)}
+}
 .hero-tag{text-align:center;padding-inline:6vw}
 .hero-tag .rule{
   width:44px;height:1px;background:var(--violet);margin:0 auto clamp(18px,3vh,28px);
@@ -832,8 +836,14 @@ function wordmarkPoints(){
   const c = off.getContext('2d');
   c.textBaseline = 'middle';
 
-  const cx = ow/2, cy = oh*0.44;
-  const big = clamp(ow * 0.098, 60, 260);          // ETHAN LONG
+  const cx = ow/2, cy = oh*0.41;
+  /* Sized by width but positioned by height, so on a wide-but-short window the
+     wordmark grew past the space available and collided with the tagline.
+     Capping against height too keeps the lockup inside its own half. */
+  /* Height term matters as much as width: on a wide, short window the
+     width-driven size grew past the space available and MEDIA collided with
+     the tagline below it. */
+  const big = clamp(Math.min(ow * 0.098, oh * 0.145), 60, 260);   // ETHAN LONG
   const small = big * 0.40;                        // MEDIA
   const ruleY = cy + big*0.22;
 
