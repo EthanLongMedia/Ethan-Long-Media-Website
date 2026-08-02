@@ -375,6 +375,19 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
   background-image:linear-gradient(45deg,transparent 50%,var(--cream-dim) 50%),linear-gradient(135deg,var(--cream-dim) 50%,transparent 50%);
   background-position:calc(100% - 19px) 50%,calc(100% - 13px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;
 }
+.mail-fallback{
+  grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;
+  gap:14px;padding:clamp(16px,2vw,22px);
+  border:1px solid rgba(139,127,232,.35);background:var(--ink-2);
+}
+.mail-fallback[hidden]{display:none}
+.mail-fallback p{font:400 13px/1.65 var(--sans);color:var(--cream-dim)}
+.mail-fallback a{color:var(--violet-hi);border-bottom:1px solid rgba(181,171,245,.4)}
+.mail-fallback textarea{
+  width:100%;background:var(--ink);border:1px solid rgba(244,239,230,.13);
+  color:var(--cream);padding:13px 14px;border-radius:2px;resize:vertical;
+  font:400 12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;
+}
 .form-note{grid-column:1/-1;font:400 12px/1.6 var(--sans);color:var(--cream-faint);margin-top:-4px}
 
 /* ================= FINALE ================= */
@@ -733,6 +746,12 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <textarea id="f-detail" name="detail" placeholder="Gym, tip-off time, jersey number, what you want out of the tape."></textarea>
         </div>
         <p class="form-note">This opens your email app with everything filled in — you just hit send. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
+        <div class="mail-fallback" id="mailFallback" hidden>
+          <p>Your email app should have opened. If it didn't, copy this and send it to <a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>.</p>
+          <textarea id="mailText" readonly rows="7"></textarea>
+          <button type="button" class="btn btn-ghost" id="copyBtn"><span>Copy details</span></button>
+        </div>
+
         <div class="fin-btns full" style="justify-content:flex-start;margin-top:4px">
           <button class="btn btn-solid" type="submit"><span>Send enquiry</span></button>
           <a class="btn btn-ghost" href="#proof"><span>Watch the work</span></a>
@@ -1205,10 +1224,41 @@ document.getElementById('bookForm').addEventListener('submit', e=>{
     val('detail') || '(no extra detail)'
   ];
 
-  window.location.href =
-    'mailto:ethanlongmedia@gmail.com' +
-    '?subject=' + encodeURIComponent('Booking — ' + name + ' (' + val('need') + ')') +
-    '&body='    + encodeURIComponent(lines.join('\n'));
+  const subject = 'Booking — ' + name + ' (' + val('need') + ')';
+  const body    = lines.join('\n');
+
+  /* A real anchor click rather than assigning location.href: embedded and
+     sandboxed contexts block top-level navigation to mailto: outright, which
+     is what produced the "content is blocked" message. */
+  const a = document.createElement('a');
+  a.href = 'mailto:ethanlongmedia@gmail.com'
+         + '?subject=' + encodeURIComponent(subject)
+         + '&body='    + encodeURIComponent(body);
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  try { a.click(); } catch(err) {}
+  a.remove();
+
+  /* Shown either way, so a blocked mail handler is never a dead end. */
+  document.getElementById('mailText').value =
+    'To: ethanlongmedia@gmail.com\nSubject: ' + subject + '\n\n' + body;
+  const fb = document.getElementById('mailFallback');
+  fb.hidden = false;
+  fb.scrollIntoView({ behavior:'smooth', block:'nearest' });
+});
+
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  const t = document.getElementById('mailText');
+  const label = document.querySelector('#copyBtn span');
+  try{
+    await navigator.clipboard.writeText(t.value);
+  }catch(err){
+    t.select();
+    try{ document.execCommand('copy'); }catch(e2){}
+  }
+  label.textContent = 'Copied';
+  setTimeout(()=>{ label.textContent = 'Copy details'; }, 2200);
 });
 
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
