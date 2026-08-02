@@ -197,11 +197,13 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
   /* breathing room so the label row isn't sitting on the video */
   margin-block:clamp(16px,2.2vw,24px);
 }
+/* Always visible. This used to start at opacity 0 and fade in on a
+   `loadeddata` listener, but a data-URI source decodes before that script
+   runs, so the event was already gone and the video stayed invisible. The
+   poster attribute covers the pre-load frame natively instead. */
 .proof-vis video{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity .8s ease;
 }
-.proof-vis.ready video{opacity:1}
 @media(max-width:760px){
   .proof-body{grid-template-columns:1fr}
   .proof-card{max-width:340px;margin-inline:auto;width:100%}
@@ -481,7 +483,8 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         <article class="card proof-card lit rv" data-tilt>
           <div class="card-top"><span class="card-idx">01</span><span class="card-kind">The cut</span></div>
           <div class="card-vis proof-vis">
-            <video src="assets/video/viral.mp4" muted loop playsinline preload="metadata"></video>
+            <video src="assets/video/viral.mp4" poster="assets/video/poster.jpg"
+                   muted loop playsinline preload="metadata"></video>
           </div>
           <div class="card-body">
             <h3 class="card-name">Northwood<em>vs Lake Erie</em></h3>
@@ -1159,8 +1162,9 @@ ScrollTrigger.create({
    ============================================================ */
 document.querySelectorAll('.proof-vis video').forEach(vid=>{
   const tile = vid.closest('.proof-vis');
-  vid.addEventListener('loadeddata', ()=> tile.classList.add('ready'), { once:true });
-  vid.addEventListener('error', ()=> tile.remove());
+  /* if playback is unavailable the poster still shows, so hide only the
+     video rather than tearing the whole visual out of the card */
+  vid.addEventListener('error', ()=>{ vid.style.display = 'none'; });
   new IntersectionObserver(es=>es.forEach(e=>{
     e.isIntersecting ? vid.play().catch(()=>{}) : vid.pause();
   }),{threshold:.25}).observe(tile);
