@@ -389,6 +389,15 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .fin-line .w i{display:inline-block;font-style:normal;will-change:transform}
 .fin-line u{text-decoration:none;color:transparent;-webkit-text-stroke:1.4px var(--violet)}
 .fin-sub{position:relative;margin:clamp(22px,3.4vh,34px) auto 0;max-width:52ch;font:400 clamp(13.5px,1.4vw,16.5px)/1.7 var(--sans);color:var(--cream-dim)}
+.fin-mail{
+  position:relative;margin-top:clamp(16px,2.2vh,24px);
+  font:700 clamp(13px,1.5vw,18px)/1 var(--sans);letter-spacing:.06em;
+}
+.fin-mail a{
+  color:var(--violet-hi);border-bottom:1px solid rgba(181,171,245,.35);
+  padding-bottom:4px;transition:color .35s,border-color .35s;
+}
+.fin-mail a:hover{color:var(--cream);border-color:var(--cream)}
 .fin-btns{position:relative;margin-top:clamp(28px,4.4vh,48px);display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn{
   display:inline-flex;align-items:center;gap:11px;padding:17px 32px;border-radius:100px;
@@ -694,6 +703,8 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
     <div class="u-wrap" id="contact">
       <h2 class="fin-line" id="finLine" data-words="LET'S GET|YOU|SEEN."></h2>
       <p class="fin-sub rv">Tell me the date, the gym and who to watch. I'll come back with availability and a price — usually same day.</p>
+
+      <p class="fin-mail rv"><a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a></p>
 
       <form class="form-wrap rv" id="bookForm" novalidate>
         <div class="field">
