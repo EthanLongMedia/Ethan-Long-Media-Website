@@ -50,7 +50,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
   background:var(--ink);color:var(--cream);font-family:var(--sans);
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
@@ -440,6 +440,36 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 }
 
 @media (prefers-reduced-motion: reduce){ #grain{display:none} }
+
+/* ================= TOUCH / SMALL SCREENS ================= */
+/* The grain layer is a full-screen overlay that jumps position five times a
+   second. On a phone that reads as the whole interface shimmering sideways,
+   and it repaints the viewport every step. Hold it still instead. */
+@media (hover: none), (max-width: 760px){
+  #grain{animation:none}
+}
+
+@media (max-width: 760px){
+  /* Decorative 3D rail: 200% wide, parallaxed, and clipped — pure cost on a
+     phone and the source of the left-right sweep behind the work cards. */
+  .gallery-bg{display:none}
+
+  /* cards sized for a mouse pointer left huge empty boxes on a phone */
+  .card{min-height:0}
+  .card-vis{padding:clamp(18px,6vw,30px) 0}
+
+  /* give the page its margins back */
+  .sec{padding-block:clamp(64px,11vh,110px)}
+  .sec-head{margin-bottom:clamp(28px,5vh,44px)}
+  .stat{padding:22px 18px}
+  .tier{padding:24px 20px}
+  .guarantee-band{padding:26px 22px}
+  .step{padding:24px 20px}
+
+  /* full-width tap targets read as buttons, not links */
+  .fin-btns{width:100%}
+  .fin-btns .btn{flex:1;justify-content:center;min-height:52px}
+}
 </style>
 </head>
 <body>
@@ -1160,8 +1190,16 @@ gsap.fromTo(FIN_WORDS,
 const TILT_MAX = 5;                          // degrees
 const falloff = v => Math.sin((gsap.utils.clamp(0, 1, v) - 0.5) * Math.PI);
 
+/* Touch devices fire pointermove throughout a scroll gesture, so the cards
+   were tilting and snapping back as you dragged past them — that was the
+   shake. Tilt is a cursor affordance; bind it only where a cursor exists. */
+const FINE_POINTER = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
 document.querySelectorAll('[data-tilt]').forEach(card=>{
+  if(!FINE_POINTER) return;
   card.addEventListener('pointermove', e=>{
+    /* hybrid laptops report a fine pointer but still take touch input */
+    if(e.pointerType === 'touch' || e.pointerType === 'pen') return;
     const r = card.getBoundingClientRect();
     const cx = (e.clientX - r.left)/r.width;
     const cy = (e.clientY - r.top)/r.height;
@@ -1179,7 +1217,7 @@ document.querySelectorAll('[data-tilt]').forEach(card=>{
   });
 });
 
-ScrollTrigger.create({
+if(window.matchMedia('(min-width: 761px)').matches) ScrollTrigger.create({
   trigger:'#work', start:'top bottom', end:'bottom top', scrub: 0.8,
   onUpdate: self=>{
     document.getElementById('rail').style
