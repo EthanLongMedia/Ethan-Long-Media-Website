@@ -450,7 +450,10 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
    second. On a phone that reads as the whole interface shimmering sideways,
    and it repaints the viewport every step. Hold it still instead. */
 @media (hover: none), (max-width: 760px){
-  #grain{animation:none}
+  /* inset:-120% makes this a composited layer roughly 11x the viewport area,
+     permanently present behind every scroll. The drift animation is off here,
+     so it only ever needs to cover the screen. */
+  #grain{animation:none;inset:0}
 }
 
 /* Touch devices apply :hover on tap with no real "leave" event, so just
@@ -1074,9 +1077,22 @@ function draw(){
   }
 }
 
+/* The hero canvas was redrawing every frame for the life of the page — about
+   60,000 arc() calls a second — even when the hero was scrolled far out of
+   view. On a phone that constant tax collides with video decode further down
+   the page, which is what made scrolling past the card judder. Render only
+   while the hero is actually on screen. */
+let heroOnScreen = true;
+new IntersectionObserver(
+  es => { heroOnScreen = es[0].isIntersecting; },
+  { rootMargin: '20% 0px' }
+).observe(document.getElementById('hero'));
+
 function loop(){
-  beat += REDUCED ? 0 : 0.02;
-  draw();
+  if(heroOnScreen){
+    beat += REDUCED ? 0 : 0.02;
+    draw();
+  }
   requestAnimationFrame(loop);
 }
 
