@@ -358,19 +358,19 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 
 /* ================= CONTACT FORM ================= */
 .form-wrap{
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.6vw,18px);
-  text-align:left;margin-top:clamp(18px,3vh,30px);
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,28px);
+  text-align:left;margin-top:clamp(30px,5vh,50px);
 }
 @media(max-width:760px){.form-wrap{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:6px}
+.field{display:flex;flex-direction:column;gap:8px}
 .field.full{grid-column:1/-1}
 .field label{font:600 9.5px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint)}
 .field input,.field select,.field textarea{
   background:var(--ink-2);border:1px solid rgba(244,239,230,.13);color:var(--cream);
-  padding:11px 14px;font:400 14px/1.4 var(--sans);border-radius:2px;
+  padding:14px 15px;font:400 16px/1.4 var(--sans);border-radius:2px;
   transition:border-color .35s,background .35s;width:100%;
 }
-.field textarea{resize:vertical;min-height:72px}
+.field textarea{resize:vertical;min-height:104px}
 .field input:focus,.field select:focus,.field textarea:focus{
   outline:none;border-color:var(--violet);background:var(--ink-3);
 }
@@ -395,19 +395,19 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .form-note{grid-column:1/-1;font:400 12px/1.6 var(--sans);color:var(--cream-faint);margin-top:-4px}
 
 /* ================= FINALE ================= */
-#finale{position:relative;background:var(--ink);padding-block:clamp(36px,6vh,90px);text-align:center;overflow:hidden;z-index:2}
+#finale{position:relative;background:var(--ink);padding-block:clamp(110px,19vh,220px);text-align:center;overflow:hidden;z-index:2}
 #finale::before{
   content:"";position:absolute;top:50%;left:50%;width:min(1100px,120vw);aspect-ratio:1;
   transform:translate(-50%,-50%);pointer-events:none;
   background:radial-gradient(circle,rgba(139,127,232,.14),transparent 62%);
 }
-.fin-line{position:relative;font:800 clamp(28px,5.6vw,80px)/1.04 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--cream)}
+.fin-line{position:relative;font:800 clamp(30px,6.6vw,96px)/1.04 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--cream)}
 .fin-line .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
 .fin-line .w i{display:inline-block;font-style:normal;will-change:transform}
 .fin-line u{text-decoration:none;color:var(--violet)}
-.fin-sub{position:relative;margin:clamp(14px,2vh,22px) auto 0;max-width:52ch;font:400 clamp(13.5px,1.4vw,16.5px)/1.6 var(--sans);color:var(--cream-dim)}
+.fin-sub{position:relative;margin:clamp(22px,3.4vh,34px) auto 0;max-width:52ch;font:400 clamp(13.5px,1.4vw,16.5px)/1.7 var(--sans);color:var(--cream-dim)}
 .fin-mail{
-  position:relative;margin-top:clamp(10px,1.4vh,16px);
+  position:relative;margin-top:clamp(16px,2.2vh,24px);
   font:700 clamp(13px,1.5vw,18px)/1 var(--sans);letter-spacing:.06em;
 }
 .fin-mail a{
@@ -415,7 +415,7 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
   padding-bottom:4px;transition:color .35s,border-color .35s;
 }
 .fin-mail a:hover{color:var(--cream);border-color:var(--cream)}
-.fin-btns{position:relative;margin-top:clamp(16px,2.6vh,28px);display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.fin-btns{position:relative;margin-top:clamp(28px,4.4vh,48px);display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn{
   display:inline-flex;align-items:center;gap:11px;padding:17px 32px;border-radius:100px;
   font:700 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
@@ -453,6 +453,19 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   #grain{animation:none}
 }
 
+/* Touch devices apply :hover on tap with no real "leave" event, so just
+   touching a card to start a scroll drag could snap its glow/scale in and
+   leave it lit — a pop that read as the card "expanding". Hover is a
+   cursor affordance; only give it to devices that actually have one. */
+@media (hover: none){
+  .card:hover{border-color:rgba(244,239,230,.11);background:var(--ink-2)}
+  .card:hover::before{opacity:0}
+  .card:hover .card-vis img,.card:hover .card-vis svg{transform:translateZ(28px) scale(1)}
+  .card:hover .gear-stroke{stroke:var(--cream-faint)}
+  .card:hover .card-go{color:var(--cream-faint)}
+  .card:hover .card-go i{width:20px}
+}
+
 @media (max-width: 760px){
   /* Decorative 3D rail: 200% wide, parallaxed, and clipped — pure cost on a
      phone and the source of the left-right sweep behind the work cards. */
@@ -480,21 +493,6 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   /* full-width tap targets read as buttons, not links */
   .fin-btns{width:100%}
   .fin-btns .btn{flex:1;justify-content:center;min-height:52px}
-
-  /* The inquiry section was spilling well past one screen on a phone —
-     mostly desktop-sized padding and a 6-field single column form. Pair
-     fields back into 2 columns and cut the dead space so the whole thing
-     reads as one screen, not three. */
-  #finale{padding-block:clamp(24px,5vh,44px)}
-  .fin-sub{margin-top:14px}
-  .fin-mail{margin-top:10px}
-  .form-wrap{margin-top:22px;grid-template-columns:1fr 1fr;gap:10px}
-  .field{gap:5px}
-  .field input,.field select,.field textarea{padding:10px 12px}
-  .field textarea{min-height:58px}
-  .form-note{margin-top:0;font-size:11px;line-height:1.5}
-  .fin-btns{margin-top:16px}
-  .fin-btns .btn{padding:14px 24px}
 }
 </style>
 </head>
@@ -808,7 +806,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <label for="f-detail">Anything else</label>
           <textarea id="f-detail" name="detail" placeholder="Gym, tip-off time, jersey number, what you want out of the tape."></textarea>
         </div>
-        <p class="form-note" id="formNote">Lands straight in my inbox. Or message me on <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a>.</p>
+        <p class="form-note" id="formNote">Hit send and it lands straight in my inbox — no email app needed. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
         <div class="mail-fallback" id="mailFallback" hidden>
           <p>That didn't go through automatically. Copy this and send it to <a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>.</p>
           <textarea id="mailText" readonly rows="7"></textarea>
@@ -1082,12 +1080,27 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-window.addEventListener('resize', size);
+/* iOS fires a resize event as the address bar collapses/expands *during
+   a scroll* — width never changes, only height. Reacting to that here
+   meant rebuilding the entire 5,000-particle wordmark mid-scroll, which
+   is what read as the page "expanding"/jittering right after the hero. */
+let lastResizeW = window.innerWidth;
+window.addEventListener('resize', () => {
+  if(window.innerWidth === lastResizeW) return;
+  lastResizeW = window.innerWidth;
+  size();
+});
 
 /* ============================================================
    3. LENIS + SCROLLTRIGGER
    ============================================================ */
 gsap.registerPlugin(ScrollTrigger);
+/* Same address-bar-resize problem hits ScrollTrigger directly: by default
+   it recalculates every trigger's position on any resize, which on mobile
+   fired repeatedly mid-scroll for no actual layout change — the cost of
+   that recalculation across every stat/card/word trigger on the page is
+   what showed up as jitter near each of them, not just the video. */
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const lenis = new Lenis({
   duration: 1.15,
