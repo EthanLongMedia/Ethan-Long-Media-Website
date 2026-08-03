@@ -165,7 +165,7 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .sec{position:relative;z-index:2;background:var(--ink);padding-block:clamp(90px,13vh,170px)}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:clamp(40px,6vh,72px)}
 .sec-title{font:800 clamp(29px,5vw,72px)/1.02 var(--display);text-transform:uppercase;letter-spacing:-.005em;color:var(--cream)}
-.sec-title u{text-decoration:none;color:transparent;-webkit-text-stroke:1.2px var(--violet)}
+.sec-title u{text-decoration:none;color:var(--violet)}
 .sec-note{max-width:38ch;font:400 14px/1.7 var(--sans);color:var(--cream-dim)}
 
 .rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
@@ -404,7 +404,7 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .fin-line{position:relative;font:800 clamp(30px,6.6vw,96px)/1.04 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--cream)}
 .fin-line .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
 .fin-line .w i{display:inline-block;font-style:normal;will-change:transform}
-.fin-line u{text-decoration:none;color:transparent;-webkit-text-stroke:1.4px var(--violet)}
+.fin-line u{text-decoration:none;color:var(--violet)}
 .fin-sub{position:relative;margin:clamp(22px,3.4vh,34px) auto 0;max-width:52ch;font:400 clamp(13.5px,1.4vw,16.5px)/1.7 var(--sans);color:var(--cream-dim)}
 .fin-mail{
   position:relative;margin-top:clamp(16px,2.2vh,24px);
@@ -547,7 +547,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <div class="card-top"><span class="card-idx">01</span><span class="card-kind">The cut</span></div>
           <div class="card-vis proof-vis">
             <video src="assets/video/viral.mp4" poster="assets/video/poster.jpg"
-                   muted loop playsinline preload="metadata"></video>
+                   muted loop playsinline autoplay preload="auto"></video>
           </div>
           <div class="card-body">
             <h3 class="card-name">Northwood<em>vs Lake Erie</em></h3>
@@ -761,9 +761,16 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       <p class="fin-mail rv"><a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a></p>
 
       <form class="form-wrap rv" id="bookForm" novalidate>
+        <input type="hidden" name="access_key" value="cbd6a85a-3db1-4b46-b152-c742444db780">
+        <input type="hidden" name="subject" value="New booking enquiry">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="field">
           <label for="f-name">Your name</label>
           <input id="f-name" name="name" type="text" placeholder="First and last" required>
+        </div>
+        <div class="field">
+          <label for="f-email">Your email</label>
+          <input id="f-email" name="email" type="email" placeholder="you@example.com" required>
         </div>
         <div class="field">
           <label for="f-team">Team or program</label>
@@ -786,9 +793,9 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <label for="f-detail">Anything else</label>
           <textarea id="f-detail" name="detail" placeholder="Gym, tip-off time, jersey number, what you want out of the tape."></textarea>
         </div>
-        <p class="form-note">This opens your email app with everything filled in — you just hit send. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
+        <p class="form-note" id="formNote">Hit send and it lands straight in my inbox — no email app needed. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
         <div class="mail-fallback" id="mailFallback" hidden>
-          <p>Your email app should have opened. If it didn't, copy this and send it to <a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>.</p>
+          <p>That didn't go through automatically. Copy this and send it to <a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>.</p>
           <textarea id="mailText" readonly rows="7"></textarea>
           <button type="button" class="btn btn-ghost" id="copyBtn"><span>Copy details</span></button>
         </div>
@@ -1237,71 +1244,91 @@ if(window.matchMedia('(min-width: 761px)').matches) ScrollTrigger.create({
 });
 
 /* ============================================================
-   REEL — clips only run while they're on screen
+   REEL — plays continuously; no scroll-linked play/pause
    ============================================================ */
 document.querySelectorAll('.proof-vis video').forEach(vid=>{
-  const tile = vid.closest('.proof-vis');
   /* if playback is unavailable the poster still shows, so hide only the
      video rather than tearing the whole visual out of the card */
   vid.addEventListener('error', ()=>{ vid.style.display = 'none'; });
-  /* A 25% threshold flips right as the card crosses the edge, so scrolling past
-     fired play()/pause() over and over — each one costs a decode hiccup, which
-     is what the jitter was. Trigger well outside the viewport instead, and only
-     act on an actual change of state. */
-  let playing = false;
-  new IntersectionObserver(es=>es.forEach(e=>{
-    if(e.isIntersecting === playing) return;
-    playing = e.isIntersecting;
-    if(playing) vid.play().catch(()=>{}); else vid.pause();
-  }),{ threshold:0, rootMargin:'25% 0px 25% 0px' }).observe(tile);
+  /* Starting/stopping decode exactly as the card crossed the viewport edge —
+     even with a wide rootMargin — was the source of the judder on mobile:
+     every play()/pause() call landed mid-scroll and dropped a frame. The clip
+     is small, muted and looping, so just let it run and only pause it while
+     the tab itself is backgrounded. */
+  vid.play().catch(()=>{});
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden) vid.pause();
+    else vid.play().catch(()=>{});
+  });
 });
 
 /* ============================================================
-   BOOKING FORM — composes a pre-filled email
+   BOOKING FORM — submits straight to an inbox via Web3Forms.
+   No mail app, no mailto: — just a POST from the page itself.
    ============================================================ */
-document.getElementById('bookForm').addEventListener('submit', e=>{
+document.getElementById('bookForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const f = e.target;
   const val = n => (f.elements[n].value || '').trim();
   const name = val('name');
+  const email = val('email');
 
   if(!name){
     f.elements['name'].focus();
     f.elements['name'].style.borderColor = 'var(--violet)';
     return;
   }
-
-  const lines = [
-    'Name: '   + name,
-    'Team: '   + (val('team')   || '—'),
-    'Needs: '  + val('need'),
-    'Date: '   + (val('when')   || '—'),
-    '',
-    val('detail') || '(no extra detail)'
-  ];
+  if(!email){
+    f.elements['email'].focus();
+    f.elements['email'].style.borderColor = 'var(--violet)';
+    return;
+  }
 
   const subject = 'Booking — ' + name + ' (' + val('need') + ')';
-  const body    = lines.join('\n');
+  f.elements['subject'].value = subject;
 
-  /* A real anchor click rather than assigning location.href: embedded and
-     sandboxed contexts block top-level navigation to mailto: outright, which
-     is what produced the "content is blocked" message. */
-  const a = document.createElement('a');
-  a.href = 'mailto:ethanlongmedia@gmail.com'
-         + '?subject=' + encodeURIComponent(subject)
-         + '&body='    + encodeURIComponent(body);
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  try { a.click(); } catch(err) {}
-  a.remove();
+  const btn = f.querySelector('button[type="submit"]');
+  const label = btn.querySelector('span');
+  const original = label.textContent;
+  btn.disabled = true;
+  label.textContent = 'Sending…';
 
-  /* Shown either way, so a blocked mail handler is never a dead end. */
-  document.getElementById('mailText').value =
-    'To: ethanlongmedia@gmail.com\nSubject: ' + subject + '\n\n' + body;
-  const fb = document.getElementById('mailFallback');
-  fb.hidden = false;
-  fb.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  try{
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(f)))
+    });
+    const data = await res.json();
+    if(!data.success) throw new Error(data.message || 'Send failed');
+
+    label.textContent = 'Sent — I\'ll be in touch';
+    document.getElementById('formNote').textContent =
+      'Got it — I\'ll follow up at ' + email + ', usually same day.';
+    f.reset();
+    setTimeout(()=>{ btn.disabled = false; label.textContent = original; }, 5000);
+
+  }catch(err){
+    /* Network hiccup or the API is down — fall back to a copyable email
+       so the enquiry is never just lost. */
+    const lines = [
+      'Name: '  + name,
+      'Email: ' + email,
+      'Team: '  + (val('team') || '—'),
+      'Needs: ' + val('need'),
+      'Date: '  + (val('when') || '—'),
+      '',
+      val('detail') || '(no extra detail)'
+    ];
+    document.getElementById('mailText').value =
+      'To: ethanlongmedia@gmail.com\nSubject: ' + subject + '\n\n' + lines.join('\n');
+    const fb = document.getElementById('mailFallback');
+    fb.hidden = false;
+    fb.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+    btn.disabled = false;
+    label.textContent = original;
+  }
 });
 
 document.getElementById('copyBtn').addEventListener('click', async ()=>{
