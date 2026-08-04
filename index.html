@@ -1507,7 +1507,70 @@ document.querySelectorAll('.proof-vis video').forEach(vid=>{
 /* ============================================================
    BOOKING FORM — submits straight to an inbox via Web3Forms.
    No mail app, no mailto: — just a POST from the page itself.
+
+   A lost enquiry is a lost booking, so this deliberately does not rely on one
+   attempt landing. In order:
+     1. transient failures are retried three times with backoff — most
+        failures here are a flaky phone connection in a gym, not a dead API
+     2. anything still unsent is queued in localStorage and retried silently
+        on the next visit, so closing the tab doesn't bin the lead
+     3. only after all that does the copyable fallback appear
+   A queued retry can duplicate an enquiry if the send actually landed but the
+   response never made it back. For a booking, a duplicate is far cheaper than
+   a miss, so that trade is taken on purpose.
    ============================================================ */
+const W3_ENDPOINT = 'https://api.web3forms.com/submit';
+const ENQ_QUEUE_KEY = 'elm_unsent_enquiries';
+const napFor = ms => new Promise(r=>setTimeout(r, ms));
+
+async function postEnquiry(payload){
+  const res = await fetch(W3_ENDPOINT, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok || !data.success) throw new Error(data.message || ('HTTP ' + res.status));
+  return data;
+}
+
+async function postWithRetry(payload, tries = 3){
+  let last;
+  for(let i = 0; i < tries; i++){
+    try{ return await postEnquiry(payload); }
+    catch(err){ last = err; if(i < tries - 1) await napFor(700 * Math.pow(2, i)); }
+  }
+  throw last;
+}
+
+function readEnqQueue(){
+  try{ return JSON.parse(localStorage.getItem(ENQ_QUEUE_KEY) || '[]'); }
+  catch(e){ return []; }
+}
+function writeEnqQueue(q){
+  try{ localStorage.setItem(ENQ_QUEUE_KEY, JSON.stringify(q.slice(-5))); }
+  catch(e){}   /* private mode / quota — nothing to do but carry on */
+}
+function queueEnquiryForRetry(payload){
+  const q = readEnqQueue();
+  q.push({ payload, ts: Date.now() });
+  writeEnqQueue(q);
+}
+
+/* every load, quietly have another go at anything left behind */
+async function flushEnqQueue(){
+  const q = readEnqQueue();
+  if(!q.length) return;
+  const keep = [];
+  for(const item of q){
+    if(Date.now() - item.ts > 7*24*3600*1000) continue;    // a week stale, drop it
+    try{ await postEnquiry(item.payload); }
+    catch(e){ keep.push(item); }
+  }
+  writeEnqQueue(keep);
+}
+flushEnqQueue();
+
 document.getElementById('bookForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const f = e.target;
@@ -1535,14 +1598,10 @@ document.getElementById('bookForm').addEventListener('submit', async e=>{
   btn.disabled = true;
   label.textContent = 'Sending…';
 
+  const payload = Object.fromEntries(new FormData(f));
+
   try{
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(new FormData(f)))
-    });
-    const data = await res.json();
-    if(!data.success) throw new Error(data.message || 'Send failed');
+    await postWithRetry(payload);
 
     label.textContent = 'Sent — I\'ll be in touch';
     document.getElementById('formNote').textContent =
@@ -1551,8 +1610,11 @@ document.getElementById('bookForm').addEventListener('submit', async e=>{
     setTimeout(()=>{ btn.disabled = false; label.textContent = original; }, 5000);
 
   }catch(err){
-    /* Network hiccup or the API is down — fall back to a copyable email
-       so the enquiry is never just lost. */
+    /* Three attempts failed. Hold the enquiry on the device and retry it on
+       the next visit, then show the copyable fallback — the form is NOT reset
+       here, so nothing they typed is thrown away either. */
+    queueEnquiryForRetry(payload);
+
     const lines = [
       'Name: '  + name,
       'Email: ' + email,
