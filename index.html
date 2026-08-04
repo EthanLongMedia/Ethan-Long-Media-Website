@@ -539,12 +539,18 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   .card:hover .card-go i{width:20px}
 
   /* ...but a tap should still feel like it landed. Touch gets its own state:
-     the card shades a little violet and settles back, reusing the same radial
-     the desktop hover uses, just centred (--mx/--my default to 50%) and
-     softer. Outranks the :hover reset above on specificity. The .6s/.5s
-     transitions already on .card and .card::before are what make it slow. */
-  .work-grid .card.tapped{border-color:rgba(139,127,232,.45);background:var(--ink-3)}
-  .work-grid .card.tapped::before{opacity:.5}
+     the card shades violet and settles back, reusing the same radial the
+     desktop hover uses, just centred (--mx/--my default to 50%). Outranks the
+     :hover reset above on specificity.
+     Quick in, slow out: .18s to arrive so it feels tied to the finger, then
+     the base .5s/.6s transitions carry the fade back out once the class is
+     removed. At opacity .5 this was ~0.09 effective alpha — invisible on a
+     phone in daylight — so the radial runs at full strength here. */
+  .work-grid .card.tapped{
+    border-color:rgba(139,127,232,.55);background:var(--ink-3);
+    transition:border-color .18s ease-out,background .18s ease-out;
+  }
+  .work-grid .card.tapped::before{opacity:1;transition:opacity .18s ease-out}
 }
 
 @media (max-width: 760px){
@@ -1413,26 +1419,40 @@ document.querySelectorAll('[data-tilt]').forEach(card=>{
 });
 
 /* Touch counterpart to the tilt above: no hover, so a tap shades the card
-   violet instead. pointerdown also fires at the start of a scroll drag, so
-   hold off ~110ms and drop it the moment the browser claims the gesture for
-   scrolling — otherwise every flick past the grid lights up a card. */
+   violet instead.
+   Two things a naive version gets wrong, and together they made this do
+   nothing at all on a real phone:
+     1. A tap is usually shorter than the anti-scroll delay, so pointerup
+        arrives while the "show it" timer is still pending. Cancelling that
+        timer on release means the shade never appears — pointerup has to
+        force it on instead.
+     2. Touch fires pointerleave immediately after pointerup, because the
+        pointer stops existing. Treating leave as a cancel wiped the shade in
+        the same tick it was added.
+   So only pointercancel — the browser taking the gesture for a scroll —
+   suppresses it. */
 if(!FINE_POINTER){
   document.querySelectorAll('.work-grid .card').forEach(card=>{
-    let on = null, off = null;
-    const release = wait => {
-      clearTimeout(on); clearTimeout(off);
-      off = setTimeout(()=> card.classList.remove('tapped'), wait);
-    };
+    let arm = null, off = null, live = false;
     card.addEventListener('pointerdown', e=>{
       if(e.pointerType === 'mouse') return;
-      clearTimeout(off);
-      on = setTimeout(()=> card.classList.add('tapped'), 110);
+      clearTimeout(arm); clearTimeout(off);
+      live = true;
+      /* pointerdown also starts a scroll drag, so hold off a beat */
+      arm = setTimeout(()=>{ if(live) card.classList.add('tapped'); }, 90);
     }, {passive:true});
-    /* a real tap — let the shade sit long enough to read, then let it fade */
-    card.addEventListener('pointerup',     ()=> release(260), {passive:true});
-    /* scroll took over, or the finger left the card — drop it immediately */
-    card.addEventListener('pointercancel', ()=> release(0), {passive:true});
-    card.addEventListener('pointerleave',  ()=> release(0), {passive:true});
+    card.addEventListener('pointerup', ()=>{
+      if(!live) return;                       // a scroll already claimed it
+      live = false;
+      clearTimeout(arm);
+      card.classList.add('tapped');           // show it even on a very quick tap
+      clearTimeout(off);
+      off = setTimeout(()=> card.classList.remove('tapped'), 260);
+    }, {passive:true});
+    card.addEventListener('pointercancel', ()=>{
+      live = false; clearTimeout(arm); clearTimeout(off);
+      card.classList.remove('tapped');
+    }, {passive:true});
   });
 }
 
