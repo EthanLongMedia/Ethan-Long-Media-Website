@@ -100,6 +100,53 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .nv-links a:hover::after{width:100%}
 @media(max-width:760px){.nv-links{display:none}}
 
+/* ---- mobile menu ----
+   The page is ~11 screens tall on a phone and the four links plus the wordmark
+   measure ~420px against a 375px screen, so below 760px they collapse into a
+   full-screen panel instead. Lives inside <nav> on purpose: nav carries
+   z-index:100 and so forms a stacking context, and a child cannot escape it —
+   burger and panel have to be siblings in here to layer against each other. */
+.nv-burger{
+  display:none;position:relative;z-index:102;
+  width:44px;height:44px;margin-right:-11px;   /* 44px keeps a comfortable tap target */
+  background:none;border:0;padding:0;cursor:pointer;
+}
+.nv-burger span{
+  position:absolute;left:11px;width:22px;height:1.5px;background:var(--cream);
+  transition:transform .38s cubic-bezier(.2,.8,.2,1);
+}
+.nv-burger span:nth-child(1){top:19px}
+.nv-burger span:nth-child(2){top:25px}
+body.menu-open .nv-burger span:nth-child(1){transform:translateY(3px) rotate(45deg)}
+body.menu-open .nv-burger span:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
+
+.nv-panel{
+  position:fixed;inset:0;z-index:101;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(14px,2.6svh,26px);padding:88px var(--pad) 40px;overflow-y:auto;
+  opacity:0;visibility:hidden;transition:opacity .34s ease,visibility .34s;
+}
+body.menu-open .nv-panel{opacity:1;visibility:visible}
+/* sized against svh, not vw — a landscape phone is wide but very short */
+.nv-panel a{
+  font:800 clamp(24px,6.4svh,40px)/1.15 var(--display);
+  text-transform:uppercase;letter-spacing:.05em;color:var(--cream);
+}
+.nv-panel a em{font-style:normal;color:var(--violet);margin-right:.6em;
+  font-size:.42em;letter-spacing:.2em;vertical-align:middle}
+.nv-panel .mail{
+  margin-top:clamp(10px,2svh,20px);
+  font:500 12px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cream-dim);word-break:break-all;
+}
+@media(max-width:760px){.nv-burger{display:block}}
+@media(min-width:761px){.nv-panel{display:none}}
+/* the panel is a plain overlay; without motion the fade is the whole effect */
+@media(prefers-reduced-motion:reduce){
+  .nv-panel{transition:none}
+  .nv-burger span{transition:none}
+}
+
 /* ================= HERO ================= */
 /* Exactly one screen, no sticky hold. Nothing animates on scroll, so pinning
    the hero would just mean scrolling with nothing happening — this way the
@@ -115,16 +162,21 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 }
 
 /* pulled up tight under the wordmark — the old bottom gap read as unfinished */
+/* One flex column from the tagline down: the tagline and the meta row sit in
+   normal flow with a real gap between them, so they cannot overlap at any
+   height. This was previously an absolutely-positioned meta row plus a
+   padding-bottom that a @media(max-height:680px) rule swapped out. iOS
+   collapsing the URL bar changes the viewport height, so that breakpoint
+   flipped *mid-scroll* and moved the tagline 110px — the jump Ethan filmed.
+   Every value here is px or svh; both hold still while the URL bar animates
+   (the canvas is already guarded separately, see the resize listener). */
 .hero-ui{
   position:absolute;inset:0;z-index:5;pointer-events:none;
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding-bottom:clamp(120px,25vh,280px);
+  gap:clamp(40px,14svh,120px);
+  padding:0 var(--pad) clamp(20px,3.4svh,44px);
 }
-/* short-and-wide windows: pull the tagline down so it clears the wordmark */
-@media(max-height:680px){
-  .hero-ui{padding-bottom:clamp(64px,12vh,110px)}
-}
-.hero-tag{text-align:center;padding-inline:6vw}
+.hero-tag{text-align:center}
 .hero-tag .rule{
   width:44px;height:1px;background:var(--violet);margin:0 auto clamp(18px,3vh,28px);
   transform:scaleX(0);transform-origin:center;
@@ -143,9 +195,10 @@ nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20
 .hero-tag .ch{display:inline-block;will-change:transform,opacity}
 .hero-tag .ch.sp{width:.34em}
 
+/* now the last child of .hero-ui rather than absolutely positioned — the
+   column's gap keeps it clear of the tagline instead of luck doing it */
 .hero-meta{
-  position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(22px,4vh,46px);
-  display:flex;justify-content:space-between;align-items:flex-end;gap:18px;z-index:6;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:18px;
   font:500 10px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);
 }
 .hero-meta .col{display:flex;flex-direction:column;gap:6px}
@@ -513,6 +566,18 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="nv-burger" id="navBurger" type="button"
+            aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nv-panel" id="navPanel" aria-hidden="true">
+    <a href="#work"><em>01</em>Work</a>
+    <a href="#proof"><em>02</em>Proof</a>
+    <a href="#pricing"><em>03</em>Pricing</a>
+    <a href="#contact"><em>04</em>Contact</a>
+    <a class="mail" href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>
   </div>
 </nav>
 
@@ -531,16 +596,16 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <span class="ln" data-line="THAT GETS PLAYERS SEEN" data-em="SEEN"></span>
           <span class="ln thin" data-line="MID-MICHIGAN · SHOT + CUT BY ETHAN LONG" data-em="·"></span>
         </div>
-      </div>
 
-      <div class="hero-meta">
-        <div class="col">
-          <div>Est. Ethan Long Media</div>
-          <div><b>Basketball film</b></div>
-        </div>
-        <div class="col r">
-          <div>ZV-E10 II · RS 3 Mini · External mic</div>
-          <div><b>1.2M / 934.8K views</b></div>
+        <div class="hero-meta">
+          <div class="col">
+            <div>Est. Ethan Long Media</div>
+            <div><b>Basketball film</b></div>
+          </div>
+          <div class="col r">
+            <div>ZV-E10 II · RS 3 Mini · External mic</div>
+            <div><b>1.2M / 934.8K views</b></div>
+          </div>
         </div>
       </div>
 
@@ -933,14 +998,51 @@ function wordmarkPoints(){
   const c = off.getContext('2d');
   c.textBaseline = 'middle';
 
-  const cx = ow/2, cy = oh*0.41;
-  /* Sized by width but positioned by height, so on a wide-but-short window the
-     wordmark grew past the space available and collided with the tagline.
-     Capping against height too keeps the lockup inside its own half. */
-  /* Height term matters as much as width: on a wide, short window the
-     width-driven size grew past the space available and MEDIA collided with
-     the tagline below it. */
-  const big = clamp(Math.min(ow * 0.098, oh * 0.145), 60, 260);   // ETHAN LONG
+  const cx = ow/2;
+  /* Size the lockup to a target *share of the width* instead of a flat
+     coefficient. The old `ow * 0.098` made ETHAN LONG span ~69% of the canvas
+     at every screen size — proportionally identical on a phone and a desktop,
+     which is exactly why it read as tiny on a phone: 69% of 375px is a 37px
+     wordmark, with a third of the hero left empty above it. Small screens need
+     a bigger share of their width, so ease from ~92% at 375px back to the
+     original 69% by 900px, leaving the desktop lockup untouched.
+     Note ow/oh are supersampled (S=2) — this block works in CSS px and scales
+     back up at the end. */
+  const cssW = ow / S, cssH = oh / S;
+  const frac = cssW <= 480 ? 0.92
+             : cssW >= 900 ? 0.69
+             : 0.92 + (0.69 - 0.92) * ((cssW - 480) / 420);
+  /* solve the size from measured glyphs: total width = size*(units + tracking),
+     where drawTracked adds size*0.045 across the 9 gaps of "ETHAN LONG" */
+  c.font = `800 100px Inter, "Helvetica Neue", Helvetica, Arial, sans-serif`;
+  const unitEL = [...'ETHAN LONG'].reduce((a,ch)=>a + c.measureText(ch).width, 0)/100;
+  const byWidth = (cssW*frac)/(unitEL + 0.045*9);
+
+  /* Vertical room. The tagline is bottom-anchored in CSS, so on a short or
+     landscape window it climbs toward the wordmark. Measure where it actually
+     starts instead of guessing with a @media(max-height) rule — that kind of
+     breakpoint is exactly what made the hero jump when iOS collapsed the URL
+     bar. The band runs from under the fixed nav down to just above the
+     tagline; the lockup is fitted and centred inside it. On a normal portrait
+     screen the band is roomy enough that the original 41% placement wins, so
+     phones and desktops keep the look they already had. */
+  const TOP_F = 0.78, BOT_F = 0.86;   // lockup extent above/below cy, in units of `big`
+  const tagEl  = document.querySelector('.hero-tag');
+  const tagTop = tagEl
+    ? tagEl.getBoundingClientRect().top - cv.getBoundingClientRect().top
+    : cssH;
+  const bandTop    = 64;                                        // clear the fixed nav
+  /* the +44 only stops the band collapsing entirely on absurdly short windows;
+     keep it small, or it outranks the tagline and reintroduces the overlap */
+  const bandBottom = Math.max(bandTop + 44, tagTop - 14);
+  const bandH      = bandBottom - bandTop;
+
+  /* lower bound only bites on a very short landscape phone, where letting the
+     lockup shrink is better than letting it sit on top of the tagline */
+  const bigCSS = clamp(Math.min(byWidth, bandH/(TOP_F + BOT_F)), 24, 130);
+  const big    = bigCSS * S;                                    // ETHAN LONG
+  const cy     = S * Math.max(bandTop + bigCSS*TOP_F,
+                              Math.min(cssH*0.41, bandBottom - bigCSS*BOT_F));
   const small = big * 0.40;                        // MEDIA
   const ruleY = cy + big*0.22;
 
@@ -1407,6 +1509,32 @@ document.getElementById('copyBtn').addEventListener('click', async ()=>{
   label.textContent = 'Copied';
   setTimeout(()=>{ label.textContent = 'Copy details'; }, 2200);
 });
+
+/* ---- mobile menu ----
+   Registered *before* the shared a[href^="#"] handler below on purpose. Both
+   listeners fire on a panel link, in registration order: this one has to run
+   first so lenis.start() has already happened by the time that handler calls
+   lenis.scrollTo() — a stopped Lenis silently ignores the scroll. */
+const burger = document.getElementById('navBurger');
+const navPanel = document.getElementById('navPanel');
+function setMenu(open){
+  document.body.classList.toggle('menu-open', open);
+  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  navPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  /* Lenis would otherwise keep scrolling the page behind the fixed overlay */
+  if(open) lenis.stop(); else lenis.start();
+}
+burger.addEventListener('click', ()=>
+  setMenu(!document.body.classList.contains('menu-open')));
+navPanel.querySelectorAll('a').forEach(a=>
+  a.addEventListener('click', ()=> setMenu(false)));
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false);
+});
+/* rotating back up to desktop must never strand the panel open. Width-gated,
+   so the iOS URL-bar resize (height-only) never reaches this. */
+window.addEventListener('resize', ()=>{ if(innerWidth > 760) setMenu(false); });
 
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
