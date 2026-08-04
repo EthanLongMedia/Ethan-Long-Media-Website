@@ -330,7 +330,12 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
 
 /* ================= PRICING ================= */
 #pricing{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 50%,var(--ink) 100%)}
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px)}
+/* two tiers now, not three — capped and centred so they read as cards rather
+   than stretching into half-page slabs on a wide monitor */
+.price-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(14px,1.8vw,24px);max-width:900px;margin-inline:auto;
+}
 @media(max-width:900px){.price-grid{grid-template-columns:1fr}}
 .tier{
   border:1px solid rgba(244,239,230,.11);background:var(--ink-2);
@@ -349,6 +354,18 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
 .tier .amt s{text-decoration:none;color:var(--violet);font-size:.42em;letter-spacing:.04em}
 .tier .amt.quote{font-size:clamp(22px,2.4vw,30px);color:var(--violet-hi)}
 .tier ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:2px}
+/* what's in the package, split into what happens on the day and what happens
+   after — violet label over a fading hairline, the same device the hero rule
+   and the card top rule already use */
+.tier-groups{display:flex;flex-direction:column;gap:20px}
+.tier-groups h4{
+  font:700 9.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;
+  color:var(--violet);display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.tier-groups h4::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(139,127,232,.45),rgba(139,127,232,0));
+}
 .tier li{
   font:400 13px/1.5 var(--sans);color:var(--cream-dim);
   padding-left:20px;position:relative;
@@ -520,6 +537,14 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   .card:hover .gear-stroke{stroke:var(--cream-faint)}
   .card:hover .card-go{color:var(--cream-faint)}
   .card:hover .card-go i{width:20px}
+
+  /* ...but a tap should still feel like it landed. Touch gets its own state:
+     the card shades a little violet and settles back, reusing the same radial
+     the desktop hover uses, just centred (--mx/--my default to 50%) and
+     softer. Outranks the :hover reset above on specificity. The .6s/.5s
+     transitions already on .card and .card::before are what make it slow. */
+  .work-grid .card.tapped{border-color:rgba(139,127,232,.45);background:var(--ink-3)}
+  .work-grid .card.tapped::before{opacity:.5}
 }
 
 @media (max-width: 760px){
@@ -737,46 +762,53 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         <div class="tier rv">
           <h3>Single training</h3>
           <div class="amt">$100<s>/ session</s></div>
-          <ul>
-            <li>Your whole session filmed — you coach, I handle the camera</li>
-            <li>Gimbal-locked from multiple angles, not shaky phone footage</li>
-            <li>Only the reps that landed make the cut</li>
-            <li>Colour graded so it looks like film, not a phone clip</li>
-            <li>Vertical for Reels and TikTok, horizontal for everything else</li>
-            <li>Real audio off an external mic — the squeak, the contact, the coaching</li>
-            <li>Back in 72 hours, while the session still matters</li>
-          </ul>
+          <div class="tier-groups">
+            <div>
+              <h4>Shooting</h4>
+              <ul>
+                <li>Your whole session filmed — you coach, I handle the camera</li>
+                <li>Gimbal-locked from multiple angles, not shaky phone footage</li>
+                <li>Real audio off an external mic — the squeak, the contact, the coaching</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Editing</h4>
+              <ul>
+                <li>Only the reps that landed make the cut</li>
+                <li>Colour graded so it looks like film, not a phone clip</li>
+                <li>Vertical for Reels and TikTok, horizontal for everything else</li>
+                <li>Back in 72 hours, while the session still matters</li>
+              </ul>
+            </div>
+          </div>
           <a class="go" href="#contact">Book a session <i></i></a>
         </div>
 
         <div class="tier feature rv">
           <h3>Single game</h3>
           <div class="amt">$150<s>/ game</s></div>
-          <ul>
-            <li>Full game covered — you never think about the camera</li>
-            <li>Every possession you're in, cut tight</li>
-            <li>30–60 seconds a coach will actually finish</li>
-            <li>Exported for every platform, correctly sized</li>
-            <li>Graded and ready to post — zero editing on your end</li>
-            <li>In your hands in 72 hours, while people are still talking about it</li>
-          </ul>
+          <div class="tier-groups">
+            <div>
+              <h4>Shooting</h4>
+              <ul>
+                <li>Full game covered — you never think about the camera</li>
+                <li>Gimbal-locked from the floor, not shaky phone footage from the stands</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Editing</h4>
+              <ul>
+                <li>Every possession you're in, cut tight</li>
+                <li>30–60 seconds a coach will actually finish</li>
+                <li>Exported for every platform, correctly sized</li>
+                <li>Graded and ready to post — zero editing on your end</li>
+                <li>In your hands in 72 hours, while people are still talking about it</li>
+              </ul>
+            </div>
+          </div>
           <a class="go" href="#contact">Book a game <i></i></a>
         </div>
 
-        <div class="tier rv">
-          <h3>Season bundle</h3>
-          <div class="amt">$1,000<s>/ season</s></div>
-          <ul>
-            <li>Game list agreed up front — no booking scramble mid-season</li>
-            <li>A highlight from every game covered, not just the big one</li>
-            <li>A full season edit at the end, built for coaches</li>
-            <li>Individual player cuts pulled from the same footage</li>
-            <li>Priority scheduling when dates clash</li>
-            <li>Content on your feed all season, not one lucky post</li>
-            <li>Per game it lands well under booking them one at a time</li>
-          </ul>
-          <a class="go" href="#contact">Lock in a season <i></i></a>
-        </div>
       </div>
     </div>
   </section>
@@ -828,7 +860,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 
       <div class="turnaround rv">
         <b>Highlights in 72 hours</b>
-        <span>Season packages and multi-player tape: 5–7 days</span>
+        <span>Multi-player tape and bigger jobs: 5–7 days</span>
       </div>
     </div>
   </section>
@@ -862,7 +894,6 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <select id="f-need" name="need">
             <option>Single game — $150</option>
             <option>Single training — $100</option>
-            <option>Season bundle — $1,000</option>
             <option>Something else</option>
           </select>
         </div>
@@ -1380,6 +1411,30 @@ document.querySelectorAll('[data-tilt]').forEach(card=>{
     gsap.to(card,{rotateX:0, rotateY:0, duration:1.2, ease:'power3.out', overwrite:'auto'});
   });
 });
+
+/* Touch counterpart to the tilt above: no hover, so a tap shades the card
+   violet instead. pointerdown also fires at the start of a scroll drag, so
+   hold off ~110ms and drop it the moment the browser claims the gesture for
+   scrolling — otherwise every flick past the grid lights up a card. */
+if(!FINE_POINTER){
+  document.querySelectorAll('.work-grid .card').forEach(card=>{
+    let on = null, off = null;
+    const release = wait => {
+      clearTimeout(on); clearTimeout(off);
+      off = setTimeout(()=> card.classList.remove('tapped'), wait);
+    };
+    card.addEventListener('pointerdown', e=>{
+      if(e.pointerType === 'mouse') return;
+      clearTimeout(off);
+      on = setTimeout(()=> card.classList.add('tapped'), 110);
+    }, {passive:true});
+    /* a real tap — let the shade sit long enough to read, then let it fade */
+    card.addEventListener('pointerup',     ()=> release(260), {passive:true});
+    /* scroll took over, or the finger left the card — drop it immediately */
+    card.addEventListener('pointercancel', ()=> release(0), {passive:true});
+    card.addEventListener('pointerleave',  ()=> release(0), {passive:true});
+  });
+}
 
 if(window.matchMedia('(min-width: 761px)').matches) ScrollTrigger.create({
   trigger:'#work', start:'top bottom', end:'bottom top', scrub: 0.8,
