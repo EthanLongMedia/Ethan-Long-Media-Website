@@ -538,19 +538,24 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   .card:hover .card-go{color:var(--cream-faint)}
   .card:hover .card-go i{width:20px}
 
-  /* ...but a tap should still feel like it landed. Touch gets its own state:
-     the card shades violet and settles back, reusing the same radial the
-     desktop hover uses, just centred (--mx/--my default to 50%). Outranks the
-     :hover reset above on specificity.
-     Quick in, slow out: .18s to arrive so it feels tied to the finger, then
-     the base .5s/.6s transitions carry the fade back out once the class is
-     removed. At opacity .5 this was ~0.09 effective alpha — invisible on a
-     phone in daylight — so the radial runs at full strength here. */
-  .work-grid .card.tapped{
-    border-color:rgba(139,127,232,.55);background:var(--ink-3);
-    transition:border-color .18s ease-out,background .18s ease-out;
-  }
-  .work-grid .card.tapped::before{opacity:1;transition:opacity .18s ease-out}
+  /* ...but a tap should still feel like it landed. Touch gets its own state,
+     and it latches: tapping lights the card and it stays lit until you tap it
+     off again, so everything here eases slowly rather than snapping. The
+     1.2s applies to the base selector, not just .tapped, so the fade back out
+     is just as slow as the fade in.
+     This is the desktop hover treatment — same violet radial (--mx/--my
+     default to 50% so it sits centred), same --violet-hi label, same 20->38px
+     line — reached by tap instead of cursor, and all three work cards get it
+     in the same spot. Outranks the :hover reset above on specificity. */
+  .work-grid .card{transition:border-color 1.2s ease,background 1.2s ease}
+  .work-grid .card::before{transition:opacity 1.2s ease}
+  .work-grid .card .card-go{transition:color 1.2s ease}
+  .work-grid .card .card-go i{transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+
+  .work-grid .card.tapped{border-color:rgba(139,127,232,.55);background:var(--ink-3)}
+  .work-grid .card.tapped::before{opacity:1}
+  .work-grid .card.tapped .card-go{color:var(--violet-hi)}
+  .work-grid .card.tapped .card-go i{width:38px}
 }
 
 @media (max-width: 760px){
@@ -1418,41 +1423,37 @@ document.querySelectorAll('[data-tilt]').forEach(card=>{
   });
 });
 
-/* Touch counterpart to the tilt above: no hover, so a tap shades the card
-   violet instead.
-   Two things a naive version gets wrong, and together they made this do
-   nothing at all on a real phone:
-     1. A tap is usually shorter than the anti-scroll delay, so pointerup
-        arrives while the "show it" timer is still pending. Cancelling that
-        timer on release means the shade never appears — pointerup has to
-        force it on instead.
-     2. Touch fires pointerleave immediately after pointerup, because the
-        pointer stops existing. Treating leave as a cancel wiped the shade in
-        the same tick it was added.
-   So only pointercancel — the browser taking the gesture for a scroll —
-   suppresses it. */
+/* Touch counterpart to the tilt above: no hover, so a tap latches the card
+   violet instead — it stays lit until you tap it off again.
+   Everything happens on pointerup, never on pointerdown: pointerdown also
+   fires at the very start of a scroll drag, and anything that lights up there
+   flickers on every flick past the grid. Waiting for a completed tap makes
+   that whole class of problem disappear.
+   Two touch quirks worth remembering, both of which broke the earlier
+   momentary version outright: a real tap is only ~70ms, so any "wait, then
+   show" timer is still pending when the finger lifts; and pointerleave fires
+   immediately after pointerup because the pointer stops existing, so treating
+   leave as a cancel wipes the state in the same tick. */
 if(!FINE_POINTER){
-  document.querySelectorAll('.work-grid .card').forEach(card=>{
-    let arm = null, off = null, live = false;
+  const workCards = [...document.querySelectorAll('.work-grid .card')];
+  workCards.forEach(card=>{
+    let sx = 0, sy = 0, live = false;
     card.addEventListener('pointerdown', e=>{
       if(e.pointerType === 'mouse') return;
-      clearTimeout(arm); clearTimeout(off);
-      live = true;
-      /* pointerdown also starts a scroll drag, so hold off a beat */
-      arm = setTimeout(()=>{ if(live) card.classList.add('tapped'); }, 90);
+      live = true; sx = e.clientX; sy = e.clientY;
     }, {passive:true});
-    card.addEventListener('pointerup', ()=>{
-      if(!live) return;                       // a scroll already claimed it
+    card.addEventListener('pointerup', e=>{
+      if(!live) return;                     // a scroll already claimed the gesture
       live = false;
-      clearTimeout(arm);
-      card.classList.add('tapped');           // show it even on a very quick tap
-      clearTimeout(off);
-      off = setTimeout(()=> card.classList.remove('tapped'), 260);
+      /* a drag that never travelled far enough to fire pointercancel still
+         isn't a tap — only a finger that stayed put counts */
+      if(Math.hypot(e.clientX - sx, e.clientY - sy) > 10) return;
+      const wasOn = card.classList.contains('tapped');
+      /* one lit card at a time reads cleaner than three at once */
+      workCards.forEach(c=> c.classList.remove('tapped'));
+      if(!wasOn) card.classList.add('tapped');
     }, {passive:true});
-    card.addEventListener('pointercancel', ()=>{
-      live = false; clearTimeout(arm); clearTimeout(off);
-      card.classList.remove('tapped');
-    }, {passive:true});
+    card.addEventListener('pointercancel', ()=>{ live = false; }, {passive:true});
   });
 }
 
