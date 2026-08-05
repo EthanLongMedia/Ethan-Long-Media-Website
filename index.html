@@ -234,6 +234,11 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
 .stat .num s{text-decoration:none;color:var(--violet)}
 .stat .lb{margin-top:13px;font:600 10px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim)}
 .stat .sub{margin-top:6px;font:400 11.5px/1.5 var(--sans);color:var(--cream-faint)}
+/* The training grid reuses this cell wholesale — same border, same violet
+   underline on reveal — but its headlines are words, not metrics, so they'd
+   wrap badly at number scale. Only the headline size changes. */
+.stat.qual .num{font-size:clamp(20px,2.4vw,31px);letter-spacing:-.01em;line-height:1.15;flex-wrap:wrap}
+.stat.qual .num s{font-size:.62em}
 @media(max-width:520px){.stat-grid{grid-template-columns:1fr}}
 
 /* the viral cut sits beside the numbers it earned */
@@ -754,6 +759,60 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
             <span class="card-go">Get me to your gym <i></i></span>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRAINING ============ -->
+  <!-- Same shape as the proof section — clip on the left, grid on the right,
+       height-matched — but the right column carries what a session includes
+       rather than analytics, because these numbers don't exist for training. -->
+  <section class="sec" id="training">
+    <div class="u-wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow rv">In the gym</div>
+          <h2 class="sec-title rv" style="margin-top:18px">Training days,<br><u>cut like film</u>.</h2>
+        </div>
+        <p class="sec-note rv">Skills work and player development, shot the same way as a game night — then cut so the reps that landed are the ones people actually see.</p>
+      </div>
+
+      <div class="proof-body">
+        <article class="card proof-card lit rv" data-tilt>
+          <div class="card-top"><span class="card-idx">02</span><span class="card-kind">The session</span></div>
+          <div class="card-vis proof-vis">
+            <video src="assets/video/training.mp4" poster="assets/video/training-poster.jpg"
+                   muted loop playsinline preload="metadata"></video>
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Training<em>sessions</em></h3>
+            <p class="card-pitch">Gimbal-locked in the gym, cut to the reps worth keeping.</p>
+            <a class="card-go" href="#contact">Book a session <i></i></a>
+          </div>
+        </article>
+
+        <div class="stat-grid">
+          <div class="stat qual rv">
+            <div class="num">Multiple angles</div>
+            <div class="lb">How it's shot</div>
+            <div class="sub">Gimbal-locked, not shaky phone footage.</div>
+          </div>
+          <div class="stat qual rv">
+            <div class="num">Real audio</div>
+            <div class="lb">Off an external mic</div>
+            <div class="sub">The squeak, the contact, the coaching.</div>
+          </div>
+          <div class="stat qual rv">
+            <div class="num">72 hours</div>
+            <div class="lb">Turnaround</div>
+            <div class="sub">Back while the session still matters.</div>
+          </div>
+          <div class="stat qual rv">
+            <div class="num">$100<s>/ session</s></div>
+            <div class="lb">What it costs</div>
+            <div class="sub">Travel inside mid-Michigan included.</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
