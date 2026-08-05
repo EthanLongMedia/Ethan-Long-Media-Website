@@ -237,6 +237,9 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
 /* The training grid reuses this cell wholesale — same border, same violet
    underline on reveal — but its headlines are words, not metrics, so they'd
    wrap badly at number scale. Only the headline size changes. */
+/* these cells stretch to match a 9:16 clip, so they end up much taller than
+   their content — centring stops the text stranding at the top of a void */
+.stat.qual{display:flex;flex-direction:column;justify-content:center}
 .stat.qual .num{font-size:clamp(20px,2.4vw,31px);letter-spacing:-.01em;line-height:1.15;flex-wrap:wrap}
 .stat.qual .num s{font-size:.62em}
 @media(max-width:520px){.stat-grid{grid-template-columns:1fr}}
@@ -266,6 +269,12 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
 .proof-vis video{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
 }
+/* The training clip is a 9:16 portrait frame, so the shared 4:5 box was
+   cropping its top and bottom away — you lost the tilt up to the ceiling and
+   most of the ball dropping through the net. Matching the box to the clip's
+   own ratio shows the whole frame, with no letterboxing. (Mobile already uses
+   9:16 below, so this only changes the desktop crop.) */
+#training .proof-vis{aspect-ratio:9/16}
 @media(max-width:760px){
   .proof-body{grid-template-columns:1fr}
   .proof-card{max-width:340px;margin-inline:auto;width:100%}
@@ -803,14 +812,14 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
             <div class="sub">The squeak, the contact, the coaching.</div>
           </div>
           <div class="stat qual rv">
-            <div class="num">72 hours</div>
-            <div class="lb">Turnaround</div>
-            <div class="sub">Back while the session still matters.</div>
+            <div class="num">Colour graded</div>
+            <div class="lb">The finish</div>
+            <div class="sub">It looks like film, not a phone clip.</div>
           </div>
           <div class="stat qual rv">
-            <div class="num">$100<s>/ session</s></div>
-            <div class="lb">What it costs</div>
-            <div class="sub">Travel inside mid-Michigan included.</div>
+            <div class="num">Every format</div>
+            <div class="lb">Exports</div>
+            <div class="sub">Vertical for Reels and TikTok, horizontal for the rest.</div>
           </div>
         </div>
       </div>
@@ -829,31 +838,6 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       </div>
 
       <div class="price-grid">
-        <div class="tier rv">
-          <h3>Single training</h3>
-          <div class="amt">$100<s>/ session</s></div>
-          <div class="tier-groups">
-            <div>
-              <h4>Shooting</h4>
-              <ul>
-                <li>Your whole session filmed — you coach, I handle the camera</li>
-                <li>Gimbal-locked from multiple angles, not shaky phone footage</li>
-                <li>Real audio off an external mic — the squeak, the contact, the coaching</li>
-              </ul>
-            </div>
-            <div>
-              <h4>Editing</h4>
-              <ul>
-                <li>Only the reps that landed make the cut</li>
-                <li>Colour graded so it looks like film, not a phone clip</li>
-                <li>Vertical for Reels and TikTok, horizontal for everything else</li>
-                <li>Back in 72 hours, while the session still matters</li>
-              </ul>
-            </div>
-          </div>
-          <a class="go" href="#contact">Book a session <i></i></a>
-        </div>
-
         <div class="tier feature rv">
           <h3>Single game</h3>
           <div class="amt">$150<s>/ game</s></div>
@@ -877,6 +861,31 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
             </div>
           </div>
           <a class="go" href="#contact">Book a game <i></i></a>
+        </div>
+
+        <div class="tier rv">
+          <h3>Single training</h3>
+          <div class="amt">$100<s>/ session</s></div>
+          <div class="tier-groups">
+            <div>
+              <h4>Shooting</h4>
+              <ul>
+                <li>Your whole session filmed — you coach, I handle the camera</li>
+                <li>Gimbal-locked from multiple angles, not shaky phone footage</li>
+                <li>Real audio off an external mic — the squeak, the contact, the coaching</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Editing</h4>
+              <ul>
+                <li>Only the reps that landed make the cut</li>
+                <li>Colour graded so it looks like film, not a phone clip</li>
+                <li>Vertical for Reels and TikTok, horizontal for everything else</li>
+                <li>Back in 72 hours, while the session still matters</li>
+              </ul>
+            </div>
+          </div>
+          <a class="go" href="#contact">Book a session <i></i></a>
         </div>
 
       </div>
