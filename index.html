@@ -538,24 +538,24 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
   .card:hover .card-go{color:var(--cream-faint)}
   .card:hover .card-go i{width:20px}
 
-  /* ...but a tap should still feel like it landed. Touch gets its own state,
-     and it latches: tapping lights the card and it stays lit until you tap it
-     off again, so everything here eases slowly rather than snapping. The
-     1.2s applies to the base selector, not just .tapped, so the fade back out
-     is just as slow as the fade in.
-     This is the desktop hover treatment — same violet radial (--mx/--my
-     default to 50% so it sits centred), same --violet-hi label, same 20->38px
-     line — reached by tap instead of cursor, and all three work cards get it
+  /* ...but the card should still come alive on a phone. There's no cursor to
+     drive it, so scrolling does: a card lights as it reaches the middle of
+     the screen and fades back out as it leaves (see the ScrollTrigger that
+     toggles .inview). The 1.2s sits on the base selector, not just .inview,
+     so the fade out is as slow as the fade in.
+     This is the desktop hover treatment reached by scroll instead of cursor —
+     same violet radial (--mx/--my default to 50% so it sits centred), same
+     --violet-hi label, same 20->38px line — and all three work cards get it
      in the same spot. Outranks the :hover reset above on specificity. */
   .work-grid .card{transition:border-color 1.2s ease,background 1.2s ease}
   .work-grid .card::before{transition:opacity 1.2s ease}
   .work-grid .card .card-go{transition:color 1.2s ease}
   .work-grid .card .card-go i{transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
 
-  .work-grid .card.tapped{border-color:rgba(139,127,232,.55);background:var(--ink-3)}
-  .work-grid .card.tapped::before{opacity:1}
-  .work-grid .card.tapped .card-go{color:var(--violet-hi)}
-  .work-grid .card.tapped .card-go i{width:38px}
+  .work-grid .card.inview{border-color:rgba(139,127,232,.55);background:var(--ink-3)}
+  .work-grid .card.inview::before{opacity:1}
+  .work-grid .card.inview .card-go{color:var(--violet-hi)}
+  .work-grid .card.inview .card-go i{width:38px}
 }
 
 @media (max-width: 760px){
@@ -1423,37 +1423,20 @@ document.querySelectorAll('[data-tilt]').forEach(card=>{
   });
 });
 
-/* Touch counterpart to the tilt above: no hover, so a tap latches the card
-   violet instead — it stays lit until you tap it off again.
-   Everything happens on pointerup, never on pointerdown: pointerdown also
-   fires at the very start of a scroll drag, and anything that lights up there
-   flickers on every flick past the grid. Waiting for a completed tap makes
-   that whole class of problem disappear.
-   Two touch quirks worth remembering, both of which broke the earlier
-   momentary version outright: a real tap is only ~70ms, so any "wait, then
-   show" timer is still pending when the finger lifts; and pointerleave fires
-   immediately after pointerup because the pointer stops existing, so treating
-   leave as a cancel wipes the state in the same tick. */
+/* Phone counterpart to the desktop tilt: there's no cursor to drive the glow,
+   so scrolling drives it instead. Each work card lights as it comes up the
+   screen and fades back out as it leaves — no tapping required.
+   Rides the ScrollTrigger/Lenis pipeline already running on the page rather
+   than adding its own scroll listener, and only toggles a class, so the work
+   per frame is a class check rather than a layout read. */
 if(!FINE_POINTER){
-  const workCards = [...document.querySelectorAll('.work-grid .card')];
-  workCards.forEach(card=>{
-    let sx = 0, sy = 0, live = false;
-    card.addEventListener('pointerdown', e=>{
-      if(e.pointerType === 'mouse') return;
-      live = true; sx = e.clientX; sy = e.clientY;
-    }, {passive:true});
-    card.addEventListener('pointerup', e=>{
-      if(!live) return;                     // a scroll already claimed the gesture
-      live = false;
-      /* a drag that never travelled far enough to fire pointercancel still
-         isn't a tap — only a finger that stayed put counts */
-      if(Math.hypot(e.clientX - sx, e.clientY - sy) > 10) return;
-      const wasOn = card.classList.contains('tapped');
-      /* one lit card at a time reads cleaner than three at once */
-      workCards.forEach(c=> c.classList.remove('tapped'));
-      if(!wasOn) card.classList.add('tapped');
-    }, {passive:true});
-    card.addEventListener('pointercancel', ()=>{ live = false; }, {passive:true});
+  document.querySelectorAll('.work-grid .card').forEach(card=>{
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 75%',      // lit once it's meaningfully on screen
+      end:   'bottom 25%',   // out again as it clears off the top
+      onToggle: self => card.classList.toggle('inview', self.isActive)
+    });
   });
 }
 
