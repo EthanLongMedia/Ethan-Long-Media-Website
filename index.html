@@ -731,7 +731,9 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         <article class="card proof-card lit rv" data-tilt>
           <div class="card-top"><span class="card-idx">02</span><span class="card-kind">The session</span></div>
           <div class="card-vis proof-vis">
-            <video src="assets/video/training.mp4" poster="assets/video/training-poster.jpg"
+            <!-- ?v= bumped whenever the clip is re-encoded, so a browser that
+                 cached an older cut fetches the new one instead of the stale file -->
+            <video src="assets/video/training.mp4?v=2" poster="assets/video/training-poster.jpg?v=2"
                    muted loop playsinline preload="metadata"></video>
           </div>
           <div class="card-body">
