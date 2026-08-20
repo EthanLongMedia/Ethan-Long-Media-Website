@@ -344,13 +344,17 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
 
 /* ================= PRICING ================= */
 #pricing{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 50%,var(--ink) 100%)}
-/* two tiers now, not three — capped and centred so they read as cards rather
-   than stretching into half-page slabs on a wide monitor */
+/* three tiers, ascending left to right, so the season lands last — by then
+   both single rates are on screen and $50-a-game does the arguing for us.
+   Still capped and centred so they read as cards rather than stretching into
+   third-page slabs on a wide monitor. */
 .price-grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:clamp(14px,1.8vw,24px);max-width:900px;margin-inline:auto;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(14px,1.8vw,24px);max-width:1140px;margin-inline:auto;
 }
-@media(max-width:900px){.price-grid{grid-template-columns:1fr}}
+/* straight to one column — the season tier carries far more copy than the
+   other two, so a 2-up middle state orphans it into a very tall lone card */
+@media(max-width:1000px){.price-grid{grid-template-columns:1fr;max-width:560px}}
 .tier{
   border:1px solid rgba(244,239,230,.11);background:var(--ink-2);
   padding:clamp(24px,2.8vw,36px);display:flex;flex-direction:column;gap:18px;
@@ -362,6 +366,15 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
   content:"Most booked";position:absolute;top:-1px;right:-1px;
   background:var(--violet);color:#0b0b10;padding:6px 13px;
   font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;
+}
+/* the season carries the badge now. It has no price and isn't for sale, so
+   the badge does the opposite job to the other tiers' — it says the slot is
+   gone, which is the whole point of leaving the card up */
+.tier.feature.value::before{content:"Booked"}
+/* the line that does the season's arguing: what the flat price actually
+   works out to per game, sitting tight under the number it qualifies */
+.tier .tier-sub{
+  font:500 12.5px/1.45 var(--sans);color:var(--violet-hi);margin-top:-9px;
 }
 .tier h3{font:800 clamp(15px,1.6vw,19px)/1.2 var(--display);text-transform:uppercase;letter-spacing:.14em;color:var(--cream)}
 .tier .amt{font:800 clamp(32px,4vw,52px)/1 var(--display);letter-spacing:-.03em;color:var(--cream);display:flex;align-items:baseline;gap:5px}
@@ -681,7 +694,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       </div>
 
       <div class="proof-body">
-        <article class="card proof-card lit rv" data-tilt>
+        <article class="card proof-card lit" data-tilt>
           <div class="card-top"><span class="card-idx">01</span><span class="card-kind">The cut</span></div>
           <div class="card-vis proof-vis">
             <video src="assets/video/viral.mp4" poster="assets/video/poster.jpg"
@@ -735,7 +748,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       </div>
 
       <div class="proof-body">
-        <article class="card proof-card lit rv" data-tilt>
+        <article class="card proof-card lit" data-tilt>
           <div class="card-top"><span class="card-idx">02</span><span class="card-kind">The session</span></div>
           <div class="card-vis proof-vis">
             <!-- ?v= bumped whenever the clip is re-encoded, so a browser that
@@ -847,9 +860,9 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
       </div>
 
       <div class="price-grid">
-        <div class="tier feature rv">
+        <div class="tier rv">
           <h3>Single game</h3>
-          <div class="amt">$150<s>/ game</s></div>
+          <div class="amt">$50<s>/ game</s></div>
           <div class="tier-groups">
             <div>
               <h4>Shooting</h4>
@@ -874,7 +887,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 
         <div class="tier rv">
           <h3>Single training</h3>
-          <div class="amt">$100<s>/ session</s></div>
+          <div class="amt">$75<s>/ session</s></div>
           <div class="tier-groups">
             <div>
               <h4>Shooting</h4>
@@ -895,6 +908,39 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
             </div>
           </div>
           <a class="go" href="#contact">Book a session <i></i></a>
+        </div>
+
+        <div class="tier feature value rv">
+          <h3>Full season</h3>
+          <!-- No number on purpose. The slot reads as gone rather than for
+               sale: naming the program that already took it answers "is he
+               good enough for this" before price is ever a question. -->
+          <div class="amt quote">Booked by Northwood</div>
+          <div class="tier-groups">
+            <div>
+              <h4>Shooting</h4>
+              <ul>
+                <li>Your whole schedule covered — booked once, then you stop thinking about it</li>
+                <li>Gimbal-locked from the floor, not a student with a phone in the stands</li>
+                <li>Real audio off an external mic — the squeak, the contact, the bench</li>
+                <li>Travel anywhere in mid-Michigan included</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Editing</h4>
+              <ul>
+                <li>Every game back in 72 hours, while the result still matters</li>
+                <li>Every player gets their moments, not just whoever scored the most</li>
+                <li>Your feed stays fed all season instead of going quiet in January</li>
+                <li>Players finish the season with tape they can send to coaches</li>
+                <li>A full season highlight reel at the end, included</li>
+              </ul>
+            </div>
+          </div>
+          <!-- "your season" implied it was still on the table; this one reads
+               correctly against a card that says the slot is taken, and still
+               leaves somewhere for a program that wants the next one to go -->
+          <a class="go" href="#contact">Ask about next season <i></i></a>
         </div>
 
       </div>
@@ -979,9 +1025,11 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         </div>
         <div class="field">
           <label for="f-need">What you need</label>
+          <!-- Order matches the pricing cards above, so someone who scrolled
+               from there finds the options in the sequence they just read -->
           <select id="f-need" name="need">
-            <option>Single game — $150</option>
-            <option>Single training — $100</option>
+            <option>Single game — $50</option>
+            <option>Single training — $75</option>
             <option>Something else</option>
           </select>
         </div>
@@ -1464,6 +1512,66 @@ gsap.fromTo(FIN_WORDS,
 
   // 4. last resort
   setTimeout(reveal, 6000);
+})();
+
+/* ============================================================
+   PROOF CLIPS — the two video cards used to ride the generic .rv
+   fade, which read as flat sitting a section above the work grid's
+   orchestrated entrance. Here the frame wipes open from the bottom
+   while the footage inside settles back out of a slight push-in, so
+   it reads like a shot resolving rather than a box appearing.
+   ============================================================ */
+(function(){
+  const cards = gsap.utils.toArray('.proof-card');
+  if(!cards.length) return;
+
+  /* Reduced motion keeps the cards exactly as they load — static and
+     visible. They no longer carry .rv, so there is nothing to undo. */
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  cards.forEach(card => {
+    const vis  = card.querySelector('.proof-vis');
+    const vid  = vis && vis.querySelector('video');
+    const copy = card.querySelectorAll('.card-top > *, .card-body > *');
+
+    /* The starting state is written here rather than in CSS on purpose. The
+       clip fading in on a `loadeddata` listener is the exact bug that once
+       left these permanently invisible (see .proof-vis video above); if this
+       script never runs at all, the card is simply visible instead of
+       stranded behind a clip-path nothing will ever open. */
+    if(vis) gsap.set(vis, { clipPath:'inset(0% 0% 100% 0%)' });
+    if(vid) gsap.set(vid, { scale:1.14, transformOrigin:'50% 50%' });
+    gsap.set(copy, { opacity:0, y:14 });
+
+    let played = false;
+    function play(){
+      if(played) return;
+      played = true;
+      const tl = gsap.timeline();
+      if(vis) tl.to(vis, { clipPath:'inset(0% 0% 0% 0%)', duration:1.05, ease:'power3.inOut' }, 0);
+      /* The push-in deliberately outlasts the wipe, so the frame is still
+         settling after it is fully open. That overlap is what stops it
+         reading as two separate effects stapled together. */
+      if(vid) tl.to(vid, { scale:1, duration:1.7, ease:'power2.out',
+                           onComplete(){ gsap.set(vid, { clearProps:'transform' }); } }, 0);
+      tl.to(copy, { opacity:1, y:0, duration:0.6, stagger:0.08, ease:'power2.out',
+                    onComplete(){ gsap.set(copy, { clearProps:'opacity,transform' }); } }, 0.42);
+    }
+
+    /* Same four independent paths the work grid uses. These start hidden, so
+       one missed trigger would cost the section its whole visual. */
+    new IntersectionObserver((es,obs)=>{
+      es.forEach(e=>{ if(e.isIntersecting){ play(); obs.disconnect(); } });
+    }, { threshold:0.2, rootMargin:'0px 0px -8% 0px' }).observe(card);
+
+    const onScrollCheck = ()=>{
+      if(played){ window.removeEventListener('scroll', onScrollCheck); return; }
+      if(card.getBoundingClientRect().top < window.innerHeight * 0.9) play();
+    };
+    window.addEventListener('scroll', onScrollCheck, { passive:true });
+    document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) onScrollCheck(); });
+    setTimeout(play, 6000);
+  });
 })();
 
 /* Tilt is deliberately gentle. A linear mapping hits full rotation right at the
