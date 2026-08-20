@@ -367,10 +367,10 @@ body.menu-open .nv-panel{opacity:1;visibility:visible}
   background:var(--violet);color:#0b0b10;padding:6px 13px;
   font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;
 }
-/* the season carries the badge now. It has no price and isn't for sale, so
-   the badge does the opposite job to the other tiers' — it says the slot is
-   gone, which is the whole point of leaving the card up */
-.tier.feature.value::before{content:"Booked"}
+/* the season carries the badge now. It has no price, so the badge does a
+   different job to the other tiers' — scarcity, not value. "Booked" read as
+   closed and cost enquiries from the programs he actually wants next */
+.tier.feature.value::before{content:"Limited"}
 /* the line that does the season's arguing: what the flat price actually
    works out to per game, sitting tight under the number it qualifies */
 .tier .tier-sub{
@@ -912,10 +912,12 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 
         <div class="tier feature value rv">
           <h3>Full season</h3>
-          <!-- No number on purpose. The slot reads as gone rather than for
-               sale: naming the program that already took it answers "is he
-               good enough for this" before price is ever a question. -->
+          <!-- No number on purpose. Naming the program already running one
+               answers "is he good enough for this" before price is ever a
+               question — but the card stays reachable, so the proof works as
+               status rather than as a closed door. -->
           <div class="amt quote">Booked by Northwood</div>
+          <p class="tier-sub">Theirs is running now — yours is quoted against your schedule.</p>
           <div class="tier-groups">
             <div>
               <h4>Shooting</h4>
@@ -937,10 +939,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
               </ul>
             </div>
           </div>
-          <!-- "your season" implied it was still on the table; this one reads
-               correctly against a card that says the slot is taken, and still
-               leaves somewhere for a program that wants the next one to go -->
-          <a class="go" href="#contact">Ask about next season <i></i></a>
+          <a class="go" href="#contact">Ask about your season <i></i></a>
         </div>
 
       </div>
@@ -1030,6 +1029,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           <select id="f-need" name="need">
             <option>Single game — $50</option>
             <option>Single training — $75</option>
+            <option>Full season — let's talk</option>
             <option>Something else</option>
           </select>
         </div>
