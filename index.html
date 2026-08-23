@@ -774,7 +774,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
             <div class="sub">The squeak, the contact, the coaching.</div>
           </div>
           <div class="stat qual rv">
-            <div class="num">Colour graded</div>
+            <div class="num">Color graded</div>
             <div class="lb">The finish</div>
             <div class="sub">It looks like film, not a phone clip.</div>
           </div>
@@ -839,7 +839,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
           </div>
           <div class="card-body">
             <h3 class="card-name">Michigan<em>trainers</em></h3>
-            <p class="card-pitch">Skills trainers and player development coaches — workout content that fills your gym. Based in Midland, travelling statewide.</p>
+            <p class="card-pitch">Skills trainers and player development coaches — workout content that fills your gym. Based in Midland, traveling statewide.</p>
             <span class="card-go">Get me to your gym <i></i></span>
           </div>
         </article>
@@ -900,7 +900,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
               <h4>Editing</h4>
               <ul>
                 <li>Only the reps that landed make the cut</li>
-                <li>Colour graded so it looks like film, not a phone clip</li>
+                <li>Color graded so it looks like film, not a phone clip</li>
                 <li>Vertical for Reels and TikTok, horizontal for everything else</li>
                 <li>Back in 72 hours, while the session still matters</li>
               </ul>
@@ -979,7 +979,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         <div class="step rv">
           <span class="n">Step 02</span>
           <h3>I shoot and cut</h3>
-          <p>Handheld and gimbal-locked on the ZV-E10 II, sound on an external mic. Colour graded by hand, cut to the moments that matter.</p>
+          <p>Handheld and gimbal-locked on the ZV-E10 II, sound on an external mic. Color graded by hand, cut to the moments that matter.</p>
         </div>
         <div class="step rv">
           <span class="n">Step 03</span>
@@ -1005,7 +1005,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
 
       <form class="form-wrap rv" id="bookForm" novalidate>
         <input type="hidden" name="access_key" value="cbd6a85a-3db1-4b46-b152-c742444db780">
-        <input type="hidden" name="subject" value="New booking enquiry">
+        <input type="hidden" name="subject" value="New booking inquiry">
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="field">
           <label for="f-name">Your name</label>
@@ -1046,7 +1046,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
         </div>
 
         <div class="fin-btns full" style="justify-content:flex-start;margin-top:4px">
-          <button class="btn btn-solid" type="submit"><span>Send enquiry</span></button>
+          <button class="btn btn-solid" type="submit"><span>Send inquiry</span></button>
           <a class="btn btn-ghost" href="#proof"><span>Watch the work</span></a>
         </div>
       </form>
@@ -1059,7 +1059,7 @@ footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rg
     <div class="ft-grid">
       <div>
         <div class="ft-mark">Ethan Long <b>Media</b></div>
-        <p class="ft-tag">Basketball film that gets players seen. Mid-Michigan, travelling anywhere the run is.</p>
+        <p class="ft-tag">Basketball film that gets players seen. Mid-Michigan, traveling anywhere the run is.</p>
       </div>
       <div class="ft-links">
         <div class="ft-col">
@@ -1673,14 +1673,14 @@ document.querySelectorAll('.proof-vis video').forEach(vid=>{
    BOOKING FORM — submits straight to an inbox via Web3Forms.
    No mail app, no mailto: — just a POST from the page itself.
 
-   A lost enquiry is a lost booking, so this deliberately does not rely on one
+   A lost inquiry is a lost booking, so this deliberately does not rely on one
    attempt landing. In order:
      1. transient failures are retried three times with backoff — most
         failures here are a flaky phone connection in a gym, not a dead API
      2. anything still unsent is queued in localStorage and retried silently
         on the next visit, so closing the tab doesn't bin the lead
      3. only after all that does the copyable fallback appear
-   A queued retry can duplicate an enquiry if the send actually landed but the
+   A queued retry can duplicate an inquiry if the send actually landed but the
    response never made it back. For a booking, a duplicate is far cheaper than
    a miss, so that trade is taken on purpose.
    ============================================================ */
@@ -1688,7 +1688,7 @@ const W3_ENDPOINT = 'https://api.web3forms.com/submit';
 const ENQ_QUEUE_KEY = 'elm_unsent_enquiries';
 const napFor = ms => new Promise(r=>setTimeout(r, ms));
 
-async function postEnquiry(payload){
+async function postInquiry(payload){
   const res = await fetch(W3_ENDPOINT, {
     method:'POST',
     headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
@@ -1702,7 +1702,7 @@ async function postEnquiry(payload){
 async function postWithRetry(payload, tries = 3){
   let last;
   for(let i = 0; i < tries; i++){
-    try{ return await postEnquiry(payload); }
+    try{ return await postInquiry(payload); }
     catch(err){ last = err; if(i < tries - 1) await napFor(700 * Math.pow(2, i)); }
   }
   throw last;
@@ -1716,7 +1716,7 @@ function writeEnqQueue(q){
   try{ localStorage.setItem(ENQ_QUEUE_KEY, JSON.stringify(q.slice(-5))); }
   catch(e){}   /* private mode / quota — nothing to do but carry on */
 }
-function queueEnquiryForRetry(payload){
+function queueInquiryForRetry(payload){
   const q = readEnqQueue();
   q.push({ payload, ts: Date.now() });
   writeEnqQueue(q);
@@ -1729,7 +1729,7 @@ async function flushEnqQueue(){
   const keep = [];
   for(const item of q){
     if(Date.now() - item.ts > 7*24*3600*1000) continue;    // a week stale, drop it
-    try{ await postEnquiry(item.payload); }
+    try{ await postInquiry(item.payload); }
     catch(e){ keep.push(item); }
   }
   writeEnqQueue(keep);
@@ -1775,10 +1775,10 @@ document.getElementById('bookForm').addEventListener('submit', async e=>{
     setTimeout(()=>{ btn.disabled = false; label.textContent = original; }, 5000);
 
   }catch(err){
-    /* Three attempts failed. Hold the enquiry on the device and retry it on
+    /* Three attempts failed. Hold the inquiry on the device and retry it on
        the next visit, then show the copyable fallback — the form is NOT reset
        here, so nothing they typed is thrown away either. */
-    queueEnquiryForRetry(payload);
+    queueInquiryForRetry(payload);
 
     const lines = [
       'Name: '  + name,
