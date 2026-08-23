@@ -1354,10 +1354,8 @@ new IntersectionObserver(
   { rootMargin: '20% 0px' }
 ).observe(document.getElementById('hero'));
 
-let last = 0;
-function loop(t){
-  if(heroOnScreen && t - last > 33){
-    last = t;
+function loop(){
+  if(heroOnScreen){
     beat += REDUCED ? 0 : 0.02;
     draw();
   }
