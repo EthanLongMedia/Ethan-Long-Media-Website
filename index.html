@@ -17,7 +17,7 @@
   --bg: #F6F4EF; --white: #FFFFFF; --ink: #111113; --body: #4A4A52; --muted: #71717A; --nav-muted: #A1A1AA;
   --line: rgba(17,17,19,.09); --accent: #5B3DF5; --accent-soft: #A391FF; --dark: #111113; --green: #22C55E;
   --wrap: 980px; --gutter: clamp(16px, 4vw, 32px);
-  --pw: clamp(220px, calc((100svh - 300px) / 2.184), 330px); /* phone width: headline + phones fill the first screen */
+  --pw: clamp(200px, calc((100svh - 316px) / 2.184), 330px); /* phone width: headline + phones fill the first screen */
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -40,30 +40,71 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .pill--sm { height: 38px; padding: 0 18px; font-size: 15px; }
 
 /* nav */
-.nav { position: sticky; top: 0; z-index: 40; background: #0B0B0C; color: #fff; }
-.nav .wrap { display: flex; align-items: center; height: 63px; gap: 24px; }
-.logo { font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+/* nav: a floating frosted-glass pill. Light glass over light sections, dark glass over dark ones. */
+.nav { position: fixed; z-index: 40; top: 14px; left: 50%; width: min(980px, calc(100% - 24px)); transform: translateX(-50%); transition: opacity .9s cubic-bezier(.2,.85,.25,1), transform .9s cubic-bezier(.2,.85,.25,1), filter .9s; }
+.nav__inner {
+  display: flex; align-items: center; gap: 16px; height: 60px; padding: 0 9px 0 22px; border-radius: 999px;
+  color: var(--ink);
+  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0)) rgba(255,255,255,.58);
+  -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 0 0 1px rgba(255,255,255,.5), 0 0 0 1px rgba(17,17,19,.06), 0 14px 36px -16px rgba(17,17,19,.28);
+  transition: background-color .4s ease, box-shadow .4s ease, color .4s ease;
+}
+.logo { display: inline-flex; align-items: center; font-weight: 700; font-size: 16px; letter-spacing: -.015em; }
 .logo span { color: var(--accent-soft); font-weight: 500; }
-.nav-links { display: flex; gap: 28px; margin: 0 auto; font-size: 15px; color: var(--nav-muted); }
-.nav-links a:hover { color: #fff; }
-@media (max-width: 760px) { .nav-links { display: none; } .nav .pill { margin-left: auto; } }
+.logo .logo__name { color: inherit; font-weight: 700; white-space: nowrap; }
+.logo .logo__name em { font-style: normal; font-weight: 500; color: var(--accent); transition: color .4s ease; }
+.nav-links { display: flex; gap: 2px; margin: 0 auto; }
+.nav-links a { padding: 9px 15px; border-radius: 999px; font-size: 14px; font-weight: 500; color: #55555C; transition: color .4s, background-color .2s; }
+.nav-links a:hover { color: var(--ink); background: rgba(17,17,19,.05); }
+.nav-cta { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 18px -10px rgba(17,17,19,.6); transition: transform .15s, background-color .4s, color .4s, box-shadow .4s; }
+.nav-cta span { transition: transform .2s; }
+.nav-cta:hover span { transform: translateX(2px); }
+.nav-cta:active { transform: scale(.97); }
+/* over dark sections */
+.nav--dark .nav__inner {
+  color: #fff;
+  background-color: rgba(24,24,28,.52);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.08), 0 0 0 1px rgba(0,0,0,.3), 0 14px 36px -16px rgba(0,0,0,.7);
+}
+.nav--dark .logo .logo__name em { color: var(--accent-soft); }
+.nav--dark .nav-links a { color: #B4B4BC; }
+.nav--dark .nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.nav--dark .nav-cta { background: #fff; color: #0B0B0C; box-shadow: 0 8px 20px -10px rgba(255,255,255,.5); }
+@media (max-width: 760px) { .nav { top: 10px; } .nav__inner { height: 54px; padding-left: 18px; } .logo { font-size: 15px; } .nav-links { display: none; } .nav-cta { margin-left: auto; height: 40px; padding: 0 15px; } }
+@media (prefers-reduced-transparency: reduce) { .nav__inner { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; } .nav--dark .nav__inner { background: #111113; } }
 
 /* hero */
-.hero { text-align: center; padding: clamp(28px, 5svh, 56px) 0 clamp(40px, 5vw, 64px); }
+.hero { text-align: center; padding: calc(clamp(28px, 5svh, 56px) + 74px) 0 clamp(40px, 5vw, 64px); }
 .hero-title { margin: 0 auto clamp(20px, 3svh, 36px); padding: 0 var(--gutter); font-size: clamp(26px, 3.6vw, 44px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
 .hero-title em { font-style: normal; color: var(--accent); }
-@media (max-width: 560px) { .hero-title span { display: block; } }
+@media (max-width: 560px) { .hero-title .br { display: block; } }
 h2 .hl { color: var(--accent); }
+/* intro: nav materializes, headline rises word by word, phones fan out from behind the center one */
+.hero-title .w { display: inline-block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; vertical-align: top; }
+.hero-title .w > i { display: inline-block; font-style: normal; transition: transform .9s cubic-bezier(.2,.85,.25,1) calc(var(--i) * 60ms + 100ms); }
+html.intro .hero-title .w > i { transform: translateY(110%); }
+html.intro .nav { opacity: 0; transform: translateX(-50%) translateY(-14px); filter: blur(8px); }
+html.intro .phone { opacity: 0; }
+html.intro .phone.is-active { transform: translateX(-50%) translateY(56px) scale(.95); }
+html.intro .phone.is-left, html.intro .phone.is-right { transform: translateX(-50%) translateY(40px) scale(.88); }
+html.intro-run .phone { transition-duration: 1.1s, .8s, .6s; }
+html.intro-run .phone.is-active { transition-delay: .3s; }
+html.intro-run .phone.is-left, html.intro-run .phone.is-right { transition-delay: .6s; }
+.reel-nav { transition: opacity .7s, transform .7s cubic-bezier(.2,.85,.25,1); }
+html.intro .reel-nav { opacity: 0; transform: translateY(10px); }
+html.intro-run .reel-nav { transition-delay: .95s; }
+
 
 /* phones */
 .stage { position: relative; overflow-x: clip; }
-.phones { position: relative; height: calc(var(--pw) * 2.184 + 70px); max-width: 1100px; margin: 0 auto; }
+.phones { position: relative; height: calc(var(--pw) * 2.184 + 70px); max-width: 1100px; margin: 0 auto; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
 .phone {
   position: absolute; left: 50%; top: 0; width: var(--pw); aspect-ratio: 245 / 535;
   padding: 3px; border-radius: calc(var(--pw) * .17); background: #1B1B1E;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.22), 0 50px 80px -40px rgba(17,17,19,.6), 0 22px 36px -22px rgba(17,17,19,.45);
-  transform: translateX(-50%); transform-origin: 50% 80%;
-  transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s;
+  transform: translateX(-50%); transform-origin: 50% 80%; translate: var(--drag, 0px) 0;
+  transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s, translate .6s cubic-bezier(.2,.75,.2,1);
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .phone::before, .phone::after { content: ''; position: absolute; width: 3px; border-radius: 2px; background: #2A2A2E; }
@@ -73,7 +114,8 @@ h2 .hl { color: var(--accent); }
 .phone__notch { position: absolute; z-index: 4; top: calc(var(--pw) * .033); left: 50%; width: 37%; height: calc(var(--pw) * .118); transform: translateX(-50%); background: #050506; border-radius: 0 0 calc(var(--pw) * .06) calc(var(--pw) * .06); }
 .phone__notch::after { content: ''; position: absolute; top: 34%; left: 50%; width: 34%; height: 9%; transform: translateX(-50%); border-radius: 4px; background: #1D1D21; }
 .phone__display { position: relative; height: 100%; overflow: hidden; border-radius: calc(var(--pw) * .125); background: #000; isolation: isolate; }
-.phone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.phone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.phones.is-dragging .phone { transition: none; }
 .phone__ui { position: absolute; z-index: 3; inset: auto 0 0; padding: calc(var(--pw) * .3) calc(var(--pw) * .05) calc(var(--pw) * .075); color: #fff; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.55) 45%, rgba(0,0,0,.85)); text-shadow: 0 1px 10px rgba(0,0,0,.6); transition: opacity .4s; }
 .phone__ui small { display: inline-block; padding: calc(var(--pw) * .012) calc(var(--pw) * .035); border-radius: 999px; background: #fff; font-size: calc(var(--pw) * .048); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-shadow: none; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
 .phone__ui b { display: block; margin-top: calc(var(--pw) * .03); font-size: calc(var(--pw) * .074); font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -97,8 +139,8 @@ h2 .hl { color: var(--accent); }
 @media (max-width: 720px) {
   :root { --pw: clamp(210px, min(72vw, calc((100svh - 290px) / 2.184)), 290px); }
   .phones { height: calc(var(--pw) * 2.184 + 30px); }
-  .phone.is-left  { opacity: 0; transform: translateX(calc(-50% - 80vw)) rotate(-4deg); pointer-events: none; }
-  .phone.is-right { opacity: 0; transform: translateX(calc(-50% + 80vw)) rotate(4deg); pointer-events: none; }
+  .phone.is-left  { transform: translateX(calc(-50% - 50vw - var(--pw) * .44 + 18px)) translateY(calc(var(--pw) * .1)) scale(.88); }
+  .phone.is-right { transform: translateX(calc(-50% + 50vw + var(--pw) * .44 - 18px)) translateY(calc(var(--pw) * .1)) scale(.88); }
 }
 
 /* sections */
@@ -131,13 +173,24 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 52px); font-weight: 600; line
 .step--top .step__lvl { color: var(--accent-soft); }
 .step__txt b { display: block; margin-top: 4px; font-size: 15px; font-weight: 600; line-height: 1.25; }
 @media (max-width: 760px) {
-  /* phones: a vertical ladder, D1 on top */
+  /* phones: a ladder from Gaels United down to D1; the line climbs as you scroll and lights each program it reaches */
   .climb__line { display: none; }
-  .climb__steps { display: flex; flex-direction: column-reverse; align-items: stretch; gap: 14px; }
-  .climb__steps::before { content: ''; position: absolute; left: 39px; top: 40px; bottom: 40px; width: 2px; background: linear-gradient(var(--accent-soft), rgba(163,145,255,.12)); }
+  .climb__steps { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+  .climb__steps::before, .climb__steps::after { content: ''; position: absolute; left: 39px; top: 40px; bottom: 40px; width: 2px; border-radius: 2px; }
+  .climb__steps::before { background: rgba(255,255,255,.08); }
+  .climb__steps::after { background: linear-gradient(rgba(163,145,255,.3), var(--accent-soft)); transform-origin: 50% 0; transform: scaleY(var(--p, 0)); transition: transform .5s cubic-bezier(.2,.75,.2,1); }
   .step { flex-direction: row; justify-content: flex-start; gap: 18px; margin: 0; text-align: left; }
   .step__stop { flex: none; width: 80px; }
   .step__txt { height: auto; margin: 0; }
+  .climb .step { opacity: 1; transform: none; transition: opacity .6s ease; }
+  .climb .step:not(.is-lit) { opacity: .28; }
+  .climb .step__stop { transition: transform .7s cubic-bezier(.3,1.35,.5,1), box-shadow .8s ease; }
+  .climb .step:not(.is-lit) .step__stop { transform: scale(.84); }
+  .climb .step__stop img { transition: filter .6s ease; }
+  .climb .step:not(.is-lit) .step__stop img { filter: grayscale(1); }
+  .climb .step__txt { transition: transform .7s cubic-bezier(.2,.75,.2,1); }
+  .climb .step:not(.is-lit) .step__txt { transform: translateX(-10px); }
+  .climb .step--top:not(.is-lit) .step__stop { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 20px 40px -20px rgba(0,0,0,.9); }
 }
 
 /* how it works: photo + three plain steps */
@@ -280,24 +333,43 @@ footer a:hover { color: #fff; }
   html { scroll-behavior: auto; }
 }
 </style>
+<script>
+(() => {
+  // A refresh starts at the top of the page, not halfway down the hero.
+  if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
+  const root = document.documentElement;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  root.classList.add('intro', 'intro-run');
+  let played = false;
+  const play = () => {
+    if (played) return;
+    played = true;
+    void root.offsetHeight; // commit the starting pose so the transitions run from it
+    root.classList.remove('intro');
+    setTimeout(() => root.classList.remove('intro-run'), 2200);
+  };
+  addEventListener('DOMContentLoaded', () => (document.fonts ? document.fonts.ready : Promise.resolve()).then(play));
+  setTimeout(play, 900);
+})();
+</script>
 </head>
 <body>
 
 <header class="nav">
-  <div class="wrap">
-    <a href="#top" class="logo">Ethan Long <span>Media</span></a>
+  <div class="nav__inner">
+    <a href="#top" class="logo"><span class="logo__name">Ethan Long <em>Media</em></span></a>
     <nav class="nav-links">
       <a href="#reels">Programs</a>
       <a href="#how">How it works</a>
       <a href="#packages">Pricing</a>
     </nav>
-    <a href="#book" class="pill pill--light pill--sm">Book my reel</a>
+    <a href="#book" class="nav-cta">Book my reel <span aria-hidden="true">→</span></a>
   </div>
 </header>
 
 <main id="top">
   <section class="hero">
-    <h1 class="hero-title">Basketball film that <span>gets players <em>seen</em>.</span></h1>
+    <h1 class="hero-title"><span class="w"><i style="--i:0">Basketball</i></span> <span class="w"><i style="--i:1">film</i></span> <span class="w"><i style="--i:2">that</i></span> <span class="br"><span class="w"><i style="--i:3">gets</i></span> <span class="w"><i style="--i:4">players</i></span> <span class="w"><i style="--i:5"><em>seen</em>.</i></span></span></h1>
     <div class="stage">
       <div class="phones" id="phones">
         <div class="phone" data-title="Game Day" data-kind="Game reel">
@@ -578,6 +650,50 @@ footer a:hover { color: #fff; }
     });
   });
   dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+
+  // Swipe between reels: the phones follow the finger, and a flick or a long enough drag moves one reel over.
+  const stage = document.getElementById('phones');
+  let drag = null, swallowClick = false;
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    swallowClick = false;
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, on: false, hist: [[e.timeStamp, e.clientX]] };
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.on) {
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; } // vertical: let the page scroll
+      if (Math.abs(dx) < 10) return;
+      drag.on = true;
+      stage.setPointerCapture(e.pointerId);
+      stage.classList.add('is-dragging');
+    }
+    drag.hist.push([e.timeStamp, e.clientX]);
+    if (drag.hist.length > 5) drag.hist.shift();
+    stage.style.setProperty('--drag', `${dx}px`);
+  });
+  const release = (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const d = drag;
+    drag = null;
+    if (!d.on) return;
+    swallowClick = true;
+    const dx = e.clientX - d.x;
+    const [t0, x0] = d.hist[0], [t1, x1] = d.hist[d.hist.length - 1];
+    const v = t1 > t0 ? (x1 - x0) / (t1 - t0) * 1000 : 0; // px/s
+    const projected = dx + v / 1000 * .99 / (1 - .99);  // where the flick would carry the phone
+    stage.classList.remove('is-dragging');
+    stage.style.setProperty('--drag', '0px');
+    if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3) go(active + (projected < 0 ? 1 : -1));
+  };
+  stage.addEventListener('pointerup', release);
+  stage.addEventListener('pointercancel', release);
+  stage.addEventListener('click', (e) => { if (swallowClick) { e.stopPropagation(); swallowClick = false; } }, true);
+  addEventListener('keydown', (e) => {
+    if (document.querySelector('.qz.is-open') || !inView || !/^Arrow(Left|Right)$/.test(e.key) || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+    go(active + (e.key === 'ArrowRight' ? 1 : -1));
+  });
   soundBtn.addEventListener('click', () => { soundOn = !soundOn; syncSound(); if (video(active).paused) play(); });
 
 
@@ -765,6 +881,42 @@ footer a:hover { color: #fff; }
   draw();
   addEventListener('resize', draw);
   addEventListener('load', draw);
+
+  // Phones: the line climbs from Gaels United to D1 as you scroll, lighting each program as it reaches it.
+  const mq = matchMedia('(max-width: 760px)');
+  const list = climb.querySelector('.climb__steps');
+  const steps = [...climb.querySelectorAll('.step')];
+  let best = 0, ticking = false;
+  function climbTo() {
+    ticking = false;
+    if (!mq.matches) return;
+    const mark = innerHeight * .72;
+    const c = stops.map((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; });
+    const p = reduce ? 1 : Math.min(1, Math.max(0, (mark - c[0]) / (c[c.length - 1] - c[0])));
+    if (p < best) return;
+    best = p;
+    list.style.setProperty('--p', p);
+    steps.forEach((step, i) => { if (reduce || c[i] <= mark + 1) step.classList.add('is-lit'); });
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(climbTo); } }, { passive: true });
+  addEventListener('resize', climbTo);
+  climbTo();
+})();
+
+/* ---------- nav: light glass over light sections, dark glass over dark ones ---------- */
+(() => {
+  const nav = document.querySelector('.nav');
+  const darkSections = [...document.querySelectorAll('.climb-sec, .offer, footer')];
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const r = nav.getBoundingClientRect();
+    const y = r.top + r.height / 2;
+    nav.classList.toggle('nav--dark', darkSections.some((el) => { const b = el.getBoundingClientRect(); return b.top <= y && b.bottom >= y; }));
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', update);
+  update();
 })();
 
 /* ---------- reveal on scroll ---------- */
