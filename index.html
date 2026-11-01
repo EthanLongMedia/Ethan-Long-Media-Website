@@ -20,6 +20,7 @@
   --pw: clamp(200px, calc((var(--vh, 100svh) - 316px) / 2.184), 330px); /* phone width: headline + phones fill the first screen */
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+a, button, label, input { touch-action: manipulation; } /* taps fire right away, never held for a double-tap zoom */
 html { scroll-behavior: smooth; }
 [id] { scroll-margin-top: 80px; }
 body { background: var(--bg); color: var(--ink); font-family: 'Figtree', system-ui, sans-serif; font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -32,11 +33,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 50px; padding: 0 24px; border-radius: 999px; font-size: 16px; font-weight: 600; white-space: nowrap; transition: transform .2s, box-shadow .2s, background-color .2s; }
 .pill:active { transform: scale(.98); }
 .pill--dark { background: var(--ink); color: #fff; }
-.pill--dark:hover { box-shadow: 0 12px 28px -12px rgba(17,17,19,.6); transform: translateY(-1px); }
+@media (hover: hover) { .pill--dark:hover { box-shadow: 0 12px 28px -12px rgba(17,17,19,.6); transform: translateY(-1px); } }
 .pill--light { background: #fff; color: #0B0B0C; }
-.pill--light:hover { box-shadow: 0 12px 28px -12px rgba(255,255,255,.4); transform: translateY(-1px); }
+@media (hover: hover) { .pill--light:hover { box-shadow: 0 12px 28px -12px rgba(255,255,255,.4); transform: translateY(-1px); } }
 .pill--ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); }
-.pill--ghost:hover { background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
+@media (hover: hover) { .pill--ghost:hover { background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); } }
 .pill--sm { height: 38px; padding: 0 18px; font-size: 15px; }
 
 /* nav */
@@ -56,10 +57,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .logo .logo__name em { font-style: normal; font-weight: 500; color: var(--accent); transition: color .4s ease; }
 .nav-links { display: flex; gap: 2px; margin: 0 auto; }
 .nav-links a { padding: 9px 15px; border-radius: 999px; font-size: 14px; font-weight: 500; color: #55555C; transition: color .4s, background-color .2s; }
-.nav-links a:hover { color: var(--ink); background: rgba(17,17,19,.05); }
+@media (hover: hover) { .nav-links a:hover { color: var(--ink); background: rgba(17,17,19,.05); } }
 .nav-cta { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 18px -10px rgba(17,17,19,.6); transition: transform .15s, background-color .4s, color .4s, box-shadow .4s; }
 .nav-cta span { transition: transform .2s; }
-.nav-cta:hover span { transform: translateX(2px); }
+@media (hover: hover) { .nav-cta:hover span { transform: translateX(2px); } }
 .nav-cta:active { transform: scale(.97); }
 /* over dark sections */
 .nav--dark .nav__inner {
@@ -69,7 +70,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .nav--dark .logo .logo__name em { color: var(--accent-soft); }
 .nav--dark .nav-links a { color: #B4B4BC; }
-.nav--dark .nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+@media (hover: hover) { .nav--dark .nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); } }
 .nav--dark .nav-cta { background: #fff; color: #0B0B0C; box-shadow: 0 8px 20px -10px rgba(255,255,255,.5); }
 @media (max-width: 760px) { .nav { top: 10px; } .nav__inner { height: 54px; padding-left: 18px; } .logo { font-size: 15px; } .nav-links { display: none; } .nav-cta { margin-left: auto; height: 40px; padding: 0 15px; } }
 @media (prefers-reduced-transparency: reduce) { .nav__inner { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; } .nav--dark .nav__inner { background: #111113; } }
@@ -131,10 +132,12 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 
 .reel-nav { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 8px; }
 .dots { display: flex; gap: 8px; }
-.dots button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 999px; background: rgba(17,17,19,.18); transition: width .3s, background-color .3s; }
+.dots button { position: relative; width: 10px; height: 10px; padding: 0; border: 0; border-radius: 999px; background: rgba(17,17,19,.18); transition: width .3s, background-color .3s; }
+.dots button::after { content: ''; position: absolute; inset: -17px -4px; } /* a finger-sized tap area around each small dot */
 .dots button[aria-current="true"] { width: 28px; background: var(--ink); }
-.sound { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 24px -12px rgba(17,17,19,.6); transition: background-color .2s, transform .2s; }
-.sound:hover { transform: translateY(-1px); }
+.sound { display: inline-flex; align-items: center; justify-content: center; min-width: 148px; gap: 8px; height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 24px -12px rgba(17,17,19,.6); transition: background-color .2s, transform .2s; }
+@media (hover: hover) { .sound:hover { transform: translateY(-1px); } }
+.sound:active { transform: scale(.97); }
 .sound[aria-pressed="true"] { background: var(--accent); }
 
 @media (max-width: 720px) {
@@ -144,10 +147,11 @@ html.intro-run .reel-nav { transition-delay: .95s; }
   .hero-title { margin-bottom: 14px; }
   .phones { height: calc(var(--pw) * 2.184 + 16px); }
   .reel-nav { margin-top: 4px; }
-  /* one reel on screen; the others wait off to the side in a fixed row and slide in on a swipe */
+  /* one reel on screen; the others wait just off each side in a looping row and slide in on a swipe */
   .phones { --step: calc(50vw + var(--pw) / 2 + 24px); }
   .phone, .phone.is-active, .phone.is-left, .phone.is-right { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); transition: transform .55s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s; }
   html.intro .phone:not(.is-active) { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); }
+  .phone.is-wrapping { transition: none; opacity: 0; }
 }
 
 /* sections */
@@ -280,7 +284,7 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 52px); font-weight: 600; line
 @media (max-width: 480px) { .includes__row ul { grid-template-columns: 1fr; } }
 
 footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: center; padding: 8px var(--gutter) 40px; }
-footer a:hover { color: #fff; }
+@media (hover: hover) { footer a:hover { color: #fff; } }
 
 /* quiz overlay */
 .qz { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #0B0B0C; color: #fff; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
@@ -291,7 +295,7 @@ footer a:hover { color: #fff; }
 .qz__bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 63px; }
 .qz__close { display: flex; align-items: center; gap: 8px; padding: 6px 0; border: 0; background: none; color: var(--nav-muted); font-size: 14px; }
 .qz__close kbd { padding: 1px 6px; border: 1px solid rgba(255,255,255,.18); border-radius: 5px; font: inherit; font-size: 11px; }
-.qz__close:hover { color: #fff; }
+@media (hover: hover) { .qz__close:hover { color: #fff; } }
 .qz__progress { position: absolute; left: 0; bottom: -1px; height: 2px; background: var(--accent-soft); transition: width .45s cubic-bezier(.2,.75,.2,1); }
 .qz__body { position: relative; z-index: 1; flex: 1; overflow-y: auto; display: flex; align-items: center; }
 .qz__inner { width: 100%; max-width: 590px; margin: 0 auto; padding: 40px var(--gutter) 80px; }
@@ -304,7 +308,7 @@ footer a:hover { color: #fff; }
 .qz__input { display: block; width: 100%; margin-top: 30px; padding: 10px 0 12px; border: 0; border-bottom: 2px solid #5B4BD8; background: transparent; color: #fff; font: inherit; font-size: clamp(22px, 2.6vw, 28px); outline: none; color-scheme: dark; transition: border-color .2s; }
 .qz__input::placeholder { color: #55555C; }
 .qz__input:focus { border-color: var(--accent-soft); }
-.qz__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.qz__field { display: block; }
 .qz__field > span { display: block; margin-top: 28px; font-size: 13px; font-weight: 600; color: #C4C4CC; }
 .qz__field > span i { font-style: normal; font-weight: 400; color: var(--nav-muted); margin-left: 4px; }
 .qz__field .qz__input { margin-top: 4px; }
@@ -313,7 +317,7 @@ footer a:hover { color: #fff; }
 .qz__opt input { position: absolute; opacity: 0; pointer-events: none; }
 .qz__opt span { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 58px; padding: 12px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; background: #161618; font-size: 16px; font-weight: 600; transition: border-color .15s, background-color .15s, transform .15s; }
 .qz__opt small { font-size: 13px; font-weight: 400; color: var(--nav-muted); }
-.qz__opt:hover span { border-color: rgba(255,255,255,.35); }
+@media (hover: hover) { .qz__opt:hover span { border-color: rgba(255,255,255,.35); } }
 .qz__opt:active span { transform: scale(.98); }
 .qz__opt input:checked + span { border-color: var(--accent-soft); background: #221E3A; }
 .qz__opt input:focus-visible + span { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
@@ -321,16 +325,17 @@ footer a:hover { color: #fff; }
 .qz__nav { display: flex; align-items: center; gap: 18px; margin-top: 14px; }
 .qz__next { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 10px 0 22px; border: 0; border-radius: 999px; background: #fff; color: #0B0B0C; font-size: 16px; font-weight: 600; transition: transform .15s; }
 .qz__next kbd { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid rgba(0,0,0,.15); border-radius: 6px; font: inherit; font-size: 12px; color: #71717A; }
-.qz__next:hover { transform: translateY(-1px); }
+@media (hover: hover) { .qz__next:hover { transform: translateY(-1px); } }
+.qz__next:active { transform: scale(.97); }
 .qz__back { border: 0; background: none; color: var(--nav-muted); font-size: 15px; }
-.qz__back:hover { color: #fff; }
+@media (hover: hover) { .qz__back:hover { color: #fff; } }
 .qz__fine { margin-top: 22px; font-size: 13px; color: #6B6B73; }
 .qz__done .ok { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--accent); font-size: 24px; font-weight: 700; }
 .qz__sum { margin: 26px 0 30px; border-top: 1px solid rgba(255,255,255,.1); }
 .qz__sum div { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: 15px; }
 .qz__sum dt { color: var(--nav-muted); }
 .qz__sum dd { font-weight: 600; text-align: right; }
-@media (max-width: 560px) { .qz__opts, .qz__pair { grid-template-columns: 1fr; } .qz__body { align-items: flex-start; } }
+@media (max-width: 560px) { .qz__opts { grid-template-columns: 1fr; } .qz__body { align-items: flex-start; } }
 
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s, transform .7s cubic-bezier(.2,.75,.2,1); }
 .reveal.is-in { opacity: 1; transform: none; }
@@ -342,6 +347,8 @@ footer a:hover { color: #fff; }
 </style>
 <script>
 (() => {
+  // iPhones only show the pressed (:active) look when the page listens for touches.
+  document.addEventListener('touchstart', () => {}, { passive: true });
   // A refresh starts at the top of the page, not halfway down the hero.
   if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
   const root = document.documentElement;
@@ -529,7 +536,7 @@ footer a:hover { color: #fff; }
 <!-- Booking quiz -->
 <div class="qz" id="quiz" role="dialog" aria-modal="true" aria-label="Book your reel">
   <div class="qz__bar">
-    <div class="wrap"><span class="logo">Ethan Long <span>Media</span></span><button class="qz__close" type="button" id="qzClose">Close <kbd>esc</kbd></button></div>
+    <div class="wrap"><span class="logo">Ethan Long&nbsp;<span>Media</span></span><button class="qz__close" type="button" id="qzClose">Close <kbd>esc</kbd></button></div>
     <span class="qz__progress" id="qzProgress"></span>
   </div>
   <div class="qz__body">
@@ -556,35 +563,11 @@ footer a:hover { color: #fff; }
           <label class="qz__opt"><input type="radio" name="level" value="D1"><span>D1</span></label>
         </div>
       </section>
-      <section class="qz__step" data-label="Player Cuts" hidden>
-        <p class="qz__count"></p><h2 class="qz__q">Add Player Cuts for teammates?</h2>
-        <p class="qz__hint">+$50 per player, cut from the same game. You can decide who later.</p>
-        <div class="qz__opts">
-          <label class="qz__opt"><input type="radio" name="cuts" value="Not now"><span>Not now</span></label>
-          <label class="qz__opt"><input type="radio" name="cuts" value="Yes"><span>Yes, add cuts<small>+$50 each</small></span></label>
-        </div>
-      </section>
-      <section class="qz__step" data-label="The player" hidden>
-        <p class="qz__count"></p><h2 class="qz__q">Who am I filming?</h2>
-        <p class="qz__hint">A player's name and number, or a team.</p>
-        <input class="qz__input" name="who" autocomplete="off" placeholder="e.g. Jordan Smith #21" required>
-      </section>
-      <section class="qz__step" data-label="The game" hidden>
-        <p class="qz__count"></p><h2 class="qz__q">When and where's the game?</h2>
-        <p class="qz__hint">Not set yet? Leave it blank and we'll figure it out.</p>
-        <div class="qz__pair">
-          <label class="qz__field"><span>Game date <i>optional</i></span><input class="qz__input" type="date" name="date"></label>
-          <label class="qz__field"><span>City or gym <i>optional</i></span><input class="qz__input" name="where" placeholder="e.g. Novi Middle School"></label>
-        </div>
-      </section>
-      <section class="qz__step" data-label="Your name" hidden>
-        <p class="qz__count"></p><h2 class="qz__q">Almost done. What's your name?</h2>
-        <input class="qz__input" name="name" autocomplete="name" placeholder="e.g. Jordan Smith" required>
-      </section>
-      <section class="qz__step" data-label="Contact" hidden>
-        <p class="qz__count"></p><h2 class="qz__q">Best number or email to reach you?</h2>
-        <p class="qz__hint">Phone or email, any format is fine.</p>
-        <input class="qz__input" name="contact" autocomplete="tel" placeholder="(555) 555-5555 or you@email.com" required>
+      <section class="qz__step" data-label="Your info" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">Where should I send your quote?</h2>
+        <label class="qz__field"><span>Your name</span><input class="qz__input" name="name" autocomplete="name" placeholder="Jordan Smith" required></label>
+        <label class="qz__field"><span>Phone or email</span><input class="qz__input" name="contact" autocomplete="tel" placeholder="(555) 555-5555" required></label>
+        <label class="qz__field"><span>Player and game <i>optional</i></span><input class="qz__input" name="details" autocomplete="off" placeholder="#21, Fri Dec 5 at Novi"></label>
       </section>
       <section class="qz__step qz__done" data-label="Done" hidden>
         <div class="ok">✓</div>
@@ -599,7 +582,7 @@ footer a:hover { color: #fff; }
         <button class="qz__next" type="submit">Next <kbd>↵</kbd></button>
         <button class="qz__back" type="button" id="qzBack">← Back</button>
       </div>
-      <p class="qz__fine" id="qzFine">Takes about a minute. No payment to ask.</p>
+      <p class="qz__fine" id="qzFine">Three quick steps. No payment to ask.</p>
     </form>
   </div>
 </div>
@@ -616,7 +599,7 @@ footer a:hover { color: #fff; }
   let active = 0, soundOn = false, inView = true;
 
   const video = (i) => phones[i].querySelector('video');
-  const row = matchMedia('(max-width: 720px)'); // phones: reels sit in a fixed row with ends
+  const row = matchMedia('(max-width: 720px)'); // phones: reels sit in a row, one on screen
 
   function layout() {
     const n = phones.length;
@@ -626,7 +609,11 @@ footer a:hover { color: #fff; }
       p.classList.toggle('is-right', rel === 1);
       p.classList.toggle('is-left', rel === n - 1);
       p.setAttribute('aria-hidden', rel !== 0);
-      p.style.setProperty('--rel', i - active); // phones: position in the fixed row
+      // Phones: place in the row, as a loop: one reel on each side. A reel that has to switch sides
+      // jumps across hidden, instead of sliding past the one you're watching, and shows again once the row settles.
+      const ring = rel > n / 2 ? rel - n : rel;
+      p.classList.toggle('is-wrapping', row.matches && Math.abs(ring - (+p.style.getPropertyValue('--rel') || 0)) > 1);
+      p.style.setProperty('--rel', ring);
     });
     dots.forEach((d, i) => d.setAttribute('aria-current', i === active));
   }
@@ -673,8 +660,12 @@ footer a:hover { color: #fff; }
   }
 
   // Both reels keep playing through the slide (the one leaving goes silent); the one leaving is parked once it's off screen.
+  // The intro's staggered timing must never apply to a swipe or tap, or the phones slide at different speeds and overlap.
+  const endIntro = () => document.documentElement.classList.remove('intro', 'intro-run');
+
   let settle = 0;
   function go(i) {
+    endIntro();
     const prev = active;
     active = (i + phones.length) % phones.length;
     layout();
@@ -682,7 +673,11 @@ footer a:hover { color: #fff; }
     warm(active);
     startActive();
     clearTimeout(settle);
-    settle = setTimeout(() => { settle = 0; play(); }, row.matches ? 600 : 950);
+    settle = setTimeout(() => {
+      settle = 0;
+      phones.forEach((p) => p.classList.remove('is-wrapping'));
+      play();
+    }, row.matches ? 600 : 950);
   }
 
   phones.forEach((p, i) => {
@@ -691,14 +686,13 @@ footer a:hover { color: #fff; }
       if (i !== active) return go(i);
       if (reduce && video(i).paused) { video(i).play(); return; }
       soundOn = !soundOn; syncSound();
+      if (video(i).paused) play(); // e.g. Low Power Mode held back autoplay: the tap starts it
     });
   });
   dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
 
   // Swipe between reels: the phones follow the finger, and a flick or a long enough drag moves one reel over.
   const stage = document.getElementById('phones');
-  const atEnd = (dir) => row.matches && (active + dir < 0 || active + dir >= phones.length);
-  const rubberband = (o, dim, c = .55) => Math.sign(o) * (Math.abs(o) * dim * c) / (dim + c * Math.abs(o));
   let drag = null, swallowClick = false;
   stage.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
@@ -712,6 +706,7 @@ footer a:hover { color: #fff; }
       if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; } // vertical: let the page scroll
       if (Math.abs(dx) < 10) return;
       drag.on = true;
+      endIntro();
       drag.base = new DOMMatrixReadOnly(getComputedStyle(stage).transform).m41; // grab it mid-slide without a jump
       drag.x = e.clientX;
       stage.setPointerCapture(e.pointerId);
@@ -720,14 +715,13 @@ footer a:hover { color: #fff; }
     drag.hist.push([e.timeStamp, e.clientX]);
     if (drag.hist.length > 5) drag.hist.shift();
     const off = drag.base + e.clientX - drag.x;
-    const toward = off < 0 ? 1 : -1;
-    stage.style.transform = `translate3d(${atEnd(toward) ? rubberband(off, innerWidth) : off}px, 0, 0)`;
+    stage.style.transform = `translate3d(${off}px, 0, 0)`;
     // Start the reel coming into view so it's already moving under the finger.
-    const peek = atEnd(toward) ? null : (active + toward + phones.length) % phones.length;
+    const peek = (active + (off < 0 ? 1 : -1) + phones.length) % phones.length;
     if (peek !== drag.peek) {
       if (drag.peek != null) video(drag.peek).pause();
       drag.peek = peek;
-      if (peek != null) warm(peek);
+      if (peek != null) { phones[peek].classList.remove('is-wrapping'); warm(peek); }
     }
   });
   const release = (e) => {
@@ -743,7 +737,7 @@ footer a:hover { color: #fff; }
     stage.classList.remove('is-dragging');
     stage.style.transform = '';
     const dir = projected < 0 ? 1 : -1;
-    if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3 && !atEnd(dir)) go(active + dir);
+    if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3) go(active + dir);
     if (d.peek != null && d.peek !== active) video(d.peek).pause(); // didn't come in after all
   };
   stage.addEventListener('pointerup', release);
@@ -808,7 +802,7 @@ footer a:hover { color: #fff; }
     if (!done) steps[i].querySelector('.qz__count').textContent = `${i + 1} of ${questions} · ${steps[i].dataset.label}`;
     const last = i === questions - 1;
     nextBtn.innerHTML = last ? 'Get my quote <kbd>↵</kbd>' : 'Next <kbd>↵</kbd>';
-    fine.textContent = last ? "I'll reply within 24 hours with your quote. No spam, no payment." : 'Takes about a minute. No payment to ask.';
+    fine.textContent = last ? "I'll reply within 24 hours with your quote. No spam, no payment." : 'Three quick steps. No payment to ask.';
     const field = steps[i].querySelector('input:not([type=radio])') || steps[i].querySelector('input:checked') || steps[i].querySelector('input');
     setTimeout(() => field && field.focus({ preventScroll: true }), 60);
   }
@@ -869,7 +863,7 @@ footer a:hover { color: #fff; }
       : 'Your connection dropped, so this is saved and will send next time you visit. To be safe, email me at <a href="mailto:ethanlongmedia@gmail.com" style="color:#A391FF">ethanlongmedia@gmail.com</a>.';
     const first = (d.name || '').trim().split(' ')[0];
     document.getElementById('qzDoneTitle').textContent = `You're on the board${first ? ', ' + first : ''}.`;
-    document.getElementById('qzSum').innerHTML = [['Hype Video', d.reel], ['Level', d.level], ['Player Cuts', d.cuts], ['Filming', d.who], ['Date', d.date || 'TBD'], ['Where', d.where || 'TBD'], ['Reach you at', d.contact]]
+    document.getElementById('qzSum').innerHTML = [['Hype Video', d.reel], ['Level', d.level], ['Player and game', d.details || 'TBD'], ['Reach you at', d.contact]]
       .map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v || '—')}</dd></div>`).join('');
     show(questions);
   }
@@ -877,7 +871,6 @@ footer a:hover { color: #fff; }
   function open(preset = {}) {
     if (at === questions) form.reset();
     if (preset.reel && REELS[preset.reel]) form.querySelector(`input[name=reel][value="${REELS[preset.reel]}"]`).checked = true;
-    if (preset.cuts === 'yes') form.querySelector('input[name=cuts][value="Yes"]').checked = true;
     lastFocus = document.activeElement;
     quiz.classList.add('is-open');
     document.body.style.overflow = 'hidden';
@@ -896,17 +889,20 @@ footer a:hover { color: #fff; }
     const a = e.target.closest('a[href="#book"]');
     if (!a) return;
     e.preventDefault();
-    open({ reel: a.dataset.reel, cuts: a.dataset.cuts });
+    open({ reel: a.dataset.reel });
   });
   document.getElementById('qzClose').addEventListener('click', close);
   document.getElementById('qzFinish').addEventListener('click', close);
   back.addEventListener('click', () => show(Math.max(0, at - 1)));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && quiz.classList.contains('is-open')) close(); });
 
-  form.addEventListener('change', (e) => {
+  // One tap on an answer moves you on, even if it's the answer you'd already picked.
+  let nextTimer = 0;
+  form.addEventListener('click', (e) => {
     if (e.target.type !== 'radio') return;
     err.textContent = '';
-    setTimeout(() => show(at + 1), 260); // one tap moves you on
+    clearTimeout(nextTimer);
+    nextTimer = setTimeout(() => show(at + 1), 260);
   });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
