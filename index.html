@@ -28,6 +28,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 a, button, label, input { touch-action: manipulation; } /* taps fire right away, never held for a double-tap zoom */
 html { scroll-behavior: smooth; }
+/* No pull-to-refresh or bounce past the ends: on iPhone (Google app, Chrome) a pull-to-refresh reloads the page
+   settled under the address bar. Also stop the browser shifting the scroll when the hero is resized. */
+html, body { overscroll-behavior-y: none; overflow-anchor: none; }
 [id] { scroll-margin-top: 80px; }
 body { background: var(--bg); color: var(--ink); font-family: 'Figtree', system-ui, sans-serif; font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
@@ -82,7 +85,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @media (prefers-reduced-transparency: reduce) { .nav__inner { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; } .nav--dark .nav__inner { background: #111113; } }
 
 /* hero */
-.hero { text-align: center; padding: calc(clamp(28px, var(--vh, 100svh) * .05, 56px) + 74px) 0 clamp(40px, 5vw, 64px); }
+.hero { text-align: center; padding: calc(clamp(28px, var(--vh, 100svh) * .05, 56px) + 74px + var(--lift, 0px)) 0 clamp(40px, 5vw, 64px); }
 .hero-title { margin: 0 auto clamp(20px, var(--vh, 100svh) * .03, 36px); padding: 0 var(--gutter); font-size: clamp(26px, 3.6vw, 44px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
 .hero-title em { font-style: normal; color: var(--accent); }
 @media (max-width: 560px) { .hero-title .br { display: block; } }
@@ -149,7 +152,7 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 @media (max-width: 720px) {
   /* the whole hero fits the first screen, with room left for browser toolbars that sit over the page */
   :root { --pw: clamp(190px, min(72vw, calc((var(--vh, 100svh) - 296px) / 2.184)), 290px); }
-  .hero { padding-top: 84px; min-height: var(--vh, 100svh); } /* cream fills the screen, even in Instagram's browser */
+  .hero { padding-top: calc(84px + var(--lift, 0px)); min-height: calc(var(--vh, 100svh) + var(--lift, 0px)); } /* cream fills the screen, even in Instagram's browser */
   .hero-title { margin-bottom: 14px; }
   .phones { height: calc(var(--pw) * 2.184 + 16px); }
   .reel-nav { margin-top: 4px; }
@@ -356,11 +359,12 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
   const root = document.documentElement;
   // iPhones only show the pressed (:active) look when the page listens for touches.
   document.addEventListener('touchstart', () => {}, { passive: true });
-  // A refresh starts at the top of the page, not halfway down the hero. Pull-to-refresh on iPhone (Google app,
-  // Chrome) reloads with the page pulled down, and when it springs back it can settle about 60px too far. So until
-  // the visitor really scrolls (finger moving up, a tap, the wheel, a key), any scroll the browser makes by itself
-  // snaps back to the top: up to 10s on touch screens, 1.5s with a mouse. The pull itself doesn't count as
-  // scrolling, and the bounce is left to finish. Skipped when the visitor came in on a link to a section.
+  // A load starts at the top of the page. Pull-to-refresh is switched off in the CSS, but if a phone browser still
+  // settles the page a little way down on its own (about 60px after a pull in the Google app on iPhone), the page
+  // isn't scrolled back from code: in those browsers that leaves the address bar covering the nav. Instead the hero
+  // moves down by the same amount, so the headline sits right under the nav as on a fresh load. That tracks the
+  // browser until the visitor really scrolls (finger moving up, a tap, the wheel, a key); a pull down doesn't count.
+  // Skipped when the visitor came in on a link to a section.
   if (!location.hash) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     let moved = false, touchY = null;
@@ -371,18 +375,15 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
     addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse') scrolled(); }, { passive: true });
     addEventListener('click', scrolled, { capture: true });
     addEventListener('keydown', scrolled);
-    const toTop = () => {
-      if (moved || scrollY <= 0) return;
-      const was = root.style.scrollBehavior;
-      root.style.scrollBehavior = 'auto'; // the page scrolls smoothly by default; this jump must be instant,
-      getComputedStyle(root).scrollBehavior; // and the browser only honours that once styles are recalculated
-      scrollTo(0, 0);
-      root.style.scrollBehavior = was;
+    const fit = () => {
+      if (moved) return;
+      const y = scrollY > 0 && scrollY <= 150 ? Math.round(scrollY) : 0;
+      root.style.setProperty('--lift', `${y}px`);
     };
     const hold = matchMedia('(pointer: coarse)').matches ? 10000 : 1500;
-    const check = setInterval(toTop, 100);
-    addEventListener('scroll', toTop, { passive: true });
-    addEventListener('load', () => setTimeout(() => { toTop(); clearInterval(check); removeEventListener('scroll', toTop); }, hold));
+    const check = setInterval(fit, 100);
+    addEventListener('scroll', fit, { passive: true });
+    addEventListener('load', () => setTimeout(() => { fit(); clearInterval(check); removeEventListener('scroll', fit); }, hold));
   }
   // The hero is sized from the screen height measured once at load. Phone browsers change the height as their
   // toolbars slide in and out while scrolling, so only a width change (rotation) or a desktop window re-measures.
@@ -1029,7 +1030,7 @@ if (/[?&]vp=1\b/.test(location.search)) {
     const line = [
       `t=${Math.round(performance.now() - t0)}ms scrollY=${scrollY} guard=${'scrolled' in document.documentElement.dataset ? 'off (you scrolled)' : 'on'} innerH=${innerHeight} clientH=${document.documentElement.clientHeight}`,
       `vv offsetTop=${Math.round(vv.offsetTop)} pageTop=${Math.round(vv.pageTop)} height=${Math.round(vv.height)}`,
-      `fixedTop=${Math.round(r(fixedProbe).top)} docTop=${Math.round(r(docProbe).top)} navBottom=${Math.round(r(document.querySelector('.nav__inner')).bottom)} headlineTop=${Math.round(r(document.querySelector('.hero-title')).top)}`,
+      `fixedTop=${Math.round(r(fixedProbe).top)} docTop=${Math.round(r(docProbe).top)} navBottom=${Math.round(r(document.querySelector('.nav__inner')).bottom)} headlineTop=${Math.round(r(document.querySelector('.hero-title')).top)} lift=${getComputedStyle(document.documentElement).getPropertyValue('--lift') || '0px'} pullOff=${getComputedStyle(document.documentElement).overscrollBehaviorY}`,
     ].join('\n');
     if (!first && performance.now() - t0 > 300) first = line;
     box.textContent = `${line}\n--- at load ---\n${first}`;
