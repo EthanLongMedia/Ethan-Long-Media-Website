@@ -17,7 +17,7 @@
   --bg: #F6F4EF; --white: #FFFFFF; --ink: #111113; --body: #4A4A52; --muted: #71717A; --nav-muted: #A1A1AA;
   --line: rgba(17,17,19,.09); --accent: #5B3DF5; --accent-soft: #A391FF; --dark: #111113; --green: #22C55E;
   --wrap: 980px; --gutter: clamp(16px, 4vw, 32px);
-  --pw: clamp(200px, calc((100svh - 316px) / 2.184), 330px); /* phone width: headline + phones fill the first screen */
+  --pw: clamp(200px, calc((var(--vh, 100svh) - 316px) / 2.184), 330px); /* phone width: headline + phones fill the first screen */
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -75,8 +75,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @media (prefers-reduced-transparency: reduce) { .nav__inner { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; } .nav--dark .nav__inner { background: #111113; } }
 
 /* hero */
-.hero { text-align: center; padding: calc(clamp(28px, 5svh, 56px) + 74px) 0 clamp(40px, 5vw, 64px); }
-.hero-title { margin: 0 auto clamp(20px, 3svh, 36px); padding: 0 var(--gutter); font-size: clamp(26px, 3.6vw, 44px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
+.hero { text-align: center; padding: calc(clamp(28px, var(--vh, 100svh) * .05, 56px) + 74px) 0 clamp(40px, 5vw, 64px); }
+.hero-title { margin: 0 auto clamp(20px, var(--vh, 100svh) * .03, 36px); padding: 0 var(--gutter); font-size: clamp(26px, 3.6vw, 44px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
 .hero-title em { font-style: normal; color: var(--accent); }
 @media (max-width: 560px) { .hero-title .br { display: block; } }
 h2 .hl { color: var(--accent); }
@@ -139,8 +139,8 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 
 @media (max-width: 720px) {
   /* the whole hero fits the first screen, with room left for browser toolbars that sit over the page */
-  :root { --pw: clamp(190px, min(72vw, calc((100svh - 296px) / 2.184)), 290px); }
-  .hero { padding-top: 84px; min-height: 100vh; min-height: max(100lvh, var(--vh, 0px)); } /* cream fills the screen, even in Instagram's browser */
+  :root { --pw: clamp(190px, min(72vw, calc((var(--vh, 100svh) - 296px) / 2.184)), 290px); }
+  .hero { padding-top: 84px; min-height: var(--vh, 100svh); } /* cream fills the screen, even in Instagram's browser */
   .hero-title { margin-bottom: 14px; }
   .phones { height: calc(var(--pw) * 2.184 + 16px); }
   .reel-nav { margin-top: 4px; }
@@ -185,7 +185,7 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 52px); font-weight: 600; line
   .climb__steps { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
   .climb__steps::before, .climb__steps::after { content: ''; position: absolute; z-index: 0; left: 39px; top: 40px; bottom: 40px; width: 2px; border-radius: 2px; }
   .climb__steps::before { background: rgba(255,255,255,.08); }
-  .climb__steps::after { background: linear-gradient(rgba(163,145,255,.3), var(--accent-soft)); transform-origin: 50% 0; transform: scaleY(var(--p, 0)); transition: transform .5s cubic-bezier(.2,.75,.2,1); }
+  .climb__steps::after { background: linear-gradient(rgba(163,145,255,.3), var(--accent-soft)); transform-origin: 50% 0; transform: scaleY(var(--p, 0)); transition: transform .3s cubic-bezier(.2,.75,.2,1); }
   .step { flex-direction: row; justify-content: flex-start; gap: 18px; margin: 0; text-align: left; }
   .step__stop { flex: none; width: 80px; }
   .step__txt { height: auto; margin: 0; }
@@ -345,7 +345,16 @@ footer a:hover { color: #fff; }
   // A refresh starts at the top of the page, not halfway down the hero.
   if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
   const root = document.documentElement;
-  root.style.setProperty('--vh', `${innerHeight}px`); // the screen height at load; the hero is at least this tall on phones
+  // The hero is sized from the screen height measured once at load. Phone browsers change the height as their
+  // toolbars slide in and out while scrolling, so only a width change (rotation) or a desktop window re-measures.
+  const setVh = () => root.style.setProperty('--vh', `${innerHeight}px`);
+  let lastW = innerWidth;
+  setVh();
+  addEventListener('resize', () => {
+    if (innerWidth === lastW && !matchMedia('(pointer: fine)').matches) return;
+    lastW = innerWidth;
+    setVh();
+  });
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   root.classList.add('intro', 'intro-run');
   let played = false;
@@ -629,14 +638,14 @@ footer a:hover { color: #fff; }
   }
 
   function play() {
-    // Side phones rest on the same frame as the poster (reels end on a fade to black).
+    // A reel left midway keeps its spot. One that played to the end rests on its poster frame
+    // (reels end on a fade to black) and starts over next time.
     phones.forEach((p, i) => {
       const v = video(i);
       if (i === active) return;
-      const rest = +p.dataset.rest || 2;
       v.pause();
       v.muted = true;
-      if (v.ended || v.currentTime > rest + .5) v.currentTime = rest;
+      if (v.ended) { v.currentTime = +p.dataset.rest || 2; p.dataset.done = ''; }
     });
     const v = video(active);
     v.muted = !soundOn;
@@ -646,12 +655,15 @@ footer a:hover { color: #fff; }
 
   // Slide first, then seek and start the new reel: video work during the slide makes it stutter on phones.
   let settle = 0;
-  function go(i, restart = true) {
+  function go(i) {
     const prev = active;
     active = (i + phones.length) % phones.length;
     if (prev !== active) video(prev).pause();
     layout();
-    if (restart) phones[active].querySelector('.phone__bar i').style.transform = 'scaleX(0)';
+    const p = phones[active];
+    const restart = 'done' in p.dataset || video(active).ended; // otherwise pick up where it was left
+    delete p.dataset.done;
+    if (restart) p.querySelector('.phone__bar i').style.transform = 'scaleX(0)';
     clearTimeout(settle);
     settle = setTimeout(() => {
       settle = 0;
@@ -914,21 +926,20 @@ footer a:hover { color: #fff; }
   addEventListener('resize', draw);
   addEventListener('load', draw);
 
-  // Phones: the line climbs from Gaels United to D1 as you scroll, lighting each program as it reaches it.
+  // Phones: the line follows the scroll from Gaels United to D1, lighting each program as it reaches it,
+  // and runs back up (dimming them again) as you scroll back up.
   const mq = matchMedia('(max-width: 760px)');
   const list = climb.querySelector('.climb__steps');
   const steps = [...climb.querySelectorAll('.step')];
-  let best = 0, ticking = false;
+  let ticking = false;
   function climbTo() {
     ticking = false;
     if (!mq.matches) return;
     const mark = innerHeight * .72;
     const c = stops.map((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; });
     const p = reduce ? 1 : Math.min(1, Math.max(0, (mark - c[0]) / (c[c.length - 1] - c[0])));
-    if (p < best) return;
-    best = p;
     list.style.setProperty('--p', p);
-    steps.forEach((step, i) => { if (reduce || c[i] <= mark + 1) step.classList.add('is-lit'); });
+    steps.forEach((step, i) => step.classList.toggle('is-lit', reduce || c[i] <= mark + 1));
   }
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(climbTo); } }, { passive: true });
   addEventListener('resize', climbTo);
