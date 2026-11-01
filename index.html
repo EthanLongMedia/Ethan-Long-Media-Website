@@ -28,9 +28,10 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 a, button, label, input { touch-action: manipulation; } /* taps fire right away, never held for a double-tap zoom */
 html { scroll-behavior: smooth; }
-/* No pull-to-refresh or bounce past the ends: on iPhone (Google app, Chrome) a pull-to-refresh reloads the page
-   settled under the address bar. Also stop the browser shifting the scroll when the hero is resized. */
-html, body { overscroll-behavior-y: none; overflow-anchor: none; }
+/* The hero can grow after load (see --lift); keep the browser from shifting the scroll when it does. */
+html, body { overflow-anchor: none; }
+@property --lift { syntax: '<length>'; inherits: true; initial-value: 0px; }
+html.lift-ease { transition: --lift .45s cubic-bezier(.2,.75,.2,1); }
 [id] { scroll-margin-top: 80px; }
 body { background: var(--bg); color: var(--ink); font-family: 'Figtree', system-ui, sans-serif; font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
@@ -359,12 +360,12 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
   const root = document.documentElement;
   // iPhones only show the pressed (:active) look when the page listens for touches.
   document.addEventListener('touchstart', () => {}, { passive: true });
-  // A load starts at the top of the page. Pull-to-refresh is switched off in the CSS, but if a phone browser still
-  // settles the page a little way down on its own (about 60px after a pull in the Google app on iPhone), the page
-  // isn't scrolled back from code: in those browsers that leaves the address bar covering the nav. Instead the hero
-  // moves down by the same amount, so the headline sits right under the nav as on a fresh load. That tracks the
-  // browser until the visitor really scrolls (finger moving up, a tap, the wheel, a key); a pull down doesn't count.
-  // Skipped when the visitor came in on a link to a section.
+  // A load starts at the top of the page. After a pull-to-refresh, the Google app and Chrome on iPhone settle the
+  // page about 60px down on their own. Scrolling it back from code leaves their address bar covering the nav, and
+  // turning pull-to-refresh off also kills the bounce at the top, which leaves their address bar unable to come
+  // back. So instead the hero moves down by the same amount, and the headline sits right under the nav as on a
+  // fresh load. That tracks the browser until the visitor really scrolls (finger moving up, a tap, the wheel, a
+  // key); a pull down doesn't count. Skipped when the visitor came in on a link to a section.
   if (!location.hash) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     let moved = false, touchY = null;
@@ -375,11 +376,19 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
     addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse') scrolled(); }, { passive: true });
     addEventListener('click', scrolled, { capture: true });
     addEventListener('keydown', scrolled);
+    let lift = 0;
     const fit = () => {
       if (moved) return;
-      const y = scrollY > 0 && scrollY <= 150 ? Math.round(scrollY) : 0;
-      root.style.setProperty('--lift', `${y}px`);
+      lift = scrollY > 0 && scrollY <= 150 ? Math.round(scrollY) : 0;
+      root.style.setProperty('--lift', `${lift}px`);
     };
+    // Once the visitor scrolls back to the very top, the browser has sorted itself out: ease the extra space away.
+    addEventListener('scroll', () => {
+      if (!moved || !lift || scrollY > 0) return;
+      lift = 0;
+      root.classList.add('lift-ease');
+      root.style.setProperty('--lift', '0px');
+    }, { passive: true });
     const hold = matchMedia('(pointer: coarse)').matches ? 10000 : 1500;
     const check = setInterval(fit, 100);
     addEventListener('scroll', fit, { passive: true });
@@ -1030,7 +1039,7 @@ if (/[?&]vp=1\b/.test(location.search)) {
     const line = [
       `t=${Math.round(performance.now() - t0)}ms scrollY=${scrollY} guard=${'scrolled' in document.documentElement.dataset ? 'off (you scrolled)' : 'on'} innerH=${innerHeight} clientH=${document.documentElement.clientHeight}`,
       `vv offsetTop=${Math.round(vv.offsetTop)} pageTop=${Math.round(vv.pageTop)} height=${Math.round(vv.height)}`,
-      `fixedTop=${Math.round(r(fixedProbe).top)} docTop=${Math.round(r(docProbe).top)} navBottom=${Math.round(r(document.querySelector('.nav__inner')).bottom)} headlineTop=${Math.round(r(document.querySelector('.hero-title')).top)} lift=${getComputedStyle(document.documentElement).getPropertyValue('--lift') || '0px'} pullOff=${getComputedStyle(document.documentElement).overscrollBehaviorY}`,
+      `fixedTop=${Math.round(r(fixedProbe).top)} docTop=${Math.round(r(docProbe).top)} navBottom=${Math.round(r(document.querySelector('.nav__inner')).bottom)} headlineTop=${Math.round(r(document.querySelector('.hero-title')).top)} lift=${getComputedStyle(document.documentElement).getPropertyValue('--lift') || '0px'}`,
     ].join('\n');
     if (!first && performance.now() - t0 > 300) first = line;
     box.textContent = `${line}\n--- at load ---\n${first}`;
