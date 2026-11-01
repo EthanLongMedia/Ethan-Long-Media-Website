@@ -647,29 +647,42 @@ footer a:hover { color: #fff; }
       v.muted = true;
       if (v.ended) { v.currentTime = +p.dataset.rest || 2; p.dataset.done = ''; }
     });
+    startActive();
+  }
+
+  const canPlay = () => inView && !reduce && !document.hidden;
+
+  function startActive() {
     const v = video(active);
     v.muted = !soundOn;
-    if (!inView || reduce || document.hidden) return;
+    if (!canPlay()) return;
     v.play().catch(() => { soundOn = false; syncSound(); v.play().catch(() => {}); });
   }
 
-  // Slide first, then seek and start the new reel: video work during the slide makes it stutter on phones.
+  // Get a reel moving, silently, so it's already playing as it slides in. A finished reel starts over;
+  // any other picks up where it was left.
+  function warm(i) {
+    const p = phones[i], v = video(i);
+    if ('done' in p.dataset || v.ended) {
+      delete p.dataset.done;
+      v.currentTime = 0;
+      p.querySelector('.phone__bar i').style.transform = 'scaleX(0)';
+    }
+    v.muted = true;
+    if (canPlay()) v.play().catch(() => {});
+  }
+
+  // Both reels keep playing through the slide (the one leaving goes silent); the one leaving is parked once it's off screen.
   let settle = 0;
   function go(i) {
     const prev = active;
     active = (i + phones.length) % phones.length;
-    if (prev !== active) video(prev).pause();
     layout();
-    const p = phones[active];
-    const restart = 'done' in p.dataset || video(active).ended; // otherwise pick up where it was left
-    delete p.dataset.done;
-    if (restart) p.querySelector('.phone__bar i').style.transform = 'scaleX(0)';
+    if (prev !== active) video(prev).muted = true;
+    warm(active);
+    startActive();
     clearTimeout(settle);
-    settle = setTimeout(() => {
-      settle = 0;
-      if (restart) video(active).currentTime = 0;
-      play();
-    }, row.matches ? 560 : 0);
+    settle = setTimeout(() => { settle = 0; play(); }, row.matches ? 600 : 950);
   }
 
   phones.forEach((p, i) => {
@@ -707,7 +720,15 @@ footer a:hover { color: #fff; }
     drag.hist.push([e.timeStamp, e.clientX]);
     if (drag.hist.length > 5) drag.hist.shift();
     const off = drag.base + e.clientX - drag.x;
-    stage.style.transform = `translate3d(${atEnd(off < 0 ? 1 : -1) ? rubberband(off, innerWidth) : off}px, 0, 0)`;
+    const toward = off < 0 ? 1 : -1;
+    stage.style.transform = `translate3d(${atEnd(toward) ? rubberband(off, innerWidth) : off}px, 0, 0)`;
+    // Start the reel coming into view so it's already moving under the finger.
+    const peek = atEnd(toward) ? null : (active + toward + phones.length) % phones.length;
+    if (peek !== drag.peek) {
+      if (drag.peek != null) video(drag.peek).pause();
+      drag.peek = peek;
+      if (peek != null) warm(peek);
+    }
   });
   const release = (e) => {
     if (!drag || e.pointerId !== drag.id) return;
@@ -723,6 +744,7 @@ footer a:hover { color: #fff; }
     stage.style.transform = '';
     const dir = projected < 0 ? 1 : -1;
     if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3 && !atEnd(dir)) go(active + dir);
+    if (d.peek != null && d.peek !== active) video(d.peek).pause(); // didn't come in after all
   };
   stage.addEventListener('pointerup', release);
   stage.addEventListener('pointercancel', release);
@@ -738,7 +760,7 @@ footer a:hover { color: #fff; }
   (function tick() {
     const v = video(active);
     const bar = phones[active].querySelector('.phone__bar i');
-    if (v.duration && !settle) bar.style.transform = `scaleX(${v.currentTime / v.duration})`;
+    if (v.duration) bar.style.transform = `scaleX(${v.currentTime / v.duration})`;
     requestAnimationFrame(tick);
   })();
 
