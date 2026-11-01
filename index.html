@@ -356,27 +356,39 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
   const root = document.documentElement;
   // iPhones only show the pressed (:active) look when the page listens for touches.
   document.addEventListener('touchstart', () => {}, { passive: true });
-  // A refresh starts at the top of the page, not halfway down the hero. Chrome on iPhone and in-app browsers
-  // put the old scroll position back on their own, whenever they like, so until the visitor touches the page
-  // any scroll the browser makes by itself snaps straight back to the top. On touch screens every real scroll
-  // starts with a touch, so that holds for up to 10s after load; with a mouse, 1.5s. Skipped when the visitor
-  // came in on a link to a section.
+  // A refresh starts at the top of the page, not halfway down the hero. Until the visitor touches the page
+  // (up to 10s on touch screens, 1.5s with a mouse), any scroll the browser makes by itself snaps back to the top.
+  // Some iPhone browsers (the Google app, Chrome) also reload with the page tucked under their address bar while
+  // still reporting it as scrolled to the top, so a plain scroll to the top does nothing there. Moving it 1px and
+  // back, a frame apart, makes the browser place the page again. Skipped when the visitor came in on a section link.
   if (!location.hash) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     let moved = false;
     for (const t of ['touchstart', 'wheel', 'keydown', 'pointerdown']) addEventListener(t, () => { moved = true; }, { passive: true, once: true });
-    const toTop = () => {
-      if (moved || !scrollY) return;
+    const jump = (y) => {
       const was = root.style.scrollBehavior;
-      root.style.scrollBehavior = 'auto'; // the page scrolls smoothly by default; this jump must be instant,
+      root.style.scrollBehavior = 'auto'; // the page scrolls smoothly by default; these jumps must be instant,
       getComputedStyle(root).scrollBehavior; // and the browser only honours that once styles are recalculated
-      scrollTo(0, 0);
+      scrollTo(0, y);
       root.style.scrollBehavior = was;
     };
+    const toTop = () => { if (!moved && scrollY) jump(0); };
+    const afterFrame = (fn) => { let done = false; const go = () => { if (!done) { done = true; fn(); } }; requestAnimationFrame(go); setTimeout(go, 50); };
+    const nudge = () => {
+      if (moved) return;
+      jump(1);
+      afterFrame(() => afterFrame(() => { if (!moved) jump(0); }));
+    };
+    const hold = matchMedia('(pointer: coarse)').matches ? 10000 : 1500;
+    const check = setInterval(toTop, 100);
     addEventListener('scroll', toTop, { passive: true });
     addEventListener('DOMContentLoaded', toTop);
-    const hold = matchMedia('(pointer: coarse)').matches ? 10000 : 1500;
-    addEventListener('load', () => { toTop(); setTimeout(() => { toTop(); removeEventListener('scroll', toTop); }, hold); });
+    addEventListener('load', () => {
+      toTop();
+      nudge();
+      setTimeout(nudge, 700);
+      setTimeout(() => { toTop(); clearInterval(check); removeEventListener('scroll', toTop); }, hold);
+    });
   }
   // The hero is sized from the screen height measured once at load. Phone browsers change the height as their
   // toolbars slide in and out while scrolling, so only a width change (rotation) or a desktop window re-measures.
@@ -1005,6 +1017,32 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
   addEventListener('resize', update);
   update();
 })();
+
+/* ---------- ?vp=1: what the browser reports about the page's position, for debugging phone browsers ---------- */
+if (/[?&]vp=1\b/.test(location.search)) {
+  const box = document.createElement('pre');
+  box.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:999;margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.85);color:#7CFC9A;font:11px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;pointer-events:none';
+  const fixedProbe = document.createElement('div');
+  fixedProbe.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;pointer-events:none';
+  const docProbe = document.createElement('div');
+  docProbe.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none';
+  document.body.append(box, fixedProbe, docProbe);
+  const t0 = performance.now();
+  let first = '';
+  const show = () => {
+    const vv = window.visualViewport || {};
+    const r = (el) => el.getBoundingClientRect();
+    const line = [
+      `t=${Math.round(performance.now() - t0)}ms scrollY=${scrollY} innerH=${innerHeight} clientH=${document.documentElement.clientHeight} outerH=${outerHeight} screenH=${screen.height}`,
+      `vv offsetTop=${Math.round(vv.offsetTop)} pageTop=${Math.round(vv.pageTop)} height=${Math.round(vv.height)}`,
+      `fixedTop=${Math.round(r(fixedProbe).top)} docTop=${Math.round(r(docProbe).top)} navBottom=${Math.round(r(document.querySelector('.nav__inner')).bottom)} headlineTop=${Math.round(r(document.querySelector('.hero-title')).top)}`,
+    ].join('\n');
+    if (!first && performance.now() - t0 > 300) first = line;
+    box.textContent = `${line}\n--- at load ---\n${first}`;
+  };
+  setInterval(show, 200);
+  show();
+}
 
 /* ---------- reveal on scroll ---------- */
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { threshold: .12 });
