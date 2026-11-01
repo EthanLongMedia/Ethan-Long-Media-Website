@@ -356,39 +356,33 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
   const root = document.documentElement;
   // iPhones only show the pressed (:active) look when the page listens for touches.
   document.addEventListener('touchstart', () => {}, { passive: true });
-  // A refresh starts at the top of the page, not halfway down the hero. Until the visitor touches the page
-  // (up to 10s on touch screens, 1.5s with a mouse), any scroll the browser makes by itself snaps back to the top.
-  // Some iPhone browsers (the Google app, Chrome) also reload with the page tucked under their address bar while
-  // still reporting it as scrolled to the top, so a plain scroll to the top does nothing there. Moving it 1px and
-  // back, a frame apart, makes the browser place the page again. Skipped when the visitor came in on a section link.
+  // A refresh starts at the top of the page, not halfway down the hero. Pull-to-refresh on iPhone (Google app,
+  // Chrome) reloads with the page pulled down, and when it springs back it can settle about 60px too far. So until
+  // the visitor really scrolls (finger moving up, a tap, the wheel, a key), any scroll the browser makes by itself
+  // snaps back to the top: up to 10s on touch screens, 1.5s with a mouse. The pull itself doesn't count as
+  // scrolling, and the bounce is left to finish. Skipped when the visitor came in on a link to a section.
   if (!location.hash) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    let moved = false;
-    for (const t of ['touchstart', 'wheel', 'keydown', 'pointerdown']) addEventListener(t, () => { moved = true; }, { passive: true, once: true });
-    const jump = (y) => {
+    let moved = false, touchY = null;
+    const scrolled = () => { moved = true; root.dataset.scrolled = ''; };
+    addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    addEventListener('touchmove', (e) => { if (touchY !== null && touchY - e.touches[0].clientY > 10) scrolled(); }, { passive: true });
+    addEventListener('wheel', (e) => { if (e.deltaY > 0) scrolled(); }, { passive: true });
+    addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse') scrolled(); }, { passive: true });
+    addEventListener('click', scrolled, { capture: true });
+    addEventListener('keydown', scrolled);
+    const toTop = () => {
+      if (moved || scrollY <= 0) return;
       const was = root.style.scrollBehavior;
-      root.style.scrollBehavior = 'auto'; // the page scrolls smoothly by default; these jumps must be instant,
+      root.style.scrollBehavior = 'auto'; // the page scrolls smoothly by default; this jump must be instant,
       getComputedStyle(root).scrollBehavior; // and the browser only honours that once styles are recalculated
-      scrollTo(0, y);
+      scrollTo(0, 0);
       root.style.scrollBehavior = was;
-    };
-    const toTop = () => { if (!moved && scrollY) jump(0); };
-    const afterFrame = (fn) => { let done = false; const go = () => { if (!done) { done = true; fn(); } }; requestAnimationFrame(go); setTimeout(go, 50); };
-    const nudge = () => {
-      if (moved) return;
-      jump(1);
-      afterFrame(() => afterFrame(() => { if (!moved) jump(0); }));
     };
     const hold = matchMedia('(pointer: coarse)').matches ? 10000 : 1500;
     const check = setInterval(toTop, 100);
     addEventListener('scroll', toTop, { passive: true });
-    addEventListener('DOMContentLoaded', toTop);
-    addEventListener('load', () => {
-      toTop();
-      nudge();
-      setTimeout(nudge, 700);
-      setTimeout(() => { toTop(); clearInterval(check); removeEventListener('scroll', toTop); }, hold);
-    });
+    addEventListener('load', () => setTimeout(() => { toTop(); clearInterval(check); removeEventListener('scroll', toTop); }, hold));
   }
   // The hero is sized from the screen height measured once at load. Phone browsers change the height as their
   // toolbars slide in and out while scrolling, so only a width change (rotation) or a desktop window re-measures.
@@ -1033,7 +1027,7 @@ if (/[?&]vp=1\b/.test(location.search)) {
     const vv = window.visualViewport || {};
     const r = (el) => el.getBoundingClientRect();
     const line = [
-      `t=${Math.round(performance.now() - t0)}ms scrollY=${scrollY} innerH=${innerHeight} clientH=${document.documentElement.clientHeight} outerH=${outerHeight} screenH=${screen.height}`,
+      `t=${Math.round(performance.now() - t0)}ms scrollY=${scrollY} guard=${'scrolled' in document.documentElement.dataset ? 'off (you scrolled)' : 'on'} innerH=${innerHeight} clientH=${document.documentElement.clientHeight}`,
       `vv offsetTop=${Math.round(vv.offsetTop)} pageTop=${Math.round(vv.pageTop)} height=${Math.round(vv.height)}`,
       `fixedTop=${Math.round(r(fixedProbe).top)} docTop=${Math.round(r(docProbe).top)} navBottom=${Math.round(r(document.querySelector('.nav__inner')).bottom)} headlineTop=${Math.round(r(document.querySelector('.hero-title')).top)}`,
     ].join('\n');
