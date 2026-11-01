@@ -103,8 +103,8 @@ html.intro-run .reel-nav { transition-delay: .95s; }
   position: absolute; left: 50%; top: 0; width: var(--pw); aspect-ratio: 245 / 535;
   padding: 3px; border-radius: calc(var(--pw) * .17); background: #1B1B1E;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.22), 0 50px 80px -40px rgba(17,17,19,.6), 0 22px 36px -22px rgba(17,17,19,.45);
-  transform: translateX(-50%); transform-origin: 50% 80%; translate: var(--drag, 0px) 0;
-  transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s, translate .6s cubic-bezier(.2,.75,.2,1);
+  transform: translateX(-50%); transform-origin: 50% 80%; will-change: transform;
+  transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .phone::before, .phone::after { content: ''; position: absolute; width: 3px; border-radius: 2px; background: #2A2A2E; }
@@ -115,7 +115,8 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 .phone__notch::after { content: ''; position: absolute; top: 34%; left: 50%; width: 34%; height: 9%; transform: translateX(-50%); border-radius: 4px; background: #1D1D21; }
 .phone__display { position: relative; height: 100%; overflow: hidden; border-radius: calc(var(--pw) * .125); background: #000; isolation: isolate; }
 .phone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-.phones.is-dragging .phone { transition: none; }
+.phones { will-change: transform; transition: transform .55s cubic-bezier(.2,.75,.2,1); }
+.phones.is-dragging { transition: none; }
 .phone__ui { position: absolute; z-index: 3; inset: auto 0 0; padding: calc(var(--pw) * .3) calc(var(--pw) * .05) calc(var(--pw) * .075); color: #fff; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.55) 45%, rgba(0,0,0,.85)); text-shadow: 0 1px 10px rgba(0,0,0,.6); transition: opacity .4s; }
 .phone__ui small { display: inline-block; padding: calc(var(--pw) * .012) calc(var(--pw) * .035); border-radius: 999px; background: #fff; font-size: calc(var(--pw) * .048); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-shadow: none; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
 .phone__ui b { display: block; margin-top: calc(var(--pw) * .03); font-size: calc(var(--pw) * .074); font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -126,7 +127,7 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 .phone.is-left   { z-index: 1; transform: translateX(calc(-50% - var(--pw) * 1.2)) translateY(calc(var(--pw) * .2)) rotate(-7deg) scale(.92); }
 .phone.is-right  { z-index: 2; transform: translateX(calc(-50% + var(--pw) * 1.2)) translateY(calc(var(--pw) * .2)) rotate(7deg) scale(.92); }
 .phone:not(.is-active) .phone__ui { opacity: 0; }
-.phone:not(.is-active):hover { filter: brightness(1.06); }
+@media (hover: hover) { .phone:not(.is-active):hover { filter: brightness(1.06); } }
 
 .reel-nav { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 8px; }
 .dots { display: flex; gap: 8px; }
@@ -139,13 +140,13 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 @media (max-width: 720px) {
   /* the whole hero fits the first screen, with room left for browser toolbars that sit over the page */
   :root { --pw: clamp(190px, min(72vw, calc((100svh - 296px) / 2.184)), 290px); }
-  .hero { padding-top: 84px; }
+  .hero { padding-top: 84px; min-height: 100vh; min-height: max(100lvh, var(--vh, 0px)); } /* cream fills the screen, even in Instagram's browser */
   .hero-title { margin-bottom: 14px; }
   .phones { height: calc(var(--pw) * 2.184 + 16px); }
   .reel-nav { margin-top: 4px; }
   /* one reel on screen; the others wait off to the side in a fixed row and slide in on a swipe */
   .phones { --step: calc(50vw + var(--pw) / 2 + 24px); }
-  .phone, .phone.is-active, .phone.is-left, .phone.is-right { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); transition: transform .55s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s, translate .55s cubic-bezier(.2,.75,.2,1); }
+  .phone, .phone.is-active, .phone.is-left, .phone.is-right { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); transition: transform .55s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s; }
   html.intro .phone:not(.is-active) { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); }
 }
 
@@ -344,6 +345,7 @@ footer a:hover { color: #fff; }
   // A refresh starts at the top of the page, not halfway down the hero.
   if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
   const root = document.documentElement;
+  root.style.setProperty('--vh', `${innerHeight}px`); // the screen height at load; the hero is at least this tall on phones
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   root.classList.add('intro', 'intro-run');
   let played = false;
@@ -605,6 +607,7 @@ footer a:hover { color: #fff; }
   let active = 0, soundOn = false, inView = true;
 
   const video = (i) => phones[i].querySelector('video');
+  const row = matchMedia('(max-width: 720px)'); // phones: reels sit in a fixed row with ends
 
   function layout() {
     const n = phones.length;
@@ -637,15 +640,24 @@ footer a:hover { color: #fff; }
     });
     const v = video(active);
     v.muted = !soundOn;
-    if (!inView || reduce) return;
+    if (!inView || reduce || document.hidden) return;
     v.play().catch(() => { soundOn = false; syncSound(); v.play().catch(() => {}); });
   }
 
+  // Slide first, then seek and start the new reel: video work during the slide makes it stutter on phones.
+  let settle = 0;
   function go(i, restart = true) {
+    const prev = active;
     active = (i + phones.length) % phones.length;
-    if (restart) video(active).currentTime = 0;
+    if (prev !== active) video(prev).pause();
     layout();
-    play();
+    if (restart) phones[active].querySelector('.phone__bar i').style.transform = 'scaleX(0)';
+    clearTimeout(settle);
+    settle = setTimeout(() => {
+      settle = 0;
+      if (restart) video(active).currentTime = 0;
+      play();
+    }, row.matches ? 560 : 0);
   }
 
   phones.forEach((p, i) => {
@@ -660,7 +672,6 @@ footer a:hover { color: #fff; }
 
   // Swipe between reels: the phones follow the finger, and a flick or a long enough drag moves one reel over.
   const stage = document.getElementById('phones');
-  const row = matchMedia('(max-width: 720px)'); // phones: reels sit in a fixed row with ends
   const atEnd = (dir) => row.matches && (active + dir < 0 || active + dir >= phones.length);
   const rubberband = (o, dim, c = .55) => Math.sign(o) * (Math.abs(o) * dim * c) / (dim + c * Math.abs(o));
   let drag = null, swallowClick = false;
@@ -676,12 +687,15 @@ footer a:hover { color: #fff; }
       if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; } // vertical: let the page scroll
       if (Math.abs(dx) < 10) return;
       drag.on = true;
+      drag.base = new DOMMatrixReadOnly(getComputedStyle(stage).transform).m41; // grab it mid-slide without a jump
+      drag.x = e.clientX;
       stage.setPointerCapture(e.pointerId);
       stage.classList.add('is-dragging');
     }
     drag.hist.push([e.timeStamp, e.clientX]);
     if (drag.hist.length > 5) drag.hist.shift();
-    stage.style.setProperty('--drag', `${atEnd(dx < 0 ? 1 : -1) ? rubberband(dx, innerWidth) : dx}px`);
+    const off = drag.base + e.clientX - drag.x;
+    stage.style.transform = `translate3d(${atEnd(off < 0 ? 1 : -1) ? rubberband(off, innerWidth) : off}px, 0, 0)`;
   });
   const release = (e) => {
     if (!drag || e.pointerId !== drag.id) return;
@@ -689,12 +703,12 @@ footer a:hover { color: #fff; }
     drag = null;
     if (!d.on) return;
     swallowClick = true;
-    const dx = e.clientX - d.x;
+    const dx = e.clientX - d.x; // the finger's own travel decides, not where the row was grabbed
     const [t0, x0] = d.hist[0], [t1, x1] = d.hist[d.hist.length - 1];
     const v = t1 > t0 ? (x1 - x0) / (t1 - t0) * 1000 : 0; // px/s
     const projected = dx + v / 1000 * .99 / (1 - .99);  // where the flick would carry the phone
     stage.classList.remove('is-dragging');
-    stage.style.setProperty('--drag', '0px');
+    stage.style.transform = '';
     const dir = projected < 0 ? 1 : -1;
     if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3 && !atEnd(dir)) go(active + dir);
   };
@@ -712,7 +726,7 @@ footer a:hover { color: #fff; }
   (function tick() {
     const v = video(active);
     const bar = phones[active].querySelector('.phone__bar i');
-    if (v.duration) bar.style.transform = `scaleX(${v.currentTime / v.duration})`;
+    if (v.duration && !settle) bar.style.transform = `scaleX(${v.currentTime / v.duration})`;
     requestAnimationFrame(tick);
   })();
 
@@ -721,6 +735,13 @@ footer a:hover { color: #fff; }
     inView = e.isIntersecting;
     if (inView) play(); else video(active).pause();
   }, { threshold: .25 }).observe(document.getElementById('phones'));
+
+  // Leaving the page (closing the tab, switching apps, closing Instagram's browser) stops every reel.
+  const stopAll = () => { clearTimeout(settle); settle = 0; phones.forEach((p, i) => video(i).pause()); };
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopAll(); else play(); });
+  addEventListener('pagehide', stopAll);
+  addEventListener('blur', () => { if (soundOn) stopAll(); });
+  addEventListener('focus', () => { if (video(active).paused) play(); });
 
   layout(); syncSound(); play();
 })();
