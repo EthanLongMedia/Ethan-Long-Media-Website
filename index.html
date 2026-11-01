@@ -137,10 +137,16 @@ html.intro-run .reel-nav { transition-delay: .95s; }
 .sound[aria-pressed="true"] { background: var(--accent); }
 
 @media (max-width: 720px) {
-  :root { --pw: clamp(210px, min(72vw, calc((100svh - 290px) / 2.184)), 290px); }
-  .phones { height: calc(var(--pw) * 2.184 + 30px); }
-  .phone.is-left  { transform: translateX(calc(-50% - 50vw - var(--pw) * .44 + 18px)) translateY(calc(var(--pw) * .1)) scale(.88); }
-  .phone.is-right { transform: translateX(calc(-50% + 50vw + var(--pw) * .44 - 18px)) translateY(calc(var(--pw) * .1)) scale(.88); }
+  /* the whole hero fits the first screen, with room left for browser toolbars that sit over the page */
+  :root { --pw: clamp(190px, min(72vw, calc((100svh - 296px) / 2.184)), 290px); }
+  .hero { padding-top: 84px; }
+  .hero-title { margin-bottom: 14px; }
+  .phones { height: calc(var(--pw) * 2.184 + 16px); }
+  .reel-nav { margin-top: 4px; }
+  /* one reel on screen; the others wait off to the side in a fixed row and slide in on a swipe */
+  .phones { --step: calc(50vw + var(--pw) / 2 + 24px); }
+  .phone, .phone.is-active, .phone.is-left, .phone.is-right { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); transition: transform .55s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s, translate .55s cubic-bezier(.2,.75,.2,1); }
+  html.intro .phone:not(.is-active) { transform: translateX(calc(-50% + var(--rel, 0) * var(--step))); }
 }
 
 /* sections */
@@ -176,20 +182,20 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 52px); font-weight: 600; line
   /* phones: a ladder from Gaels United down to D1; the line climbs as you scroll and lights each program it reaches */
   .climb__line { display: none; }
   .climb__steps { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
-  .climb__steps::before, .climb__steps::after { content: ''; position: absolute; left: 39px; top: 40px; bottom: 40px; width: 2px; border-radius: 2px; }
+  .climb__steps::before, .climb__steps::after { content: ''; position: absolute; z-index: 0; left: 39px; top: 40px; bottom: 40px; width: 2px; border-radius: 2px; }
   .climb__steps::before { background: rgba(255,255,255,.08); }
   .climb__steps::after { background: linear-gradient(rgba(163,145,255,.3), var(--accent-soft)); transform-origin: 50% 0; transform: scaleY(var(--p, 0)); transition: transform .5s cubic-bezier(.2,.75,.2,1); }
   .step { flex-direction: row; justify-content: flex-start; gap: 18px; margin: 0; text-align: left; }
   .step__stop { flex: none; width: 80px; }
   .step__txt { height: auto; margin: 0; }
-  .climb .step { opacity: 1; transform: none; transition: opacity .6s ease; }
-  .climb .step:not(.is-lit) { opacity: .28; }
-  .climb .step__stop { transition: transform .7s cubic-bezier(.3,1.35,.5,1), box-shadow .8s ease; }
+  /* the line runs behind the logo circles; unlit programs dim their logo and text, never the circle, so the line stays hidden */
+  .climb .step { opacity: 1; transform: none; transition: none; }
+  .climb .step__stop { z-index: 1; transition: transform .7s cubic-bezier(.3,1.35,.5,1), box-shadow .8s ease; }
   .climb .step:not(.is-lit) .step__stop { transform: scale(.84); }
-  .climb .step__stop img { transition: filter .6s ease; }
-  .climb .step:not(.is-lit) .step__stop img { filter: grayscale(1); }
-  .climb .step__txt { transition: transform .7s cubic-bezier(.2,.75,.2,1); }
-  .climb .step:not(.is-lit) .step__txt { transform: translateX(-10px); }
+  .climb .step__stop img { transition: filter .6s ease, opacity .6s ease; }
+  .climb .step:not(.is-lit) .step__stop img { opacity: .3; filter: grayscale(1); }
+  .climb .step__txt { transition: transform .7s cubic-bezier(.2,.75,.2,1), opacity .6s ease; }
+  .climb .step:not(.is-lit) .step__txt { opacity: .28; transform: translateX(-10px); }
   .climb .step--top:not(.is-lit) .step__stop { box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 20px 40px -20px rgba(0,0,0,.9); }
 }
 
@@ -608,6 +614,7 @@ footer a:hover { color: #fff; }
       p.classList.toggle('is-right', rel === 1);
       p.classList.toggle('is-left', rel === n - 1);
       p.setAttribute('aria-hidden', rel !== 0);
+      p.style.setProperty('--rel', i - active); // phones: position in the fixed row
     });
     dots.forEach((d, i) => d.setAttribute('aria-current', i === active));
   }
@@ -653,6 +660,9 @@ footer a:hover { color: #fff; }
 
   // Swipe between reels: the phones follow the finger, and a flick or a long enough drag moves one reel over.
   const stage = document.getElementById('phones');
+  const row = matchMedia('(max-width: 720px)'); // phones: reels sit in a fixed row with ends
+  const atEnd = (dir) => row.matches && (active + dir < 0 || active + dir >= phones.length);
+  const rubberband = (o, dim, c = .55) => Math.sign(o) * (Math.abs(o) * dim * c) / (dim + c * Math.abs(o));
   let drag = null, swallowClick = false;
   stage.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
@@ -671,7 +681,7 @@ footer a:hover { color: #fff; }
     }
     drag.hist.push([e.timeStamp, e.clientX]);
     if (drag.hist.length > 5) drag.hist.shift();
-    stage.style.setProperty('--drag', `${dx}px`);
+    stage.style.setProperty('--drag', `${atEnd(dx < 0 ? 1 : -1) ? rubberband(dx, innerWidth) : dx}px`);
   });
   const release = (e) => {
     if (!drag || e.pointerId !== drag.id) return;
@@ -685,7 +695,8 @@ footer a:hover { color: #fff; }
     const projected = dx + v / 1000 * .99 / (1 - .99);  // where the flick would carry the phone
     stage.classList.remove('is-dragging');
     stage.style.setProperty('--drag', '0px');
-    if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3) go(active + (projected < 0 ? 1 : -1));
+    const dir = projected < 0 ? 1 : -1;
+    if (e.type !== 'pointercancel' && Math.abs(projected) > phones[active].offsetWidth * .3 && !atEnd(dir)) go(active + dir);
   };
   stage.addEventListener('pointerup', release);
   stage.addEventListener('pointercancel', release);
