@@ -4,9 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ethan Long Media — Basketball film that gets players seen</title>
-<meta name="description" content="Basketball hype videos for players and teams, middle school to D1. $250 per game, delivered in 72 hours.">
+<meta name="description" content="Basketball hype videos for players and teams, middle school to D1, in Mid-Michigan. I film the whole game courtside and deliver in 72 hours. $250 per game.">
+<link rel="canonical" href="https://ethanlongmedia.com/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ethan Long Media">
 <meta property="og:title" content="Ethan Long Media — Basketball film that gets players seen">
-<meta property="og:description" content="Basketball hype videos for players and teams, middle school to D1.">
+<meta property="og:description" content="Basketball hype videos for players and teams, middle school to D1, in Mid-Michigan. I film the whole game courtside and deliver in 72 hours. $250 per game.">
 <meta property="og:image" content="https://ethanlongmedia.com/assets/social/og.jpg">
 <meta property="og:url" content="https://ethanlongmedia.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -349,8 +355,17 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
 (() => {
   // iPhones only show the pressed (:active) look when the page listens for touches.
   document.addEventListener('touchstart', () => {}, { passive: true });
-  // A refresh starts at the top of the page, not halfway down the hero.
-  if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
+  // A refresh starts at the top of the page, not halfway down the hero. Some phone browsers (Chrome on iPhone,
+  // in-app browsers) put the old scroll position back on their own, so also jump to the top as the page loads,
+  // unless the visitor has already started scrolling or came in on a link to a section.
+  if (!location.hash) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    let moved = false;
+    for (const t of ['touchstart', 'wheel', 'keydown', 'pointerdown']) addEventListener(t, () => { moved = true; }, { passive: true, once: true });
+    const toTop = () => { if (!moved && scrollY) scrollTo({ top: 0, behavior: 'instant' }); };
+    addEventListener('DOMContentLoaded', toTop);
+    addEventListener('load', () => { toTop(); setTimeout(toTop, 150); setTimeout(toTop, 500); });
+  }
   const root = document.documentElement;
   // The hero is sized from the screen height measured once at load. Phone browsers change the height as their
   // toolbars slide in and out while scrolling, so only a width change (rotation) or a desktop window re-measures.
