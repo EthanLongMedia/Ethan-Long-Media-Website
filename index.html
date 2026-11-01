@@ -1,1919 +1,775 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ethan Long — Basketball film that gets players seen</title>
-<meta name="description" content="Ethan Long Media — basketball film that gets players seen. 1.2M views on Instagram, 934.8K on TikTok. Northwood University, REAL Basketball, and the kit behind every frame.">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#070709">
-
-<!-- Social preview. Absolute URLs are required — Facebook, X and LinkedIn
-     will not resolve a relative og:image. Bump ?v= when the card changes,
-     otherwise scrapers keep serving the version they already cached. -->
-<link rel="canonical" href="https://ethanlongmedia.com/">
-<meta property="og:url" content="https://ethanlongmedia.com/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Ethan Long Media">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ethan Long Media — Basketball film that gets players seen</title>
+<meta name="description" content="Basketball hype videos for players and teams, middle school to D1. $250 per game, delivered in 72 hours.">
 <meta property="og:title" content="Ethan Long Media — Basketball film that gets players seen">
-<meta property="og:description" content="One cut went 1.2M on Instagram and 934.8K on TikTok. Gameday, training and recruiting tape across Michigan. Delivered in 72 hours.">
-<meta property="og:image" content="https://ethanlongmedia.com/assets/social/og.jpg?v=3">
-<meta property="og:image:secure_url" content="https://ethanlongmedia.com/assets/social/og.jpg?v=3">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Ethan Long Media — basketball film that gets players seen, 1.2M on Instagram and 934.8K on TikTok">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ethan Long Media — Basketball film that gets players seen">
-<meta name="twitter:description" content="One cut went 1.2M on Instagram and 934.8K on TikTok. Delivered in 72 hours.">
-<meta name="twitter:image" content="https://ethanlongmedia.com/assets/social/og.jpg?v=3">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23070709'/%3E%3Ctext x='32' y='42' font-family='Helvetica,Arial,sans-serif' font-size='24' font-weight='bold' fill='%238B7FE8' text-anchor='middle'%3EEL%3C/text%3E%3C/svg%3E">
-
+<meta property="og:description" content="Basketball hype videos for players and teams, middle school to D1.">
+<meta property="og:image" content="https://ethanlongmedia.com/assets/social/og.jpg">
+<meta property="og:url" content="https://ethanlongmedia.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --ink:#070709;
-  --ink-2:#0c0c11;
-  --ink-3:#131319;
-  --cream:#F4EFE6;
-  --cream-dim:#9C978D;
-  --cream-faint:#524F4A;
+:root {
+  --bg: #F6F4EF; --white: #FFFFFF; --ink: #111113; --body: #4A4A52; --muted: #71717A; --nav-muted: #A1A1AA;
+  --line: rgba(17,17,19,.09); --accent: #5B3DF5; --accent-soft: #A391FF; --dark: #111113; --green: #22C55E;
+  --wrap: 980px; --gutter: clamp(16px, 4vw, 32px);
+  --pw: clamp(220px, calc((100svh - 300px) / 2.184), 330px); /* phone width: headline + phones fill the first screen */
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+[id] { scroll-margin-top: 80px; }
+body { background: var(--bg); color: var(--ink); font-family: 'Figtree', system-ui, sans-serif; font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); box-sizing: content-box; }
+::selection { background: var(--accent); color: #fff; }
 
-  --violet:#8B7FE8;
-  --violet-lo:#6F61DC;
-  --violet-hi:#B5ABF5;
+/* buttons */
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 50px; padding: 0 24px; border-radius: 999px; font-size: 16px; font-weight: 600; white-space: nowrap; transition: transform .2s, box-shadow .2s, background-color .2s; }
+.pill:active { transform: scale(.98); }
+.pill--dark { background: var(--ink); color: #fff; }
+.pill--dark:hover { box-shadow: 0 12px 28px -12px rgba(17,17,19,.6); transform: translateY(-1px); }
+.pill--light { background: #fff; color: #0B0B0C; }
+.pill--light:hover { box-shadow: 0 12px 28px -12px rgba(255,255,255,.4); transform: translateY(-1px); }
+.pill--ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); }
+.pill--ghost:hover { background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
+.pill--sm { height: 38px; padding: 0 18px; font-size: 15px; }
 
-  --display:'Inter',-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;
-  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;
+/* nav */
+.nav { position: sticky; top: 0; z-index: 40; background: #0B0B0C; color: #fff; }
+.nav .wrap { display: flex; align-items: center; height: 63px; gap: 24px; }
+.logo { font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+.logo span { color: var(--accent-soft); font-weight: 500; }
+.nav-links { display: flex; gap: 28px; margin: 0 auto; font-size: 15px; color: var(--nav-muted); }
+.nav-links a:hover { color: #fff; }
+@media (max-width: 760px) { .nav-links { display: none; } .nav .pill { margin-left: auto; } }
 
-  --pad:clamp(20px,5vw,72px);
-  --maxw:1440px;
-}
+/* hero */
+.hero { text-align: center; padding: clamp(28px, 5svh, 56px) 0 clamp(40px, 5vw, 64px); }
+.hero-title { margin: 0 auto clamp(20px, 3svh, 36px); padding: 0 var(--gutter); font-size: clamp(26px, 3.6vw, 44px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
+.hero-title em { font-style: normal; color: var(--accent); }
+@media (max-width: 560px) { .hero-title span { display: block; } }
+h2 .hl { color: var(--accent); }
 
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%;overflow-x:clip}
-body{
-  background:var(--ink);color:var(--cream);font-family:var(--sans);
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  overflow-x:hidden;
+/* phones */
+.stage { position: relative; overflow-x: clip; }
+.phones { position: relative; height: calc(var(--pw) * 2.184 + 70px); max-width: 1100px; margin: 0 auto; }
+.phone {
+  position: absolute; left: 50%; top: 0; width: var(--pw); aspect-ratio: 245 / 535;
+  padding: 3px; border-radius: calc(var(--pw) * .17); background: #1B1B1E;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.22), 0 50px 80px -40px rgba(17,17,19,.6), 0 22px 36px -22px rgba(17,17,19,.45);
+  transform: translateX(-50%); transform-origin: 50% 80%;
+  transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s, filter .6s;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
-a{color:inherit;text-decoration:none}
-img{display:block;max-width:100%}
-canvas{display:block}
-::selection{background:var(--violet);color:#fff}
+.phone::before, .phone::after { content: ''; position: absolute; width: 3px; border-radius: 2px; background: #2A2A2E; }
+.phone::before { left: -3px; top: 22%; height: 9%; box-shadow: 0 calc(var(--pw) * .13) 0 #2A2A2E; }
+.phone::after { right: -3px; top: 28%; height: 13%; }
+.phone__screen { position: relative; height: 100%; padding: calc(var(--pw) * .033); border-radius: calc(var(--pw) * .158); background: #050506; }
+.phone__notch { position: absolute; z-index: 4; top: calc(var(--pw) * .033); left: 50%; width: 37%; height: calc(var(--pw) * .118); transform: translateX(-50%); background: #050506; border-radius: 0 0 calc(var(--pw) * .06) calc(var(--pw) * .06); }
+.phone__notch::after { content: ''; position: absolute; top: 34%; left: 50%; width: 34%; height: 9%; transform: translateX(-50%); border-radius: 4px; background: #1D1D21; }
+.phone__display { position: relative; height: 100%; overflow: hidden; border-radius: calc(var(--pw) * .125); background: #000; isolation: isolate; }
+.phone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.phone__ui { position: absolute; z-index: 3; inset: auto 0 0; padding: calc(var(--pw) * .3) calc(var(--pw) * .05) calc(var(--pw) * .075); color: #fff; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.55) 45%, rgba(0,0,0,.85)); text-shadow: 0 1px 10px rgba(0,0,0,.6); transition: opacity .4s; }
+.phone__ui small { display: inline-block; padding: calc(var(--pw) * .012) calc(var(--pw) * .035); border-radius: 999px; background: #fff; font-size: calc(var(--pw) * .048); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-shadow: none; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+.phone__ui b { display: block; margin-top: calc(var(--pw) * .03); font-size: calc(var(--pw) * .074); font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.phone__bar { height: 3px; margin-top: calc(var(--pw) * .05); border-radius: 3px; background: rgba(255,255,255,.3); overflow: hidden; }
+.phone__bar i { display: block; height: 100%; background: #fff; transform-origin: 0 50%; transform: scaleX(0); }
 
-.u-wrap{width:min(var(--maxw),100%);margin-inline:auto;padding-inline:var(--pad)}
-.eyebrow{
-  font:600 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;
-  color:var(--violet-hi);display:flex;align-items:center;gap:12px;
-}
-.eyebrow::before{content:"";width:26px;height:1px;background:var(--violet);flex:none}
+.phone.is-active { z-index: 3; transform: translateX(-50%); }
+.phone.is-left   { z-index: 1; transform: translateX(calc(-50% - var(--pw) * 1.2)) translateY(calc(var(--pw) * .2)) rotate(-7deg) scale(.92); }
+.phone.is-right  { z-index: 2; transform: translateX(calc(-50% + var(--pw) * 1.2)) translateY(calc(var(--pw) * .2)) rotate(7deg) scale(.92); }
+.phone:not(.is-active) .phone__ui { opacity: 0; }
+.phone:not(.is-active):hover { filter: brightness(1.06); }
 
-/* ================= GRAIN + VIGNETTE ================= */
-#grain{
-  position:fixed;inset:-12%;z-index:120;pointer-events:none;opacity:.045;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation:grainShift .55s steps(1) infinite;will-change:transform;
-}
-@keyframes grainShift{
-  0%{transform:translate(0,0)}      20%{transform:translate(-6%,3%)}
-  40%{transform:translate(4%,-5%)}  60%{transform:translate(-3%,-2%)}
-  80%{transform:translate(5%,4%)}   100%{transform:translate(0,0)}
-}
-#vignette{
-  position:fixed;inset:0;z-index:110;pointer-events:none;
-  background:radial-gradient(ellipse 80% 68% at 50% 45%,transparent 42%,rgba(0,0,0,.5) 88%,rgba(0,0,0,.82) 100%);
-}
+.reel-nav { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 8px; }
+.dots { display: flex; gap: 8px; }
+.dots button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 999px; background: rgba(17,17,19,.18); transition: width .3s, background-color .3s; }
+.dots button[aria-current="true"] { width: 28px; background: var(--ink); }
+.sound { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 24px -12px rgba(17,17,19,.6); transition: background-color .2s, transform .2s; }
+.sound:hover { transform: translateY(-1px); }
+.sound[aria-pressed="true"] { background: var(--accent); }
 
-/* ================= NAV ================= */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 0;
-  border-bottom:1px solid transparent;
-  transition:background-color .5s ease,backdrop-filter .5s ease,border-color .5s ease;
-}
-/* transparent over the hero; once content scrolls under it further down the
-   page it picks up a translucent material instead of staying invisible */
-nav.scrolled{
-  background:rgba(7,7,9,.68);
-  backdrop-filter:blur(18px) saturate(160%);
-  -webkit-backdrop-filter:blur(18px) saturate(160%);
-  border-bottom-color:rgba(244,239,230,.08);
-}
-@media(prefers-reduced-transparency:reduce){
-  nav.scrolled{background:rgba(7,7,9,.94);backdrop-filter:none;-webkit-backdrop-filter:none}
-}
-nav .u-wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
-.nv-logo{font:800 13px/1 var(--display);letter-spacing:.22em;text-transform:uppercase;color:var(--cream)}
-.nv-logo b{font-weight:800;color:var(--violet)}
-.nv-links{display:flex;gap:28px;font:600 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim)}
-.nv-links a{position:relative;padding-bottom:3px;transition:color .35s}
-.nv-links a:hover{color:var(--cream)}
-.nv-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--violet);transition:width .35s cubic-bezier(.2,.8,.2,1)}
-.nv-links a:hover::after{width:100%}
-@media(max-width:760px){.nv-links{display:none}}
-
-/* ---- mobile menu ----
-   The page is ~11 screens tall on a phone and the four links plus the wordmark
-   measure ~420px against a 375px screen, so below 760px they collapse into a
-   full-screen panel instead. Lives inside <nav> on purpose: nav carries
-   z-index:100 and so forms a stacking context, and a child cannot escape it —
-   burger and panel have to be siblings in here to layer against each other. */
-.nv-burger{
-  display:none;position:relative;z-index:102;
-  width:44px;height:44px;margin-right:-11px;   /* 44px keeps a comfortable tap target */
-  background:none;border:0;padding:0;cursor:pointer;
-}
-.nv-burger span{
-  position:absolute;left:11px;width:22px;height:1.5px;background:var(--cream);
-  transition:transform .38s cubic-bezier(.2,.8,.2,1);
-}
-.nv-burger span:nth-child(1){top:19px}
-.nv-burger span:nth-child(2){top:25px}
-body.menu-open .nv-burger span:nth-child(1){transform:translateY(3px) rotate(45deg)}
-body.menu-open .nv-burger span:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
-
-.nv-panel{
-  position:fixed;inset:0;z-index:101;background:var(--ink);
-  display:flex;flex-direction:column;justify-content:center;
-  gap:clamp(14px,2.6svh,26px);padding:88px var(--pad) 40px;overflow-y:auto;
-  opacity:0;visibility:hidden;transition:opacity .34s ease,visibility .34s;
-}
-body.menu-open .nv-panel{opacity:1;visibility:visible}
-/* sized against svh, not vw — a landscape phone is wide but very short */
-.nv-panel a{
-  font:800 clamp(24px,6.4svh,40px)/1.15 var(--display);
-  text-transform:uppercase;letter-spacing:.05em;color:var(--cream);
-}
-.nv-panel a em{font-style:normal;color:var(--violet);margin-right:.6em;
-  font-size:.42em;letter-spacing:.2em;vertical-align:middle}
-.nv-panel .mail{
-  margin-top:clamp(10px,2svh,20px);
-  font:500 12px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;
-  color:var(--cream-dim);word-break:break-all;
-}
-@media(max-width:760px){.nv-burger{display:block}}
-@media(min-width:761px){.nv-panel{display:none}}
-/* the panel is a plain overlay; without motion the fade is the whole effect */
-@media(prefers-reduced-motion:reduce){
-  .nv-panel{transition:none}
-  .nv-burger span{transition:none}
+@media (max-width: 720px) {
+  :root { --pw: clamp(210px, min(72vw, calc((100svh - 290px) / 2.184)), 290px); }
+  .phones { height: calc(var(--pw) * 2.184 + 30px); }
+  .phone.is-left  { opacity: 0; transform: translateX(calc(-50% - 80vw)) rotate(-4deg); pointer-events: none; }
+  .phone.is-right { opacity: 0; transform: translateX(calc(-50% + 80vw)) rotate(4deg); pointer-events: none; }
 }
 
-/* ================= HERO ================= */
-/* Exactly one screen, no sticky hold. Nothing animates on scroll, so pinning
-   the hero would just mean scrolling with nothing happening — this way the
-   hero scrolls away like every other section. */
-#hero{height:100svh;position:relative;background:var(--ink);overflow:hidden}
-.hero-stick{position:relative;height:100%;overflow:hidden}
-#particles{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-.hero-glow{
-  position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 52% 40% at 50% 44%,rgba(139,127,232,.16),transparent 70%),
-    radial-gradient(ellipse 70% 50% at 50% 100%,rgba(139,127,232,.07),transparent 70%);
+/* sections */
+.sec { padding: clamp(80px, 11vw, 120px) 0; }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 52px); font-weight: 600; line-height: 1.08; letter-spacing: -.03em; }
+.sec-head { display: grid; grid-template-columns: 1.15fr .85fr; gap: 24px 48px; align-items: end; margin-bottom: 44px; }
+.sec-head > p { color: var(--body); font-size: 17px; padding-bottom: 6px; }
+@media (max-width: 760px) { .sec-head { grid-template-columns: 1fr; } }
+
+/* programs: logos climb from middle school (left, low) to D1 (right, high) */
+.climb-sec { position: relative; overflow: hidden; background: #0B0B0C; color: #fff; }
+.climb-sec::before { content: ''; position: absolute; right: -10%; top: -20%; width: 70%; height: 90%; background: radial-gradient(closest-side, rgba(123,97,255,.22), transparent); pointer-events: none; }
+.climb-sec .eyebrow { color: var(--nav-muted); }
+.climb-sec h2 .hl { color: var(--accent-soft); }
+.climb-head { position: relative; text-align: center; margin-bottom: clamp(48px, 7vw, 80px); }
+.climb { position: relative; }
+.climb__line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.climb__line line { stroke: url(#climbGrad); stroke-width: 2; stroke-linecap: round; transition: stroke-dashoffset 1.6s cubic-bezier(.45,0,.2,1); }
+.climb__steps { position: relative; list-style: none; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; align-items: end; }
+.step { --rise: 34px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: calc(var(--i) * var(--rise)); opacity: 0; transform: translateY(18px); transition: opacity .6s, transform .6s cubic-bezier(.2,.75,.2,1); transition-delay: calc(var(--i) * 110ms + 150ms); }
+.climb.is-in .step { opacity: 1; transform: none; }
+.step__stop { position: relative; display: grid; place-items: center; width: min(124px, 100%); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #1E1E22, #0F0F11 70%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.09), 0 20px 40px -20px rgba(0,0,0,.9); }
+.step__stop img { width: 64%; height: 64%; object-fit: contain; }
+.step__stop img.is-wordmark { width: 80%; }
+.step__stop img.is-badge { width: 90%; height: 90%; }
+.step--top .step__stop { box-shadow: inset 0 0 0 1.5px var(--accent-soft), 0 0 50px -6px rgba(123,97,255,.65); }
+.step__txt { height: 58px; margin-top: 16px; }
+.step__lvl { display: block; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--nav-muted); }
+.step--top .step__lvl { color: var(--accent-soft); }
+.step__txt b { display: block; margin-top: 4px; font-size: 15px; font-weight: 600; line-height: 1.25; }
+@media (max-width: 760px) {
+  /* phones: a vertical ladder, D1 on top */
+  .climb__line { display: none; }
+  .climb__steps { display: flex; flex-direction: column-reverse; align-items: stretch; gap: 14px; }
+  .climb__steps::before { content: ''; position: absolute; left: 39px; top: 40px; bottom: 40px; width: 2px; background: linear-gradient(var(--accent-soft), rgba(163,145,255,.12)); }
+  .step { flex-direction: row; justify-content: flex-start; gap: 18px; margin: 0; text-align: left; }
+  .step__stop { flex: none; width: 80px; }
+  .step__txt { height: auto; margin: 0; }
 }
 
-/* pulled up tight under the wordmark — the old bottom gap read as unfinished */
-/* One flex column from the tagline down: the tagline and the meta row sit in
-   normal flow with a real gap between them, so they cannot overlap at any
-   height. This was previously an absolutely-positioned meta row plus a
-   padding-bottom that a @media(max-height:680px) rule swapped out. iOS
-   collapsing the URL bar changes the viewport height, so that breakpoint
-   flipped *mid-scroll* and moved the tagline 110px — the jump Ethan filmed.
-   Every value here is px or svh; both hold still while the URL bar animates
-   (the canvas is already guarded separately, see the resize listener). */
-.hero-ui{
-  position:absolute;inset:0;z-index:5;pointer-events:none;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  gap:clamp(40px,14svh,120px);
-  padding:0 var(--pad) clamp(20px,3.4svh,44px);
-}
-.hero-tag{text-align:center}
-.hero-tag .rule{
-  width:44px;height:1px;background:var(--violet);margin:0 auto clamp(18px,3vh,28px);
-  transform:scaleX(0);transform-origin:center;
-}
-.hero-tag .ln{
-  display:block;overflow:hidden;
-  font:800 clamp(15px,2.4vw,32px)/1.28 var(--display);
-  text-transform:uppercase;letter-spacing:.15em;color:var(--cream);
-}
-.hero-tag .ln em{font-style:normal;color:var(--violet)}
-.hero-tag .ln.thin{
-  font-weight:500;color:var(--cream-dim);letter-spacing:.3em;
-  font-size:clamp(9.5px,1.1vw,12.5px);margin-top:16px;
-}
-.hero-tag .ln.thin em{font-style:normal;color:var(--violet)}
-.hero-tag .ch{display:inline-block;will-change:transform,opacity}
-.hero-tag .ch.sp{width:.34em}
-
-/* now the last child of .hero-ui rather than absolutely positioned — the
-   column's gap keeps it clear of the tagline instead of luck doing it */
-.hero-meta{
-  display:flex;justify-content:space-between;align-items:flex-end;gap:18px;
-  font:500 10px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);
-}
-.hero-meta .col{display:flex;flex-direction:column;gap:6px}
-.hero-meta .col.r{text-align:right;align-items:flex-end}
-.hero-meta b{color:var(--violet);font-weight:700;letter-spacing:.2em}
-
-.scroll-cue{
-  position:absolute;left:50%;transform:translateX(-50%);bottom:clamp(20px,4vh,42px);z-index:6;
-  display:flex;flex-direction:column;align-items:center;gap:9px;
-  font:500 9px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--cream-faint);
-  transition:opacity .45s ease;
-}
-.scroll-cue i{display:block;width:1px;height:42px;background:linear-gradient(var(--violet),transparent);transform-origin:top;animation:cueDrop 1.9s ease-in-out infinite}
-@keyframes cueDrop{0%,100%{transform:scaleY(.35);opacity:.4}50%{transform:scaleY(1);opacity:1}}
-
-/* ================= SECTION SHELL ================= */
-.sec{position:relative;z-index:2;background:var(--ink);padding-block:clamp(90px,13vh,170px)}
-.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:clamp(40px,6vh,72px)}
-.sec-title{font:800 clamp(29px,5vw,72px)/1.02 var(--display);text-transform:uppercase;letter-spacing:-.005em;color:var(--cream)}
-.sec-title u{text-decoration:none;color:var(--violet)}
-.sec-note{max-width:38ch;font:400 14px/1.7 var(--sans);color:var(--cream-dim)}
-
-.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
-.rv.in{opacity:1;transform:none}
-
-/* ================= STATS ================= */
-#proof{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 55%,var(--ink) 100%)}
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(244,239,230,.09);border:1px solid rgba(244,239,230,.09)}
-.stat{background:var(--ink);padding:clamp(24px,3.4vw,44px) clamp(18px,2.4vw,32px);position:relative;overflow:hidden}
-.stat::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--violet);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
-.stat.in::after{width:100%}
-.stat .num{font:800 clamp(30px,4.4vw,60px)/1 var(--display);letter-spacing:-.03em;color:var(--cream);display:flex;align-items:baseline}
-.stat .num s{text-decoration:none;color:var(--violet)}
-.stat .lb{margin-top:13px;font:600 10px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim)}
-.stat .sub{margin-top:6px;font:400 11.5px/1.5 var(--sans);color:var(--cream-faint)}
-/* The training grid reuses this cell wholesale — same border, same violet
-   underline on reveal — but its headlines are words, not metrics, so they'd
-   wrap badly at number scale. Only the headline size changes. */
-/* these cells stretch to match a 9:16 clip, so they end up much taller than
-   their content — centring stops the text stranding at the top of a void */
-.stat.qual{display:flex;flex-direction:column;justify-content:center}
-.stat.qual .num{font-size:clamp(20px,2.4vw,31px);letter-spacing:-.01em;line-height:1.15;flex-wrap:wrap}
-.stat.qual .num s{font-size:.62em}
-@media(max-width:520px){.stat-grid{grid-template-columns:1fr}}
-
-/* the viral cut sits beside the numbers it earned */
-.proof-body{
-  display:grid;grid-template-columns:minmax(236px,31%) 1fr;
-  gap:clamp(16px,2.6vw,34px);align-items:stretch;
-}
-/* The clip is a real .card — same border, hover, cursor glow and tilt as the
-   work grid. Only the visual slot differs: video fills it instead of a logo. */
-.proof-card{min-height:0}
-/* Aspect-locked. Previously it stretched to whatever height the card ended up
-   at, so the crop — and how much of the frame you saw — shifted with the
-   viewport. A fixed ratio keeps the framing identical at every width, and the
-   box never exceeds the clip's own 562px so it never upscales and softens. */
-.proof-vis{
-  position:relative;overflow:hidden;padding:0;flex:none;
-  width:100%;aspect-ratio:4/5;background:#000;
-  /* breathing room so the label row isn't sitting on the video */
-  margin-block:clamp(16px,2.2vw,24px);
-}
-/* Always visible. This used to start at opacity 0 and fade in on a
-   `loadeddata` listener, but a data-URI source decodes before that script
-   runs, so the event was already gone and the video stayed invisible. The
-   poster attribute covers the pre-load frame natively instead. */
-.proof-vis video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-}
-/* The training clip is a 9:16 portrait frame, so the shared 4:5 box was
-   cropping its top and bottom away — you lost the tilt up to the ceiling and
-   most of the ball dropping through the net. Matching the box to the clip's
-   own ratio shows the whole frame, with no letterboxing. (Mobile already uses
-   9:16 below, so this only changes the desktop crop.) */
-#training .proof-vis{aspect-ratio:9/16}
-@media(max-width:760px){
-  .proof-body{grid-template-columns:1fr}
-  .proof-card{max-width:340px;margin-inline:auto;width:100%}
-  .proof-vis{aspect-ratio:9/16;min-height:0}
+/* how it works: photo + three plain steps */
+.how2 { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(36px, 6vw, 80px); align-items: center; }
+.how2__photo { overflow: hidden; aspect-ratio: 4 / 5; border-radius: 22px; background: #2A1A20; box-shadow: 0 40px 70px -40px rgba(17,17,19,.5); }
+.how2__photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+.how2 h2 { margin-top: 12px; }
+.how2__steps { list-style: none; margin-top: 36px; border-top: 1px solid var(--line); }
+.how2__steps li { display: grid; grid-template-columns: 56px 1fr; gap: 4px 16px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.how2__steps .n { grid-row: span 2; font-size: 15px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 4px; }
+.how2__steps b { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.how2__steps span { font-size: 16px; color: var(--body); }
+.how2 .pill { margin-top: 32px; }
+@media (max-width: 860px) {
+  .how2 { grid-template-columns: 1fr; }
+  .how2__photo { aspect-ratio: 4 / 3; }
+  .how2__photo img { object-position: 50% 58%; }
+  .how2__steps li { grid-template-columns: 36px 1fr; }
 }
 
-/* ================= WORK ================= */
-#work{background:var(--ink);overflow:hidden}
-.gallery-bg{position:absolute;inset:0;z-index:0;pointer-events:none;perspective:1000px;overflow:hidden;opacity:.45}
-.gallery-bg .rail{
-  position:absolute;top:50%;left:50%;width:200%;height:60vh;
-  transform:translate(-50%,-50%) rotateX(56deg) translateZ(-260px) translateY(var(--rail-y,0px));
-  display:flex;gap:44px;transform-style:preserve-3d;
-}
-.gallery-bg .pane{flex:1;border-radius:5px;background:linear-gradient(180deg,rgba(139,127,232,.32),rgba(139,127,232,.02));box-shadow:0 0 60px rgba(139,127,232,.18)}
-.gallery-bg .pane:nth-child(3n){background:linear-gradient(180deg,rgba(244,239,230,.12),transparent)}
-.gallery-bg .pane:nth-child(4n){background:linear-gradient(180deg,rgba(181,171,245,.2),transparent)}
+/* offer */
+.offer { background: var(--dark); color: #fff; }
+.offer .eyebrow { color: var(--nav-muted); }
+.offer h2 .hl { color: var(--accent-soft); }
+.offer .sec-head > p { color: #B4B4BC; }
+.plans { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 16px; align-items: stretch; padding-block: 24px; }
+.plan { position: relative; display: flex; flex-direction: column; padding: 28px; border: 1px solid #26262B; border-radius: 18px; background: rgba(25,25,28,.94); }
+/* Featured card is wider and sticks out 24px above and below the side cards. */
+.plan.is-featured { margin: -24px 0; padding: 40px 30px 32px; border: 1px solid #7B61FF; background: rgba(34,31,48,.98); box-shadow: inset 0 0 0 1px #7B61FF, 0 34px 80px -34px rgba(112,76,255,.75); }
+.plan__flag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: 6px 12px; border-radius: 99px; background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; white-space: nowrap; }
+.plan__for { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--nav-muted); }
+.plan h3 { margin-top: 6px; font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.plan__big { display: flex; align-items: baseline; gap: 10px; margin-top: 18px; }
+.plan__big b { font-size: 52px; font-weight: 600; line-height: 1; letter-spacing: -.04em; }
+.plan__big span { font-size: 14px; color: var(--nav-muted); }
+.plan__big sup { align-self: flex-start; margin: 4px -6px 0 0; font-size: 22px; font-weight: 600; line-height: 1; color: #C4C4CC; }
+.plan__promise { margin-top: auto; margin-bottom: 16px; padding: 12px 14px; border: 1px solid rgba(34,197,94,.28); border-radius: 12px; background: rgba(34,197,94,.08); font-size: 13px; line-height: 1.45; color: #C4C4CC; }
+.plan__promise b { display: block; margin-bottom: 2px; font-size: 13px; font-weight: 600; color: #86EFAC; }
+.plan__promise + .pill { margin-top: 0; }
+.plan__sub { margin-top: 10px; font-size: 13px; color: var(--nav-muted); }
+.plan__sub strong { color: var(--accent-soft); font-weight: 600; }
+.plan__lead { margin-top: 20px; font-size: 14px; font-weight: 600; }
+.plan ul { list-style: none; display: flex; flex-direction: column; gap: 11px; margin: 16px 0 28px; font-size: 14px; line-height: 1.45; color: #D4D4D8; }
+.plan li { position: relative; padding-left: 27px; }
+.plan li::before { content: '✓'; position: absolute; left: 0; top: 1px; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: rgba(255,255,255,.08); color: #D4D4D8; font-size: 10px; font-weight: 700; }
+.plan.is-featured li::before { background: var(--accent); color: #fff; }
+.plan li strong { color: #fff; font-weight: 600; }
+.plan .pill { width: 100%; height: 52px; margin-top: auto; font-size: 17px; }
+.plan__fine { margin-top: 10px; font-size: 12px; text-align: center; color: #8B8B95; }
+/* pricing podium: travel | price | guarantee */
+.plans--podium { grid-template-columns: 1fr 1.15fr 1fr; }
+/* price card centered like the side cards */
+.plans--podium .plan.is-featured { align-items: center; text-align: center; }
+.plans--podium .plan.is-featured .plan__big { justify-content: center; flex-wrap: wrap; row-gap: 6px; }
+.plans--podium .plan.is-featured .plan__big span { flex-basis: 100%; text-align: center; }
+/* the $ hangs off the left so the number itself sits dead center */
+.plan__big b { position: relative; }
+.plan__big b sup { position: absolute; right: 100%; top: 5px; margin: 0 4px 0 0; }
+/* centered caps: cancel the letter-spacing after the last letter so they center optically */
+.plans--podium .plan.is-featured .plan__for { padding-left: .12em; }
+.plan__flag { padding-left: calc(12px + .08em); }
+.side__eyebrow::after { margin-left: -.2em; }
+.side__stats span { padding-left: .06em; }
+.plans--podium .plan.is-featured ul { text-align: left; }
+.plans--podium .plan.is-featured .pill { align-self: stretch; }
+.plan--side { align-items: center; justify-content: space-between; gap: 28px; padding: 40px 28px 30px; text-align: center; background: radial-gradient(120% 60% at 50% 0%, rgba(123,97,255,.12), transparent 70%), rgba(25,25,28,.94); }
+.side__icon { flex: none; display: grid; place-items: center; width: 84px; height: 84px; border: 1px solid rgba(163,145,255,.45); border-radius: 50%; color: var(--accent-soft); background: rgba(123,97,255,.06); box-shadow: 0 0 40px -12px rgba(123,97,255,.6); }
+.side__mid { display: flex; flex-direction: column; align-items: center; }
+.side__eyebrow { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-soft); }
+.side__eyebrow::before, .side__eyebrow::after { content: ''; width: 18px; height: 1px; background: var(--accent-soft); }
+.side__title { margin-top: 14px; font-size: clamp(20px, 2.3vw, 26px); font-weight: 800; line-height: 1.1; letter-spacing: -.01em; text-transform: uppercase; white-space: nowrap; color: #F4F1EA; }
+.side__title span { color: #8E78F0; }
+.side__body { max-width: 230px; min-height: calc(1.6em * 2); margin-top: 14px; font-size: 14px; line-height: 1.6; color: #9C9CA6; }
+.side__stats { display: grid; grid-template-columns: 1fr 1fr; width: 100%; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
+.side__stats div + div { border-left: 1px solid rgba(255,255,255,.08); }
+.side__stats b { display: block; font-size: 18px; font-weight: 700; letter-spacing: -.01em; color: #fff; }
+.side__stats span { display: block; margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #8B8B95; }
+@media (max-width: 900px) { .plans--podium .plan.is-featured { order: -1; } }
+@media (max-width: 900px) { .plans { grid-template-columns: 1fr; gap: 26px; } .plans { padding-block: 0; } .plan.is-featured { margin: 0; } .includes__row { grid-template-columns: 1fr; } .includes__row ul { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .includes__row ul { grid-template-columns: 1fr; } }
 
-.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,26px);position:relative;z-index:2}
-@media(max-width:980px){.work-grid{grid-template-columns:1fr}}
+footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: center; padding: 8px var(--gutter) 40px; }
+footer a:hover { color: #fff; }
 
-.card{
-  position:relative;border:1px solid rgba(244,239,230,.11);background:var(--ink-2);
-  padding:clamp(20px,2.4vw,30px);min-height:clamp(400px,50vh,540px);
-  display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;
-  transform-style:preserve-3d;will-change:transform;transition:border-color .5s,background .5s;
-}
-.card:hover{border-color:rgba(139,127,232,.5);background:var(--ink-3)}
-.card::before{
-  content:"";position:absolute;inset:0;opacity:0;transition:opacity .6s;pointer-events:none;
-  background:radial-gradient(circle 300px at var(--mx,50%) var(--my,50%),rgba(139,127,232,.18),transparent 70%);
-}
-.card:hover::before{opacity:1}
-/* a violet rule draws across the top as each card lands */
-.card::after{
-  content:"";position:absolute;left:0;top:0;height:1px;width:0;z-index:4;
-  background:linear-gradient(90deg,var(--violet),rgba(139,127,232,0));
-  transition:width 1.2s cubic-bezier(.2,.8,.2,1);
-}
-.card.lit::after{width:100%}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;position:relative;z-index:2}
-.card-idx{font:700 10px/1 var(--sans);letter-spacing:.22em;color:var(--violet)}
-.card-kind{font:600 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);text-align:right}
+/* quiz overlay */
+.qz { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #0B0B0C; color: #fff; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+.qz.is-open { opacity: 1; visibility: visible; }
+.qz [hidden] { display: none !important; }
+.qz::after { content: ''; position: absolute; left: 50%; bottom: -260px; width: 900px; height: 520px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(91,61,245,.28), transparent); pointer-events: none; }
+.qz__bar { position: relative; flex: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+.qz__bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 63px; }
+.qz__close { display: flex; align-items: center; gap: 8px; padding: 6px 0; border: 0; background: none; color: var(--nav-muted); font-size: 14px; }
+.qz__close kbd { padding: 1px 6px; border: 1px solid rgba(255,255,255,.18); border-radius: 5px; font: inherit; font-size: 11px; }
+.qz__close:hover { color: #fff; }
+.qz__progress { position: absolute; left: 0; bottom: -1px; height: 2px; background: var(--accent-soft); transition: width .45s cubic-bezier(.2,.75,.2,1); }
+.qz__body { position: relative; z-index: 1; flex: 1; overflow-y: auto; display: flex; align-items: center; }
+.qz__inner { width: 100%; max-width: 590px; margin: 0 auto; padding: 40px var(--gutter) 80px; }
+.qz__step[hidden] { display: none; }
+.qz__step { animation: qzIn .4s cubic-bezier(.2,.75,.2,1); }
+@keyframes qzIn { from { opacity: 0; transform: translateY(12px); } }
+.qz__count { font-size: 13px; font-weight: 600; color: var(--accent-soft); }
+.qz__q { margin-top: 12px; font-size: clamp(30px, 4.4vw, 44px); font-weight: 600; line-height: 1.1; letter-spacing: -.03em; }
+.qz__hint { margin-top: 10px; color: var(--nav-muted); font-size: 15px; }
+.qz__input { display: block; width: 100%; margin-top: 30px; padding: 10px 0 12px; border: 0; border-bottom: 2px solid #5B4BD8; background: transparent; color: #fff; font: inherit; font-size: clamp(22px, 2.6vw, 28px); outline: none; color-scheme: dark; transition: border-color .2s; }
+.qz__input::placeholder { color: #55555C; }
+.qz__input:focus { border-color: var(--accent-soft); }
+.qz__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.qz__field > span { display: block; margin-top: 28px; font-size: 13px; font-weight: 600; color: #C4C4CC; }
+.qz__field > span i { font-style: normal; font-weight: 400; color: var(--nav-muted); margin-left: 4px; }
+.qz__field .qz__input { margin-top: 4px; }
+.qz__opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
+.qz__opt { position: relative; cursor: pointer; }
+.qz__opt input { position: absolute; opacity: 0; pointer-events: none; }
+.qz__opt span { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 58px; padding: 12px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; background: #161618; font-size: 16px; font-weight: 600; transition: border-color .15s, background-color .15s, transform .15s; }
+.qz__opt small { font-size: 13px; font-weight: 400; color: var(--nav-muted); }
+.qz__opt:hover span { border-color: rgba(255,255,255,.35); }
+.qz__opt:active span { transform: scale(.98); }
+.qz__opt input:checked + span { border-color: var(--accent-soft); background: #221E3A; }
+.qz__opt input:focus-visible + span { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+.qz__err { min-height: 22px; margin-top: 10px; font-size: 14px; color: #FF8A8A; }
+.qz__nav { display: flex; align-items: center; gap: 18px; margin-top: 14px; }
+.qz__next { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 10px 0 22px; border: 0; border-radius: 999px; background: #fff; color: #0B0B0C; font-size: 16px; font-weight: 600; transition: transform .15s; }
+.qz__next kbd { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid rgba(0,0,0,.15); border-radius: 6px; font: inherit; font-size: 12px; color: #71717A; }
+.qz__next:hover { transform: translateY(-1px); }
+.qz__back { border: 0; background: none; color: var(--nav-muted); font-size: 15px; }
+.qz__back:hover { color: #fff; }
+.qz__fine { margin-top: 22px; font-size: 13px; color: #6B6B73; }
+.qz__done .ok { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--accent); font-size: 24px; font-weight: 700; }
+.qz__sum { margin: 26px 0 30px; border-top: 1px solid rgba(255,255,255,.1); }
+.qz__sum div { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: 15px; }
+.qz__sum dt { color: var(--nav-muted); }
+.qz__sum dd { font-weight: 600; text-align: right; }
+@media (max-width: 560px) { .qz__opts, .qz__pair { grid-template-columns: 1fr; } .qz__body { align-items: flex-start; } }
 
-.card-vis{position:relative;z-index:2;flex:1;display:grid;place-items:center;padding:clamp(14px,2.4vw,26px) 0}
-.card-vis img{
-  width:clamp(112px,13vw,158px);height:auto;transform:translateZ(28px);
-  transition:transform .7s cubic-bezier(.2,.8,.2,1);
-  filter:drop-shadow(0 12px 30px rgba(0,0,0,.65));
-}
-.card:hover .card-vis img{transform:translateZ(48px) scale(1.06)}
-
-.card-vis svg{width:clamp(140px,17vw,205px);height:auto;transform:translateZ(28px);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-.card:hover .card-vis svg{transform:translateZ(48px) scale(1.06)}
-.gear-stroke{stroke:var(--cream-faint);transition:stroke .6s}
-.card:hover .gear-stroke{stroke:var(--violet-hi)}
-.gear-accent{fill:var(--violet);opacity:.85}
-
-.card-body{position:relative;z-index:2;transform:translateZ(20px)}
-.card-name{font:800 clamp(19px,2.1vw,28px)/1.12 var(--display);text-transform:uppercase;letter-spacing:.01em;color:var(--cream)}
-.card-name em{font-style:normal;display:block;color:var(--violet)}
-.card-pitch{margin-top:12px;font:400 13.5px/1.62 var(--sans);color:var(--cream-dim);max-width:34ch}
-.card-go{margin-top:17px;display:inline-flex;align-items:center;gap:9px;font:600 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);transition:color .4s}
-.card:hover .card-go{color:var(--violet-hi)}
-.card-go i{display:block;width:20px;height:1px;background:currentColor;transition:width .45s cubic-bezier(.2,.8,.2,1)}
-.card:hover .card-go i{width:38px}
-
-/* ================= PRICING ================= */
-#pricing{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 50%,var(--ink) 100%)}
-/* three tiers, ascending left to right, so the season lands last — by then
-   both single rates are on screen and $50-a-game does the arguing for us.
-   Still capped and centred so they read as cards rather than stretching into
-   third-page slabs on a wide monitor. */
-.price-grid{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(14px,1.8vw,24px);max-width:1140px;margin-inline:auto;
-}
-/* straight to one column — the season tier carries far more copy than the
-   other two, so a 2-up middle state orphans it into a very tall lone card */
-@media(max-width:1000px){.price-grid{grid-template-columns:1fr;max-width:560px}}
-.tier{
-  border:1px solid rgba(244,239,230,.11);background:var(--ink-2);
-  padding:clamp(24px,2.8vw,36px);display:flex;flex-direction:column;gap:18px;
-  position:relative;transition:border-color .5s,background .5s,transform .5s;
-}
-.tier:hover{border-color:rgba(139,127,232,.45);background:var(--ink-3);transform:translateY(-4px)}
-.tier.feature{border-color:rgba(139,127,232,.55);background:var(--ink-3)}
-.tier.feature::before{
-  content:"Most booked";position:absolute;top:-1px;right:-1px;
-  background:var(--violet);color:#0b0b10;padding:6px 13px;
-  font:700 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;
-}
-/* the season is priced and capped now, so the badge goes back to arguing
-   value rather than scarcity — the per-game maths in .tier-sub backs it up */
-.tier.feature.value::before{content:"Best value"}
-/* the line that does the season's arguing: what the flat price actually
-   works out to per game, sitting tight under the number it qualifies */
-.tier .tier-sub{
-  font:500 12.5px/1.45 var(--sans);color:var(--violet-hi);margin-top:-9px;
-}
-.tier h3{font:800 clamp(15px,1.6vw,19px)/1.2 var(--display);text-transform:uppercase;letter-spacing:.14em;color:var(--cream)}
-.tier .amt{font:800 clamp(32px,4vw,52px)/1 var(--display);letter-spacing:-.03em;color:var(--cream);display:flex;align-items:baseline;gap:5px}
-.tier .amt s{text-decoration:none;color:var(--violet);font-size:.42em;letter-spacing:.04em}
-.tier .amt.quote{font-size:clamp(22px,2.4vw,30px);color:var(--violet-hi)}
-.tier ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:2px}
-/* what's in the package, split into what happens on the day and what happens
-   after — violet label over a fading hairline, the same device the hero rule
-   and the card top rule already use */
-.tier-groups{display:flex;flex-direction:column;gap:20px}
-.tier-groups h4{
-  font:700 9.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;
-  color:var(--violet);display:flex;align-items:center;gap:10px;margin-bottom:12px;
-}
-.tier-groups h4::after{
-  content:"";flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(139,127,232,.45),rgba(139,127,232,0));
-}
-.tier li{
-  font:400 13px/1.5 var(--sans);color:var(--cream-dim);
-  padding-left:20px;position:relative;
-}
-.tier li::before{
-  content:"";position:absolute;left:0;top:.52em;width:8px;height:1px;background:var(--violet);
-}
-.tier .go{
-  margin-top:auto;padding-top:8px;
-  font:700 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--violet-hi);
-  display:inline-flex;align-items:center;gap:9px;
-}
-.tier .go i{display:block;width:20px;height:1px;background:currentColor;transition:width .4s}
-.tier:hover .go i{width:36px}
-
-/* ================= GUARANTEE ================= */
-#guarantee{position:relative;z-index:2;background:var(--ink);padding-block:clamp(30px,5vh,60px)}
-.guarantee-band{
-  border:1px solid rgba(139,127,232,.34);background:var(--ink-2);
-  padding:clamp(30px,4.4vw,58px);position:relative;overflow:hidden;
-  display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3.4vw,48px);align-items:center;
-}
-.guarantee-band::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 60% 130% at 0% 50%,rgba(139,127,232,.16),transparent 70%);
-}
-@media(max-width:760px){.guarantee-band{grid-template-columns:1fr;gap:20px}}
-.guarantee-seal{
-  position:relative;z-index:2;width:clamp(66px,7vw,92px);height:clamp(66px,7vw,92px);
-  border:1px solid rgba(139,127,232,.5);border-radius:50%;
-  display:grid;place-items:center;flex:none;
-}
-.guarantee-seal svg{width:52%;height:52%;stroke:var(--violet-hi);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.guarantee-copy{position:relative;z-index:2}
-.guarantee-copy .eyebrow{margin-bottom:14px}
-.guarantee-copy h2{
-  font:800 clamp(21px,2.9vw,38px)/1.18 var(--display);
-  text-transform:uppercase;letter-spacing:.005em;color:var(--cream);text-wrap:balance;
-}
-.guarantee-copy h2 em{font-style:normal;color:var(--violet)}
-.guarantee-copy p{margin-top:14px;font:400 14px/1.7 var(--sans);color:var(--cream-dim);max-width:56ch}
-
-/* ================= PROCESS ================= */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(244,239,230,.09);border:1px solid rgba(244,239,230,.09)}
-@media(max-width:820px){.steps{grid-template-columns:1fr}}
-.step{background:var(--ink);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:13px}
-.step .n{
-  font:700 10px/1 var(--sans);letter-spacing:.22em;color:var(--violet);
-}
-.step h3{font:800 clamp(16px,1.8vw,22px)/1.2 var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--cream)}
-.step p{font:400 13.5px/1.6 var(--sans);color:var(--cream-dim)}
-.turnaround{
-  margin-top:clamp(26px,4vh,44px);display:flex;flex-wrap:wrap;gap:12px;align-items:center;
-  font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);
-}
-.turnaround b{
-  color:var(--violet-hi);font-weight:700;
-  border:1px solid rgba(139,127,232,.4);padding:9px 15px;border-radius:100px;
-}
-
-/* ================= CONTACT FORM ================= */
-.form-wrap{
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,28px);
-  text-align:left;margin-top:clamp(30px,5vh,50px);
-}
-@media(max-width:760px){.form-wrap{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:8px}
-.field.full{grid-column:1/-1}
-.field label{font:600 9.5px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint)}
-.field input,.field select,.field textarea{
-  background:var(--ink-2);border:1px solid rgba(244,239,230,.13);color:var(--cream);
-  padding:14px 15px;font:400 16px/1.4 var(--sans);border-radius:2px;
-  transition:border-color .35s,background .35s;width:100%;
-}
-.field textarea{resize:vertical;min-height:104px}
-.field input:focus,.field select:focus,.field textarea:focus{
-  outline:none;border-color:var(--violet);background:var(--ink-3);
-}
-.field input::placeholder,.field textarea::placeholder{color:var(--cream-faint)}
-.field select{appearance:none;cursor:pointer;
-  background-image:linear-gradient(45deg,transparent 50%,var(--cream-dim) 50%),linear-gradient(135deg,var(--cream-dim) 50%,transparent 50%);
-  background-position:calc(100% - 19px) 50%,calc(100% - 13px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;
-}
-.mail-fallback{
-  grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;
-  gap:14px;padding:clamp(16px,2vw,22px);
-  border:1px solid rgba(139,127,232,.35);background:var(--ink-2);
-}
-.mail-fallback[hidden]{display:none}
-.mail-fallback p{font:400 13px/1.65 var(--sans);color:var(--cream-dim)}
-.mail-fallback a{color:var(--violet-hi);border-bottom:1px solid rgba(181,171,245,.4)}
-.mail-fallback textarea{
-  width:100%;background:var(--ink);border:1px solid rgba(244,239,230,.13);
-  color:var(--cream);padding:13px 14px;border-radius:2px;resize:vertical;
-  font:400 12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-.form-note{grid-column:1/-1;font:400 12px/1.6 var(--sans);color:var(--cream-faint);margin-top:-4px}
-
-/* ================= FINALE ================= */
-#finale{position:relative;background:var(--ink);padding-block:clamp(110px,19vh,220px);text-align:center;overflow:hidden;z-index:2}
-#finale::before{
-  content:"";position:absolute;top:50%;left:50%;width:min(1100px,120vw);aspect-ratio:1;
-  transform:translate(-50%,-50%);pointer-events:none;
-  background:radial-gradient(circle,rgba(139,127,232,.14),transparent 62%);
-}
-.fin-line{position:relative;font:800 clamp(30px,6.6vw,96px)/1.04 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--cream)}
-.fin-line .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
-.fin-line .w i{display:inline-block;font-style:normal;will-change:transform}
-.fin-line u{text-decoration:none;color:var(--violet)}
-.fin-sub{position:relative;margin:clamp(22px,3.4vh,34px) auto 0;max-width:52ch;font:400 clamp(13.5px,1.4vw,16.5px)/1.7 var(--sans);color:var(--cream-dim)}
-.fin-mail{
-  position:relative;margin-top:clamp(16px,2.2vh,24px);
-  font:700 clamp(13px,1.5vw,18px)/1 var(--sans);letter-spacing:.06em;
-}
-.fin-mail a{
-  color:var(--violet-hi);border-bottom:1px solid rgba(181,171,245,.35);
-  padding-bottom:4px;transition:color .35s,border-color .35s;
-}
-.fin-mail a:hover{color:var(--cream);border-color:var(--cream)}
-.fin-btns{position:relative;margin-top:clamp(28px,4.4vh,48px);display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:11px;padding:17px 32px;border-radius:100px;
-  font:700 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
-  border:1px solid transparent;cursor:pointer;position:relative;overflow:hidden;
-  transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,background .45s,color .45s,border-color .45s;
-}
-.btn-solid{background:var(--violet);color:#0b0b10;box-shadow:0 16px 40px -12px rgba(139,127,232,.7)}
-.btn-solid:hover{transform:translateY(-3px);box-shadow:0 24px 56px -12px rgba(139,127,232,.9);background:var(--violet-hi)}
-.btn-ghost{border-color:rgba(244,239,230,.24);color:var(--cream)}
-.btn-ghost:hover{transform:translateY(-3px);border-color:var(--cream);background:var(--cream);color:var(--ink)}
-/* feedback belongs on press, not just on hover — a tap should compress
-   instantly instead of waiting for release to show anything */
-.btn:active{transform:scale(.96) translateY(0);transition-duration:.1s,.1s,.1s,.1s,.1s}
-.btn-solid:active{box-shadow:0 10px 24px -10px rgba(139,127,232,.75)}
-
-/* ================= FOOTER ================= */
-footer{position:relative;z-index:2;background:var(--ink);border-top:1px solid rgba(244,239,230,.09);padding-block:clamp(38px,6vh,62px)}
-.ft-grid{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:flex-start}
-.ft-mark{font:800 clamp(15px,1.8vw,21px)/1 var(--display);letter-spacing:.26em;text-transform:uppercase}
-.ft-mark b{font-weight:800;color:var(--violet)}
-.ft-tag{margin-top:12px;font:400 12.5px/1.6 var(--sans);color:var(--cream-faint);max-width:30ch}
-.ft-links{display:flex;gap:clamp(26px,4vw,60px);flex-wrap:wrap}
-.ft-col h4{font:600 9.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:14px}
-.ft-col a{display:block;font:500 13.5px/1 var(--sans);color:var(--cream-dim);margin-bottom:11px;transition:color .35s,transform .35s;transform-origin:left}
-.ft-col a:hover{color:var(--violet-hi);transform:translateX(4px)}
-.ft-base{
-  margin-top:clamp(28px,4.6vh,50px);padding-top:20px;border-top:1px solid rgba(244,239,230,.07);
-  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
-  font:500 10px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream-faint);
-}
-
-@media (prefers-reduced-motion: reduce){ #grain{display:none} }
-
-/* ================= TOUCH / SMALL SCREENS ================= */
-/* The grain layer is a full-screen overlay that jumps position five times a
-   second. On a phone that reads as the whole interface shimmering sideways,
-   and it repaints the viewport every step. Hold it still instead. */
-@media (hover: none), (max-width: 760px){
-  /* inset:-120% makes this a composited layer roughly 11x the viewport area,
-     permanently present behind every scroll. The drift animation is off here,
-     so it only ever needs to cover the screen. */
-  #grain{animation:none;inset:0}
-}
-
-/* Touch devices apply :hover on tap with no real "leave" event, so just
-   touching a card to start a scroll drag could snap its glow/scale in and
-   leave it lit — a pop that read as the card "expanding". Hover is a
-   cursor affordance; only give it to devices that actually have one. */
-@media (hover: none){
-  .card:hover{border-color:rgba(244,239,230,.11);background:var(--ink-2)}
-  .card:hover::before{opacity:0}
-  .card:hover .card-vis img,.card:hover .card-vis svg{transform:translateZ(28px) scale(1)}
-  .card:hover .gear-stroke{stroke:var(--cream-faint)}
-  .card:hover .card-go{color:var(--cream-faint)}
-  .card:hover .card-go i{width:20px}
-
-  /* ...but the card should still come alive on a phone. There's no cursor to
-     drive it, so scrolling does: a card lights as it reaches the middle of
-     the screen and fades back out as it leaves (see the ScrollTrigger that
-     toggles .inview). The 1.2s sits on the base selector, not just .inview,
-     so the fade out is as slow as the fade in.
-     This is the desktop hover treatment reached by scroll instead of cursor —
-     same violet radial (--mx/--my default to 50% so it sits centred), same
-     --violet-hi label, same 20->38px line — and all three work cards get it
-     in the same spot. Outranks the :hover reset above on specificity. */
-  .work-grid .card{transition:border-color 1.2s ease,background 1.2s ease}
-  .work-grid .card::before{transition:opacity 1.2s ease}
-  .work-grid .card .card-go{transition:color 1.2s ease}
-  .work-grid .card .card-go i{transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
-
-  .work-grid .card.inview{border-color:rgba(139,127,232,.55);background:var(--ink-3)}
-  .work-grid .card.inview::before{opacity:1}
-  .work-grid .card.inview .card-go{color:var(--violet-hi)}
-  .work-grid .card.inview .card-go i{width:38px}
-}
-
-@media (max-width: 760px){
-  /* Decorative 3D rail: 200% wide, parallaxed, and clipped — pure cost on a
-     phone and the source of the left-right sweep behind the work cards. */
-  .gallery-bg{display:none}
-
-  /* cards sized for a mouse pointer left huge empty boxes on a phone */
-  .card{min-height:0}
-  .card-vis{padding:clamp(18px,6vw,30px) 0}
-
-  /* give the page its margins back */
-  .sec{padding-block:clamp(64px,11vh,110px)}
-  .sec-head{margin-bottom:clamp(28px,5vh,44px)}
-  .stat{padding:22px 18px}
-  .tier{padding:24px 20px}
-  .guarantee-band{padding:26px 22px}
-  .step{padding:24px 20px}
-
-  /* Tilt is disabled on touch, so the 3D context is pure cost: will-change
-     pins a compositor layer permanently, and preserve-3d wrapped around a
-     <video> is a known source of scroll jank on iOS. */
-  .card{transform-style:flat;will-change:auto}
-  .card-body,.card-vis img,.card-vis svg,
-  .card:hover .card-vis img,.card:hover .card-vis svg{transform:none}
-
-  /* full-width tap targets read as buttons, not links */
-  .fin-btns{width:100%}
-  .fin-btns .btn{flex:1;justify-content:center;min-height:52px}
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s, transform .7s cubic-bezier(.2,.75,.2,1); }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
 }
 </style>
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "xyxmp9swku");
-</script>
 </head>
 <body>
 
-<div id="vignette"></div>
-<div id="grain"></div>
-
-<nav>
-  <div class="u-wrap">
-    <a href="#" class="nv-logo">Ethan Long <b>Media</b></a>
-    <div class="nv-links">
-      <a href="#work">Work</a>
-      <a href="#proof">Proof</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <button class="nv-burger" id="navBurger" type="button"
-            aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
-      <span></span><span></span>
-    </button>
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" class="logo">Ethan Long <span>Media</span></a>
+    <nav class="nav-links">
+      <a href="#reels">Programs</a>
+      <a href="#how">How it works</a>
+      <a href="#packages">Pricing</a>
+    </nav>
+    <a href="#book" class="pill pill--light pill--sm">Book my reel</a>
   </div>
+</header>
 
-  <div class="nv-panel" id="navPanel" aria-hidden="true">
-    <a href="#work"><em>01</em>Work</a>
-    <a href="#proof"><em>02</em>Proof</a>
-    <a href="#pricing"><em>03</em>Pricing</a>
-    <a href="#contact"><em>04</em>Contact</a>
-    <a class="mail" href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>
-  </div>
-</nav>
-
-<main>
-
-  <!-- ============ HERO : scroll-scrubbed particle assembly ============ -->
-  <section id="hero">
-    <div class="hero-stick">
-      <div class="hero-glow"></div>
-      <canvas id="particles"></canvas>
-
-      <div class="hero-ui">
-        <div class="hero-tag">
-          <div class="rule" id="tagRule"></div>
-          <span class="ln" data-line="BASKETBALL FILM"></span>
-          <span class="ln" data-line="THAT GETS PLAYERS SEEN" data-em="SEEN"></span>
-          <span class="ln thin" data-line="MID-MICHIGAN · SHOT + CUT BY ETHAN LONG" data-em="·"></span>
-        </div>
-
-        <div class="hero-meta">
-          <div class="col">
-            <div>Est. Ethan Long Media</div>
-            <div><b>Basketball film</b></div>
+<main id="top">
+  <section class="hero">
+    <h1 class="hero-title">Basketball film that <span>gets players <em>seen</em>.</span></h1>
+    <div class="stage">
+      <div class="phones" id="phones">
+        <div class="phone" data-title="Game Day" data-kind="Game reel">
+          <div class="phone__screen"><span class="phone__notch"></span>
+            <div class="phone__display">
+              <video src="media/reel-1.mp4" poster="media/reel-1.jpg" muted playsinline preload="auto"></video>
+              <div class="phone__ui"><small>Division 1</small><b>Game Day</b><div class="phone__bar"><i></i></div></div>
+            </div>
           </div>
-          <div class="col r">
-            <div>ZV-E10 II · RS 3 Mini · External mic</div>
-            <div><b>1.2M / 934.8K views</b></div>
+        </div>
+        <div class="phone" data-title="Northwood Scrimmage" data-kind="Scrimmage reel">
+          <div class="phone__screen"><span class="phone__notch"></span>
+            <div class="phone__display">
+              <video src="media/reel-2.mp4" poster="media/reel-2.jpg" muted playsinline preload="metadata"></video>
+              <div class="phone__ui"><small>Division 2</small><b>Northwood Scrimmage</b><div class="phone__bar"><i></i></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone" data-title="Novi Finals" data-kind="Game reel" data-rest="2.48">
+          <div class="phone__screen"><span class="phone__notch"></span>
+            <div class="phone__display">
+              <video src="media/reel-3.mp4?v=2" poster="media/reel-3.jpg?v=4" muted playsinline preload="metadata"></video>
+              <div class="phone__ui"><small>Middle School</small><b>Novi Finals</b><div class="phone__bar"><i></i></div></div>
+            </div>
           </div>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- ============ PROOF / STATS ============ -->
-  <section class="sec" id="proof">
-    <div class="u-wrap">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow rv">The receipts</div>
-          <h2 class="sec-title rv" style="margin-top:18px">It <u>travels</u><br>on every app.</h2>
+      <div class="reel-nav">
+        <div class="dots" id="dots" role="tablist" aria-label="Reels">
+          <button type="button" aria-label="Reel 1"></button><button type="button" aria-label="Reel 2"></button><button type="button" aria-label="Reel 3"></button>
         </div>
-        <p class="sec-note rv">One cut. It went 1.2M on Instagram and 934.8K on TikTok — same film, two algorithms, same result. That's not a fluke, that's a formula.</p>
-      </div>
-
-      <div class="proof-body">
-        <article class="card proof-card lit" data-tilt>
-          <div class="card-top"><span class="card-idx">01</span><span class="card-kind">The cut</span></div>
-          <div class="card-vis proof-vis">
-            <video src="assets/video/viral.mp4" poster="assets/video/poster.jpg"
-                   muted loop playsinline preload="metadata"></video>
-          </div>
-          <div class="card-body">
-            <h3 class="card-name">Northwood<em>vs Lake Erie</em></h3>
-            <p class="card-pitch">2.1M views across Instagram and TikTok.</p>
-            <a class="card-go" href="https://www.instagram.com/reel/DTqJCvAjTXl/" target="_blank" rel="noopener">Watch on Instagram <i></i></a>
-          </div>
-        </article>
-
-        <div class="stat-grid">
-          <div class="stat rv">
-            <div class="num"><span data-count="1.2" data-dec="1">0.0</span><s>M</s></div>
-            <div class="lb">Instagram views</div>
-            <div class="sub">Single reel · @northwood_mbb</div>
-          </div>
-          <div class="stat rv">
-            <div class="num"><span data-count="934.8" data-dec="1">0.0</span><s>K</s></div>
-            <div class="lb">TikTok views</div>
-            <div class="sub">Same cut · cross-platform</div>
-          </div>
-          <div class="stat rv">
-            <div class="num"><span data-count="246" data-dec="0">0</span><s>K</s></div>
-            <div class="lb">Combined likes</div>
-            <div class="sub">106K Instagram · 140.6K TikTok</div>
-          </div>
-          <div class="stat rv">
-            <div class="num"><span data-count="6349" data-dec="0" data-comma>0</span></div>
-            <div class="lb">Saves</div>
-            <div class="sub">People kept it. That's the tell.</div>
-          </div>
-        </div>
+        <button class="sound" id="sound" type="button" aria-pressed="false"></button>
       </div>
     </div>
   </section>
 
-  <!-- ============ TRAINING ============ -->
-  <!-- Same shape as the proof section — clip on the left, grid on the right,
-       height-matched — but the right column carries what a session includes
-       rather than analytics, because these numbers don't exist for training. -->
-  <section class="sec" id="training">
-    <div class="u-wrap">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow rv">In the gym</div>
-          <h2 class="sec-title rv" style="margin-top:18px">Training days,<br><u>cut like film</u>.</h2>
-        </div>
-        <p class="sec-note rv">Skill work and player development, shot the same way as a game night — then cut so the reps that landed are the ones people actually see.</p>
-      </div>
-
-      <div class="proof-body">
-        <article class="card proof-card lit" data-tilt>
-          <div class="card-top"><span class="card-idx">02</span><span class="card-kind">The session</span></div>
-          <div class="card-vis proof-vis">
-            <!-- ?v= bumped whenever the clip is re-encoded, so a browser that
-                 cached an older cut fetches the new one instead of the stale file -->
-            <video src="assets/video/training.mp4?v=2" poster="assets/video/training-poster.jpg?v=2"
-                   muted loop playsinline preload="metadata"></video>
-          </div>
-          <div class="card-body">
-            <h3 class="card-name">Training<em>sessions</em></h3>
-            <p class="card-pitch">Gimbal-locked in the gym, cut to the reps worth keeping.</p>
-            <a class="card-go" href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener">My Instagram <i></i></a>
-          </div>
-        </article>
-
-        <div class="stat-grid">
-          <div class="stat qual rv">
-            <div class="num">Multiple angles</div>
-            <div class="lb">How it's shot</div>
-            <div class="sub">Gimbal-locked, not shaky phone footage.</div>
-          </div>
-          <div class="stat qual rv">
-            <div class="num">Real audio</div>
-            <div class="lb">Off an external mic</div>
-            <div class="sub">The squeak, the contact, the coaching.</div>
-          </div>
-          <div class="stat qual rv">
-            <div class="num">Color graded</div>
-            <div class="lb">The finish</div>
-            <div class="sub">It looks like film, not a phone clip.</div>
-          </div>
-          <div class="stat qual rv">
-            <div class="num">Every format</div>
-            <div class="lb">Exports</div>
-            <div class="sub">Vertical for Reels and TikTok, horizontal for the rest.</div>
-          </div>
-        </div>
+  <section class="sec climb-sec" id="reels">
+    <div class="wrap">
+      <div class="climb-head reveal"><p class="eyebrow">Programs I've shot for</p><h2>Every level.<br><span class="hl">Middle school to D1.</span></h2></div>
+      <div class="climb" id="climb">
+        <svg class="climb__line" aria-hidden="true">
+          <defs><linearGradient id="climbGrad" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#A391FF" stop-opacity=".15"/><stop offset="1" stop-color="#A391FF"/></linearGradient></defs>
+          <line/>
+        </svg>
+        <ol class="climb__steps">
+          <li class="step" style="--i:0">
+            <div class="step__stop"><img class="is-badge" src="media/logos/gaels-united.png" alt="Gaels United Basketball"></div>
+            <div class="step__txt"><span class="step__lvl">Middle School</span><b>Gaels United</b></div>
+          </li>
+          <li class="step" style="--i:1">
+            <div class="step__stop"><img class="is-wordmark" src="media/logos/real.png" alt="REAL Basketball"></div>
+            <div class="step__txt"><span class="step__lvl">High School Travel</span><b>REAL Basketball</b></div>
+          </li>
+          <li class="step" style="--i:2">
+            <div class="step__stop"><img src="media/logos/mid-michigan.png" alt="Mid Michigan College Lakers"></div>
+            <div class="step__txt"><span class="step__lvl">Junior College</span><b>Mid Michigan College</b></div>
+          </li>
+          <li class="step" style="--i:3">
+            <div class="step__stop"><img src="media/logos/delta.png" alt="Delta College"></div>
+            <div class="step__txt"><span class="step__lvl">Junior College</span><b>Delta College</b></div>
+          </li>
+          <li class="step" style="--i:4">
+            <div class="step__stop"><img src="media/logos/northwood.png" alt="Northwood Timberwolves"></div>
+            <div class="step__txt"><span class="step__lvl">Division 2</span><b>Northwood</b></div>
+          </li>
+          <li class="step step--top" style="--i:5">
+            <div class="step__stop"><img src="media/logos/cmu.svg" alt="Central Michigan Chippewas"></div>
+            <div class="step__txt"><span class="step__lvl">Division 1</span><b>Central Michigan</b></div>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- ============ WORK ============ -->
-  <section class="sec" id="work">
-    <div class="gallery-bg"><div class="rail" id="rail"></div></div>
-    <div class="u-wrap">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow rv">Selected work</div>
-          <h2 class="sec-title rv" style="margin-top:18px">Who I<br><u>shoot for</u>.</h2>
-        </div>
-        <p class="sec-note rv">Collegiate programs, grassroots travel ball, and a kit built to move. Every frame is handheld, graded and cut by me.</p>
+  <section class="sec" id="how">
+    <div class="wrap how2">
+      <div class="how2__photo reveal"><img src="media/ethan-filming.jpg?v=6" alt="Ethan Long filming courtside with a camera on a gimbal" loading="lazy"></div>
+      <div class="reveal">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps.<br><span class="hl">That's it.</span></h2>
+        <ol class="how2__steps">
+          <li><span class="n">01</span><b>Book your game</b><span>Tell me who, when and where.</span></li>
+          <li><span class="n">02</span><b>I film it</b><span>Courtside, from the starting bell to the final horn.</span></li>
+          <li><span class="n">03</span><b>You post it</b><span>Your reel lands in your phone, ready to go.</span></li>
+        </ol>
+        <a href="#book" class="pill pill--dark">Book my reel →</a>
       </div>
+    </div>
+  </section>
 
-      <div class="work-grid">
-        <article class="card" data-tilt>
-          <div class="card-top"><span class="card-idx">01</span><span class="card-kind">NCAA D-II · Midland, MI</span></div>
-          <div class="card-vis"><img src="assets/brand/northwood-clean.png" alt="Northwood University Timberwolves logo"></div>
-          <div class="card-body">
-            <h3 class="card-name">Northwood<em>University</em></h3>
-            <p class="card-pitch">Gameday film for the Timberwolves — the overtime cut against Lake Erie that broke a million views.</p>
-            <span class="card-go">Gameday film <i></i></span>
+
+  <section class="sec offer" id="packages">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><p class="eyebrow">Pricing</p><h2>One price.<br><span class="hl">Book it in a minute.</span></h2></div>
+        <p>Every Hype Video is $250 per game, middle school to D1. Travel within 30 miles is free. No payment to book.</p>
+      </div>
+      <div class="plans plans--podium">
+        <article class="plan plan--side reveal">
+          <div class="side__icon" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+          <div class="side__mid">
+            <p class="side__eyebrow">Travel</p>
+            <h3 class="side__title">Free travel<br>within<br><span>30 miles.</span></h3>
+            <p class="side__body">Anything farther is a flat fee I'll tell you before you book.</p>
           </div>
+          <div class="side__stats"><div><b>0–30 mi</b><span>Free</span></div><div><b>30+ mi</b><span>Flat fee</span></div></div>
         </article>
-
-        <article class="card" data-tilt>
-          <div class="card-top"><span class="card-idx">02</span><span class="card-kind">Travel program · 17U</span></div>
-          <div class="card-vis"><img src="assets/brand/real-clean.png" alt="REAL Basketball logo"></div>
-          <div class="card-body">
-            <h3 class="card-name">REAL<em>Basketball</em></h3>
-            <p class="card-pitch">Summer circuit with the travel program — exposure edits built so college coaches actually finish the tape.</p>
-            <span class="card-go">Exposure edits <i></i></span>
-          </div>
+        <article class="plan is-featured reveal">
+          <span class="plan__flag">ONE PRICE · EVERY LEVEL</span>
+          <p class="plan__for">For players &amp; teams</p>
+          <h3>Hype Video</h3>
+          <div class="plan__big"><b><sup>$</sup>250</b><span>per game</span></div>
+          <p class="plan__sub"><strong>One game, cut like the league.</strong> Built around one player or the whole team.</p>
+          <p class="plan__lead">What you get:</p>
+          <ul>
+            <li>I film the <strong>whole game</strong>, courtside</li>
+            <li>30–60 sec hype video, cut to music</li>
+            <li>Vertical cut for IG &amp; TikTok + full-size file</li>
+            <li>Delivered in <strong>72 hours</strong></li>
+          </ul>
+          <a href="#book" class="pill pill--light">Book my Hype Video →</a>
+          <p class="plan__fine">$250 per game · no payment to book</p>
         </article>
-
-        <article class="card" data-tilt>
-          <div class="card-top"><span class="card-idx">03</span><span class="card-kind">Player development</span></div>
-          <div class="card-vis">
-            <!-- Real state boundary, projected from GeoJSON and simplified.
-                 viewBox is cropped to the artwork's own bounds so the map sits
-                 centred in the card instead of floating in empty space. -->
-            <svg viewBox="0 24 200 202" fill="none" aria-label="Michigan">
-              <path d="M40.9 76.0 13.0 67.3 6.0 59.7 40.0 45.4 53.0 33.2 64.5 29.6 69.6 32.2 57.4 38.9 51.9 52.5 59.4 46.5 70.3 50.6 78.1 61.9 89.8 64.1 106.0 56.3 134.4 53.0 132.7 62.5 143.8 64.6 153.8 60.9 154.2 70.5 150.9 72.6 159.1 78.4 165.4 75.0 169.2 78.9 147.9 80.7 141.4 76.7 139.2 83.8 121.5 75.2 116.9 79.7 103.3 80.3 95.3 91.4 92.9 89.1 97.1 82.0 87.1 89.2 85.6 83.8 72.4 108.3 68.9 104.9 70.9 99.2 65.4 99.7 67.3 88.0 60.6 85.5 58.7 80.2Z"
-                    class="gear-stroke" stroke-width="2.4" stroke-linejoin="round"/>
-              <path d="M171.5 214.5 169.6 219.2 90.4 218.3 104.5 190.7 104.3 176.9 97.1 156.5 103.8 121.6 120.3 104.4 118.0 116.4 119.3 119.0 122.1 111.7 120.9 119.7 124.6 102.5 135.3 98.4 130.6 93.6 133.1 86.2 151.7 90.5 171.3 102.5 172.5 133.2 159.7 145.7 158.9 155.2 164.6 157.9 181.0 142.2 188.9 150.0 194.0 177.2 191.8 189.3 187.6 193.3 189.0 188.2 184.7 189.2Z"
-                    class="gear-stroke" stroke-width="2.4" stroke-linejoin="round"/>
-              <!-- centred on the Lower Peninsula's true area centroid -->
-              <circle cx="141.5" cy="161.5" r="10" class="gear-stroke" stroke-width="1" opacity=".45"/>
-              <circle cx="141.5" cy="161.5" r="4.5" class="gear-accent"/>
-            </svg>
+        <article class="plan plan--side reveal">
+          <div class="side__icon" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></svg></div>
+          <div class="side__mid">
+            <p class="side__eyebrow">My guarantee</p>
+            <h3 class="side__title">If the cut<br>isn't right,<br><span>I fix it.</span></h3>
+            <p class="side__body">Tell me what's off and I go back in and fix it. No charge.</p>
           </div>
-          <div class="card-body">
-            <h3 class="card-name">Michigan<em>trainers</em></h3>
-            <p class="card-pitch">Skills trainers and player development coaches — workout content that fills your gym. Based in Midland, traveling statewide.</p>
-            <span class="card-go">Get me to your gym <i></i></span>
-          </div>
+          <div class="side__stats"><div><b>Video</b><span>1 free revision</span></div><div><b>Music</b><span>1 free revision</span></div></div>
         </article>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ PRICING ============ -->
-  <section class="sec" id="pricing">
-    <div class="u-wrap">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow rv">What it costs</div>
-          <h2 class="sec-title rv" style="margin-top:18px">No DMs<br>to find <u>the price</u>.</h2>
-        </div>
-        <p class="sec-note rv">Every package is shot, graded and cut by me — no second shooter, no outsourced edit. Travel inside mid-Michigan is included.</p>
-      </div>
-
-      <div class="price-grid">
-        <div class="tier rv">
-          <h3>Single game</h3>
-          <div class="amt">$50<s>/ game</s></div>
-          <div class="tier-groups">
-            <div>
-              <h4>Shooting</h4>
-              <ul>
-                <li>Full game covered — you never think about the camera</li>
-                <li>Gimbal-locked from the floor, not shaky phone footage from the stands</li>
-              </ul>
-            </div>
-            <div>
-              <h4>Editing</h4>
-              <ul>
-                <li>Every possession you're in, cut tight</li>
-                <li>30–60 seconds a coach will actually finish</li>
-                <li>Exported for every platform, correctly sized</li>
-                <li>Graded and ready to post — zero editing on your end</li>
-                <li>In your hands in 72 hours, while people are still talking about it</li>
-              </ul>
-            </div>
-          </div>
-          <a class="go" href="#contact">Book a game <i></i></a>
-        </div>
-
-        <div class="tier rv">
-          <h3>Single training</h3>
-          <div class="amt">$75<s>/ session</s></div>
-          <div class="tier-groups">
-            <div>
-              <h4>Shooting</h4>
-              <ul>
-                <li>Your whole session filmed — you coach, I handle the camera</li>
-                <li>Gimbal-locked from multiple angles, not shaky phone footage</li>
-                <li>Real audio off an external mic — the squeak, the contact, the coaching</li>
-              </ul>
-            </div>
-            <div>
-              <h4>Editing</h4>
-              <ul>
-                <li>Only the reps that landed make the cut</li>
-                <li>Color graded so it looks like film, not a phone clip</li>
-                <li>Vertical for Reels and TikTok, horizontal for everything else</li>
-                <li>Back in 72 hours, while the session still matters</li>
-              </ul>
-            </div>
-          </div>
-          <a class="go" href="#contact">Book a session <i></i></a>
-        </div>
-
-        <div class="tier feature value rv">
-          <h3>Full season</h3>
-          <div class="amt">$500<s>/ season</s></div>
-          <!-- Carries the per-game maths that earns the "best value" badge.
-               Deliberately names no program: nobody has booked a season yet,
-               and the work grid already vouches for the gameday film itself. -->
-          <p class="tier-sub">Up to 15 games — $33 a game, a third off the single-game rate.</p>
-          <div class="tier-groups">
-            <div>
-              <h4>Shooting</h4>
-              <ul>
-                <li>Your whole schedule covered — booked once, then you stop thinking about it</li>
-                <li>Gimbal-locked from the floor, not a student with a phone in the stands</li>
-                <li>Travel anywhere in mid-Michigan included</li>
-              </ul>
-            </div>
-            <div>
-              <h4>Editing</h4>
-              <ul>
-                <li>Every game back in 48 hours — season programs jump the queue</li>
-                <li>Every player gets their moments, not just whoever scored the most</li>
-                <li>Your feed stays fed all season instead of going quiet in January</li>
-                <li>Players finish the season with tape they can send to coaches</li>
-                <li>A full season highlight reel at the end, included</li>
-              </ul>
-            </div>
-          </div>
-          <a class="go" href="#contact">Book the season <i></i></a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ GUARANTEE ============ -->
-  <section id="guarantee">
-    <div class="u-wrap">
-      <div class="guarantee-band rv">
-        <div class="guarantee-seal" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 2 20 6v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z"/><path d="M8.6 12.2 11 14.6l4.6-4.8"/></svg>
-        </div>
-        <div class="guarantee-copy">
-          <div class="eyebrow">My guarantee</div>
-          <h2>If the cut isn't right,<br><em>I recut it. No charge.</em></h2>
-          <p>You tell me what's off — a moment I missed, a different song, a tighter edit — and I go back in and fix it. You're not stuck with a video you won't post.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PROCESS ============ -->
-  <section class="sec" id="process">
-    <div class="u-wrap">
-      <div class="sec-head">
-        <div>
-          <div class="eyebrow rv">How it works</div>
-          <h2 class="sec-title rv" style="margin-top:18px">Three steps.<br><u>That's it</u>.</h2>
-        </div>
-        <p class="sec-note rv">You don't need to know anything about film. Tell me when and where, and what you want out of it.</p>
-      </div>
-
-      <div class="steps">
-        <div class="step rv">
-          <span class="n">Step 01</span>
-          <h3>Send the game info</h3>
-          <p>Date, gym, tip-off time, and who you want featured. A jersey number is enough.</p>
-        </div>
-        <div class="step rv">
-          <span class="n">Step 02</span>
-          <h3>I shoot and cut</h3>
-          <p>Handheld and gimbal-locked on the ZV-E10 II, sound on an external mic. Color graded by hand, cut to the moments that matter.</p>
-        </div>
-        <div class="step rv">
-          <span class="n">Step 03</span>
-          <h3>You get it back fast</h3>
-          <p>Delivered as a download, sized for Instagram, TikTok and Hudl. Ready to send to coaches within 72 hours.</p>
-        </div>
-      </div>
-
-      <div class="turnaround rv">
-        <b>Highlights in 72 hours</b>
-        <span>Multi-player tape and bigger jobs: 5–7 days</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ FINALE ============ -->
-  <section id="finale">
-    <div class="u-wrap" id="contact">
-      <h2 class="fin-line" id="finLine" data-words="LET'S GET|YOU|SEEN."></h2>
-      <p class="fin-sub rv">Tell me the date, the gym and who to watch. I'll come back with availability and a price — usually same day.</p>
-
-      <p class="fin-mail rv"><a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a></p>
-
-      <form class="form-wrap rv" id="bookForm" novalidate>
-        <input type="hidden" name="access_key" value="cbd6a85a-3db1-4b46-b152-c742444db780">
-        <input type="hidden" name="subject" value="New booking inquiry">
-        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
-        <div class="field">
-          <label for="f-name">Your name</label>
-          <input id="f-name" name="name" type="text" placeholder="First and last" required>
-        </div>
-        <div class="field">
-          <label for="f-email">Your email</label>
-          <input id="f-email" name="email" type="email" placeholder="you@example.com" required>
-        </div>
-        <div class="field">
-          <label for="f-team">Team or program</label>
-          <input id="f-team" name="team" type="text" placeholder="e.g. Northwood, REAL 17U">
-        </div>
-        <div class="field">
-          <label for="f-need">What you need</label>
-          <!-- Order matches the pricing cards above, so someone who scrolled
-               from there finds the options in the sequence they just read -->
-          <select id="f-need" name="need">
-            <option>Single game — $50</option>
-            <option>Single training — $75</option>
-            <option>Full season — $500</option>
-            <option>Something else</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="f-when">Date of the game</label>
-          <input id="f-when" name="when" type="text" placeholder="e.g. Fri 14 Nov, or a few options">
-        </div>
-        <div class="field full">
-          <label for="f-detail">Anything else</label>
-          <textarea id="f-detail" name="detail" placeholder="Gym, tip-off time, jersey number, what you want out of the tape."></textarea>
-        </div>
-        <p class="form-note" id="formNote">Hit send and it lands straight in my inbox — no email app needed. Prefer to message? <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener" style="color:var(--violet-hi)">Instagram</a> works too.</p>
-        <div class="mail-fallback" id="mailFallback" hidden>
-          <p>That didn't go through automatically. Copy this and send it to <a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a>.</p>
-          <textarea id="mailText" readonly rows="7"></textarea>
-          <button type="button" class="btn btn-ghost" id="copyBtn"><span>Copy details</span></button>
-        </div>
-
-        <div class="fin-btns full" style="justify-content:flex-start;margin-top:4px">
-          <button class="btn btn-solid" type="submit"><span>Send inquiry</span></button>
-          <a class="btn btn-ghost" href="#proof"><span>Watch the work</span></a>
-        </div>
-      </form>
     </div>
   </section>
 </main>
 
-<footer>
-  <div class="u-wrap">
-    <div class="ft-grid">
-      <div>
-        <div class="ft-mark">Ethan Long <b>Media</b></div>
-        <p class="ft-tag">Basketball film that gets players seen. Mid-Michigan, traveling anywhere the run is.</p>
-      </div>
-      <div class="ft-links">
-        <div class="ft-col">
-          <h4>Follow</h4>
-          <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener">Instagram — ethan_long_media</a>
-          <a href="https://www.tiktok.com/@official_ethan_long" target="_blank" rel="noopener">TikTok — @official_ethan_long</a>
-        </div>
-        <div class="ft-col">
-          <h4>Work with me</h4>
-          <a href="mailto:ethanlongmedia@gmail.com">Book a shoot</a>
-          <a href="#proof">See the numbers</a>
-        </div>
-      </div>
-    </div>
-    <div class="ft-base">
-      <span>© <span id="yr">2026</span> Ethan Long Media</span>
-      <span>Sony ZV-E10 II · DJI RS 3 Mini · External mic</span>
-    </div>
-  </div>
-</footer>
+<footer>© 2026 Ethan Long Media · <a href="https://www.instagram.com/ethan_long_media/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.tiktok.com/@official_ethan_long" target="_blank" rel="noopener">TikTok</a> · <a href="mailto:ethanlongmedia@gmail.com">ethanlongmedia@gmail.com</a> · <a href="#book">Book a reel</a></footer>
 
-<script src="assets/vendor/gsap.min.js"></script>
-<script src="assets/vendor/ScrollTrigger.min.js"></script>
-<script src="assets/vendor/lenis.min.js"></script>
+<!-- Booking quiz -->
+<div class="qz" id="quiz" role="dialog" aria-modal="true" aria-label="Book your reel">
+  <div class="qz__bar">
+    <div class="wrap"><span class="logo">Ethan Long <span>Media</span></span><button class="qz__close" type="button" id="qzClose">Close <kbd>esc</kbd></button></div>
+    <span class="qz__progress" id="qzProgress"></span>
+  </div>
+  <div class="qz__body">
+    <form class="qz__inner" id="qzForm" novalidate>
+      <input type="hidden" name="access_key" value="cbd6a85a-3db1-4b46-b152-c742444db780">
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+      <section class="qz__step" data-label="Video">
+        <p class="qz__count"></p><h2 class="qz__q">Who's the Hype Video for?</h2>
+        <p class="qz__hint">$250 per game, any level.</p>
+        <div class="qz__opts">
+          <label class="qz__opt"><input type="radio" name="reel" value="One player"><span>One player<small>Built around one hooper</small></span></label>
+          <label class="qz__opt"><input type="radio" name="reel" value="The whole team"><span>The whole team<small>Game night, senior night, tournaments</small></span></label>
+          <label class="qz__opt"><input type="radio" name="reel" value="Not sure yet"><span>Not sure yet<small>Help me decide</small></span></label>
+        </div>
+      </section>
+      <section class="qz__step" data-label="Level" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">What level do they play?</h2>
+        <div class="qz__opts">
+          <label class="qz__opt"><input type="radio" name="level" value="Middle School"><span>Middle School</span></label>
+          <label class="qz__opt"><input type="radio" name="level" value="High School"><span>High School</span></label>
+          <label class="qz__opt"><input type="radio" name="level" value="AAU / Travel"><span>AAU / Travel</span></label>
+          <label class="qz__opt"><input type="radio" name="level" value="Prep / JUCO"><span>Prep / JUCO</span></label>
+          <label class="qz__opt"><input type="radio" name="level" value="D3 / D2"><span>D3 / D2</span></label>
+          <label class="qz__opt"><input type="radio" name="level" value="D1"><span>D1</span></label>
+        </div>
+      </section>
+      <section class="qz__step" data-label="Player Cuts" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">Add Player Cuts for teammates?</h2>
+        <p class="qz__hint">+$50 per player, cut from the same game. You can decide who later.</p>
+        <div class="qz__opts">
+          <label class="qz__opt"><input type="radio" name="cuts" value="Not now"><span>Not now</span></label>
+          <label class="qz__opt"><input type="radio" name="cuts" value="Yes"><span>Yes, add cuts<small>+$50 each</small></span></label>
+        </div>
+      </section>
+      <section class="qz__step" data-label="The player" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">Who am I filming?</h2>
+        <p class="qz__hint">A player's name and number, or a team.</p>
+        <input class="qz__input" name="who" autocomplete="off" placeholder="e.g. Jordan Smith #21" required>
+      </section>
+      <section class="qz__step" data-label="The game" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">When and where's the game?</h2>
+        <p class="qz__hint">Not set yet? Leave it blank and we'll figure it out.</p>
+        <div class="qz__pair">
+          <label class="qz__field"><span>Game date <i>optional</i></span><input class="qz__input" type="date" name="date"></label>
+          <label class="qz__field"><span>City or gym <i>optional</i></span><input class="qz__input" name="where" placeholder="e.g. Novi Middle School"></label>
+        </div>
+      </section>
+      <section class="qz__step" data-label="Your name" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">Almost done. What's your name?</h2>
+        <input class="qz__input" name="name" autocomplete="name" placeholder="e.g. Jordan Smith" required>
+      </section>
+      <section class="qz__step" data-label="Contact" hidden>
+        <p class="qz__count"></p><h2 class="qz__q">Best number or email to reach you?</h2>
+        <p class="qz__hint">Phone or email, any format is fine.</p>
+        <input class="qz__input" name="contact" autocomplete="tel" placeholder="(555) 555-5555 or you@email.com" required>
+      </section>
+      <section class="qz__step qz__done" data-label="Done" hidden>
+        <div class="ok">✓</div>
+        <h2 class="qz__q" id="qzDoneTitle">You're on the board.</h2>
+        <p class="qz__hint" id="qzDoneHint">I'll reach out within 24 hours to lock in the date and send your quote.</p>
+        <dl class="qz__sum" id="qzSum"></dl>
+        <button class="qz__next" type="button" id="qzFinish">Back to the site</button>
+      </section>
+
+      <p class="qz__err" id="qzErr" aria-live="polite"></p>
+      <div class="qz__nav" id="qzNav">
+        <button class="qz__next" type="submit">Next <kbd>↵</kbd></button>
+        <button class="qz__back" type="button" id="qzBack">← Back</button>
+      </div>
+      <p class="qz__fine" id="qzFine">Takes about a minute. No payment to ask.</p>
+    </form>
+  </div>
+</div>
 
 <script>
-/* Scoped in an IIFE on purpose: the minified vendor bundles leak bare globals
-   (one of them declares `W`), and a top-level `let W` here would collide and
-   kill this whole script at parse time. */
-(function(){
-if('scrollRestoration' in history) history.scrollRestoration = 'manual';
-window.scrollTo(0,0);
-document.getElementById('yr').textContent = new Date().getFullYear();
+/* ---------- phones: the front phone plays, then the next one comes forward ---------- */
+(() => {
+  const phones = [...document.querySelectorAll('.phone')];
+  const dots = [...document.querySelectorAll('#dots button')];
+  const soundBtn = document.getElementById('sound');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ICON_OFF = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>';
+  const ICON_ON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  let active = 0, soundOn = false, inView = true;
 
-const clamp = (v,a,b) => v < a ? a : v > b ? b : v;
-const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const video = (i) => phones[i].querySelector('video');
 
-/* ============================================================
-   1. TEXT BUILDERS
-   ============================================================ */
-document.querySelectorAll('.hero-tag .ln').forEach(ln=>{
-  const em = ln.dataset.em || '';
-  ln.innerHTML = [...ln.dataset.line].map(c=>{
-    if(c === ' ') return '<span class="ch sp"></span>';
-    return `<span class="ch">${c === '·' ? '<em>·</em>' : c}</span>`;
-  }).join('');
-  /* highlight a whole word if one was named — every character gets a .ch span,
-     spaces included, so span index maps straight onto string index */
-  if(em && em !== '·'){
-    const chars = ln.querySelectorAll('.ch');
-    const text = ln.dataset.line;
-    const at = text.indexOf(em);
-    if(at > -1){
-      for(let i = at; i < at + em.length; i++){
-        if(text[i] !== ' ') chars[i].innerHTML = `<em>${text[i]}</em>`;
-      }
-    }
-  }
-});
-const TAG_CHARS = document.querySelectorAll('.hero-tag .ch');
-
-const finLine = document.getElementById('finLine');
-finLine.innerHTML = finLine.dataset.words.split('|').map((w,i)=>
-  `<span class="w"><i>${i===2?`<u>${w}</u>`:w}</i></span>`
-).join('<br>');
-const FIN_WORDS = finLine.querySelectorAll('.w i');
-
-document.getElementById('rail').innerHTML =
-  Array.from({length:14},()=>'<div class="pane"></div>').join('');
-
-/* ============================================================
-   2. HERO — particles assemble into the wordmark
-   ============================================================ */
-const cv  = document.getElementById('particles');
-const ctx = cv.getContext('2d');
-const DPR = Math.min(window.devicePixelRatio || 1, 2);
-
-let W = 0, H = 0, P = [], N = 0;
-
-/* --- render the wordmark offscreen, then sample it into points --- */
-function drawTracked(c, text, cx, y, size, tracking, weight){
-  c.font = `${weight} ${size}px Inter, "Helvetica Neue", Helvetica, Arial, sans-serif`;
-  const widths = [...text].map(ch => c.measureText(ch).width);
-  const total = widths.reduce((a,b)=>a+b,0) + tracking*(text.length-1);
-  let x = cx - total/2;
-  [...text].forEach((ch,i)=>{ c.fillText(ch, x, y); x += widths[i] + tracking; });
-  return total;
-}
-
-let wordCanvas = null;      // the solid wordmark the particles resolve into
-
-function wordmarkPoints(){
-  /* Supersample: MEDIA is small type, so sampling at CSS resolution starves it
-     of points. Render at 2x, sample there, and reuse the same canvas as the
-     crisp solid layer once the particles land. */
-  const S = 2;
-  const ow = W*S, oh = H*S;
-  const off = document.createElement('canvas');
-  off.width = ow; off.height = oh;
-  const c = off.getContext('2d');
-  c.textBaseline = 'middle';
-
-  const cx = ow/2;
-  /* Size the lockup to a target *share of the width* instead of a flat
-     coefficient. The old `ow * 0.098` made ETHAN LONG span ~69% of the canvas
-     at every screen size — proportionally identical on a phone and a desktop,
-     which is exactly why it read as tiny on a phone: 69% of 375px is a 37px
-     wordmark, with a third of the hero left empty above it. Small screens need
-     a bigger share of their width, so ease from ~92% at 375px back to the
-     original 69% by 900px, leaving the desktop lockup untouched.
-     Note ow/oh are supersampled (S=2) — this block works in CSS px and scales
-     back up at the end. */
-  const cssW = ow / S, cssH = oh / S;
-  const frac = cssW <= 480 ? 0.92
-             : cssW >= 900 ? 0.69
-             : 0.92 + (0.69 - 0.92) * ((cssW - 480) / 420);
-  /* solve the size from measured glyphs: total width = size*(units + tracking),
-     where drawTracked adds size*0.045 across the 9 gaps of "ETHAN LONG" */
-  c.font = `800 100px Inter, "Helvetica Neue", Helvetica, Arial, sans-serif`;
-  const unitEL = [...'ETHAN LONG'].reduce((a,ch)=>a + c.measureText(ch).width, 0)/100;
-  const byWidth = (cssW*frac)/(unitEL + 0.045*9);
-
-  /* Vertical room. The tagline is bottom-anchored in CSS, so on a short or
-     landscape window it climbs toward the wordmark. Measure where it actually
-     starts instead of guessing with a @media(max-height) rule — that kind of
-     breakpoint is exactly what made the hero jump when iOS collapsed the URL
-     bar. The band runs from under the fixed nav down to just above the
-     tagline; the lockup is fitted and centred inside it. On a normal portrait
-     screen the band is roomy enough that the original 41% placement wins, so
-     phones and desktops keep the look they already had. */
-  const TOP_F = 0.78, BOT_F = 0.86;   // lockup extent above/below cy, in units of `big`
-  const tagEl  = document.querySelector('.hero-tag');
-  const tagTop = tagEl
-    ? tagEl.getBoundingClientRect().top - cv.getBoundingClientRect().top
-    : cssH;
-  const bandTop    = 64;                                        // clear the fixed nav
-  /* the +44 only stops the band collapsing entirely on absurdly short windows;
-     keep it small, or it outranks the tagline and reintroduces the overlap */
-  const bandBottom = Math.max(bandTop + 44, tagTop - 14);
-  const bandH      = bandBottom - bandTop;
-
-  /* lower bound only bites on a very short landscape phone, where letting the
-     lockup shrink is better than letting it sit on top of the tagline */
-  const bigCSS = clamp(Math.min(byWidth, bandH/(TOP_F + BOT_F)), 24, 130);
-  const big    = bigCSS * S;                                    // ETHAN LONG
-  const cy     = S * Math.max(bandTop + bigCSS*TOP_F,
-                              Math.min(cssH*0.41, bandBottom - bigCSS*BOT_F));
-  const small = big * 0.40;                        // MEDIA
-  const ruleY = cy + big*0.22;
-
-  c.fillStyle = '#F4EFE6';
-  const w1 = drawTracked(c, 'ETHAN LONG', cx, cy - big*0.36, big, big*0.045, 800);
-
-  c.fillStyle = '#B5ABF5';
-  drawTracked(c, 'MEDIA', cx, cy + big*0.70, small, small*0.58, 800);
-  const rw = w1 * 0.30, rh = Math.max(2, big*0.030);
-  c.fillRect(cx - rw/2, ruleY, rw, rh);
-
-  wordCanvas = off;
-
-  const step = 4;                                   // in supersampled px
-  const data = c.getImageData(0,0,ow,oh).data;
-  const pts = [];
-  for(let y=0; y<oh; y+=step){
-    for(let x=0; x<ow; x+=step){
-      if(data[(y*ow + x)*4 + 3] > 128){
-        pts.push({
-          x: (x + (Math.random()-0.5)*step*0.8)/S,
-          y: (y + (Math.random()-0.5)*step*0.8)/S,
-          /* the rule and MEDIA carry the purple */
-          v: y >= ruleY - big*0.04 ? 1 : 0
-        });
-      }
-    }
-  }
-  return pts;
-}
-
-function build(){
-  const A = wordmarkPoints();
-
-  /* keep the count sane on very large displays */
-  const MAX = 5200;
-  if(A.length > MAX){
-    for(let i=A.length-1; i>0; i--){
-      const j = (Math.random()*(i+1))|0;
-      [A[i], A[j]] = [A[j], A[i]];
-    }
-    A.length = MAX;
-  }
-
-  N = A.length; P = [];
-  const R = Math.max(W,H);
-  for(let i=0;i<N;i++){
-    const a  = Math.random()*Math.PI*2;      // where it flies in from
-    const a2 = Math.random()*Math.PI*2;      // where it blows out to
-    const r  = R*(0.22 + Math.random()*0.55);
-    P.push({
-      ax:A[i].x, ay:A[i].y, av:A[i].v,
-      sx: W/2 + Math.cos(a)*r,
-      sy: H/2 + Math.sin(a)*r*0.72,
-      ox: Math.cos(a2), oy: Math.sin(a2),
-      ph: Math.random()*Math.PI*2,
-      sp: 0.6 + Math.random()*0.9,
-      d:  Math.random()
+  function layout() {
+    const n = phones.length;
+    phones.forEach((p, i) => {
+      const rel = (i - active + n) % n;
+      p.classList.toggle('is-active', rel === 0);
+      p.classList.toggle('is-right', rel === 1);
+      p.classList.toggle('is-left', rel === n - 1);
+      p.setAttribute('aria-hidden', rel !== 0);
     });
-  }
-}
-
-function size(){
-  W = cv.clientWidth; H = cv.clientHeight;
-  cv.width = W*DPR; cv.height = H*DPR;
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-  build();
-}
-
-let beat = 0;
-const intro = { t: 0 };            // 0 -> 1 once, on load
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-
-  const ie = intro.t;
-
-  /* particles land -> crisp solid type takes over */
-  const landed = clamp((ie - 0.55)/0.45, 0, 1);
-
-  /* The wordmark builds once and then simply stays on screen — no scroll
-     transform, no fade. It leaves naturally when the sticky section ends. */
-  const sweepX = ((beat*0.16) % 1.6 - 0.3) * W;
-
-  for(let i=0;i<N;i++){
-    const q = P[i];
-
-    /* load-in: converge from a soft scatter onto the letterforms */
-    const e = ie < 1 ? 1 - Math.pow(1 - clamp(ie*1.5 - q.d*0.5, 0, 1), 3) : 1;
-
-    let x = q.sx + (q.ax - q.sx)*e;
-    let y = q.sy + (q.ay - q.sy)*e;
-
-    /* swirl while still flying in */
-    const flight = 1 - e;
-    if(flight > 0.001){
-      x += Math.cos(q.ph + beat*q.sp)*flight*52;
-      y += Math.sin(q.ph + beat*q.sp)*flight*52;
-    }
-    /* settled breathing keeps it alive without smearing the letterforms */
-    x += Math.cos(q.ph*2 + beat*0.55);
-    y += Math.sin(q.ph*2 + beat*0.55);
-
-    let alpha = (0.18 + e*0.79) * (1 - landed*0.78);
-    if(alpha <= 0.004) continue;
-
-    let r = 1.0;
-    let violet = q.av;
-
-    /* violet charge sweeping across the settled wordmark */
-    if(e > 0.9){
-      const d = Math.abs(x - sweepX);
-      if(d < W*0.11){
-        const k = 1 - d/(W*0.11);
-        alpha = Math.min(1, alpha + k*0.45);
-        r += k*0.9;
-        violet = 1;
-      }
-    }
-
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, 6.283);
-    ctx.fillStyle = violet
-      ? 'rgba(181,171,245,' + alpha + ')'
-      : 'rgba(244,239,230,' + (alpha*0.86) + ')';
-    ctx.fill();
+    dots.forEach((d, i) => d.setAttribute('aria-current', i === active));
   }
 
-  /* the solid wordmark, sitting exactly where the particles resolve */
-  if(landed > 0.004 && wordCanvas){
-    ctx.globalAlpha = landed;
-    ctx.drawImage(wordCanvas, 0, 0, W, H);
-    ctx.globalAlpha = 1;
-  }
-}
-
-/* The hero canvas was redrawing every frame for the life of the page — about
-   60,000 arc() calls a second — even when the hero was scrolled far out of
-   view. On a phone that constant tax collides with video decode further down
-   the page, which is what made scrolling past the card judder. Render only
-   while the hero is actually on screen. */
-let heroOnScreen = true;
-new IntersectionObserver(
-  es => { heroOnScreen = es[0].isIntersecting; },
-  { rootMargin: '20% 0px' }
-).observe(document.getElementById('hero'));
-
-function loop(){
-  if(heroOnScreen){
-    beat += REDUCED ? 0 : 0.02;
-    draw();
-  }
-  requestAnimationFrame(loop);
-}
-
-/* iOS fires a resize event as the address bar collapses/expands *during
-   a scroll* — width never changes, only height. Reacting to that here
-   meant rebuilding the entire 5,000-particle wordmark mid-scroll, which
-   is what read as the page "expanding"/jittering right after the hero. */
-let lastResizeW = window.innerWidth;
-window.addEventListener('resize', () => {
-  if(window.innerWidth === lastResizeW) return;
-  lastResizeW = window.innerWidth;
-  size();
-});
-
-/* ============================================================
-   3. LENIS + SCROLLTRIGGER
-   ============================================================ */
-gsap.registerPlugin(ScrollTrigger);
-/* Same address-bar-resize problem hits ScrollTrigger directly: by default
-   it recalculates every trigger's position on any resize, which on mobile
-   fired repeatedly mid-scroll for no actual layout change — the cost of
-   that recalculation across every stat/card/word trigger on the page is
-   what showed up as jitter near each of them, not just the video. */
-ScrollTrigger.config({ ignoreMobileResize: true });
-
-const lenis = new Lenis({
-  duration: 1.15,
-  easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t)),
-  smoothWheel: true, syncTouch: false, touchMultiplier: 1.6
-});
-window.lenis = lenis;
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(time => lenis.raf(time*1000));
-gsap.ticker.lagSmoothing(0);
-
-/* nav materializes once you're clear of the hero. Rides the existing Lenis
-   scroll event rather than adding a second listener. */
-const navEl = document.querySelector('nav');
-lenis.on('scroll', ({ scroll }) => navEl.classList.toggle('scrolled', scroll > 60));
-
-/* tagline tracks in on entry, lifts away as the wordmark locks */
-gsap.set(TAG_CHARS, { yPercent: 115, opacity: 0, filter:'blur(5px)' });
-function playIntro(){
-  /* snappy — the wordmark is together before you'd think to scroll */
-  gsap.to(intro, { t: 1, duration: 1.0, ease:'power2.out' });
-  gsap.to('#tagRule', { scaleX: 1, duration: 0.7, ease:'power3.inOut', delay: 0.2 });
-  gsap.to(TAG_CHARS, {
-    yPercent: 0, opacity: 1, filter:'blur(0px)',
-    duration: 0.7, ease:'power3.out', stagger: 0.010, delay: 0.32
-  });
-}
-
-
-/* ============================================================
-   4. REVEALS / STATS / TILT
-   ============================================================ */
-const io = new IntersectionObserver(entries=>{
-  entries.forEach(en=>{
-    if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
-  });
-},{threshold:.18, rootMargin:'0px 0px -8% 0px'});
-document.querySelectorAll('.rv').forEach((el,i)=>{
-  el.style.transitionDelay = ((i%4) * 0.07)+'s';
-  io.observe(el);
-});
-
-document.querySelectorAll('[data-count]').forEach(el=>{
-  const to  = parseFloat(el.dataset.count);
-  const dec = parseInt(el.dataset.dec, 10);
-  const comma = el.hasAttribute('data-comma');
-  const obj = {v:0};
-  ScrollTrigger.create({
-    trigger: el, start:'top 88%', once:true,
-    onEnter: ()=> gsap.to(obj, {
-      v: to, duration: 2.1, ease:'power2.out',
-      onUpdate: ()=>{
-        let s = obj.v.toFixed(dec);
-        if(comma) s = Number(s).toLocaleString('en-US');
-        el.textContent = s;
-      }
-    })
-  });
-});
-
-/* same gap as the work cards — reduced-motion gets a plain fade to the same
-   resting state instead of the slide-up + rotate */
-if(REDUCED){
-  gsap.set(FIN_WORDS, { yPercent: 0, rotate: 0, opacity: 0 });
-  gsap.to(FIN_WORDS, { opacity: 1, duration: 0.5, stagger: 0.05,
-    scrollTrigger:{ trigger:'#finale', start:'top 68%' }});
-} else {
-  gsap.fromTo(FIN_WORDS,
-    { yPercent: 115, rotate: 3 },
-    { yPercent: 0, rotate: 0, duration: 1.05, ease:'power4.out', stagger: 0.1,
-      scrollTrigger:{ trigger:'#finale', start:'top 68%' }});
-}
-
-/* ============================================================
-   WORK CARDS — orchestrated reveal. Each card swings up from
-   below on its own hinge, the violet rule draws across the top,
-   then the copy cascades in behind it.
-   ============================================================ */
-(function(){
-  const cards = gsap.utils.toArray('.work-grid .card');
-  if(!cards.length) return;
-
-  /* reduced-motion gets a plain cross-fade to the same resting state instead
-     of the 3D flip — the hero particles and proof-card wipes already check
-     this; this reveal and the finale headline below didn't */
-  gsap.set(cards, REDUCED
-    ? { opacity: 0 }
-    : { opacity: 0, yPercent: 14, rotateX: -16, scale: 0.94,
-        transformPerspective: 1200, transformOrigin: '50% 100%' }
-  );
-
-  /* Driven by IntersectionObserver rather than ScrollTrigger: if the trigger
-     ever failed to fire, the cards would be stranded at opacity 0. A safety
-     timer guarantees they appear regardless. */
-  let played = false;
-  function reveal(){
-    if(played) return;
-    played = true;
-    {
-      cards.forEach((card, i) => {
-        const at = i * 0.15;
-        if(REDUCED){
-          gsap.to(card, {
-            opacity: 1, duration: 0.4, delay: at * 0.3, ease: 'power1.out',
-            onStart(){ card.classList.add('lit'); }
-          });
-          gsap.from(card.querySelectorAll('.card-top > *, .card-body > *'), {
-            opacity: 0, duration: 0.4, delay: at * 0.3 + 0.1, ease: 'power1.out'
-          });
-          return;
-        }
-        gsap.to(card, {
-          opacity: 1, yPercent: 0, rotateX: 0, scale: 1,
-          duration: 1.15, delay: at, ease: 'power3.out',
-          onStart(){ card.classList.add('lit'); },
-          /* hand the transform back so the hover tilt starts from clean */
-          onComplete(){ gsap.set(card, { clearProps: 'transform' }); }
-        });
-        /* copy only — the logo/video visual rides in with the card, so we
-           never write an inline opacity that would outrank .playable */
-        gsap.from(card.querySelectorAll('.card-top > *, .card-body > *'), {
-          opacity: 0, y: 20, duration: 0.75, delay: at + 0.22,
-          ease: 'power2.out', stagger: 0.07
-        });
-      });
-    }
+  function syncSound() {
+    soundBtn.innerHTML = (soundOn ? ICON_ON : ICON_OFF) + (soundOn ? 'Sound on' : 'Tap for sound');
+    soundBtn.setAttribute('aria-pressed', soundOn);
+    video(active).muted = !soundOn;
   }
 
-  const grid = document.querySelector('.work-grid');
-
-  /* The cards start at opacity 0, so a failure to fire would leave them
-     invisible. Four independent paths make that impossible. */
-  const io = new IntersectionObserver((entries, obs) => {
-    entries.forEach(e => {
-      if(e.isIntersecting){ reveal(); obs.disconnect(); }
+  function play() {
+    // Side phones rest on the same frame as the poster (reels end on a fade to black).
+    phones.forEach((p, i) => {
+      const v = video(i);
+      if (i === active) return;
+      const rest = +p.dataset.rest || 2;
+      v.pause();
+      v.muted = true;
+      if (v.ended || v.currentTime > rest + .5) v.currentTime = rest;
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-  io.observe(grid);
+    const v = video(active);
+    v.muted = !soundOn;
+    if (!inView || reduce) return;
+    v.play().catch(() => { soundOn = false; syncSound(); v.play().catch(() => {}); });
+  }
 
-  // 2. plain scroll check, independent of both Lenis and IntersectionObserver
-  const onScrollCheck = () => {
-    if(played){ window.removeEventListener('scroll', onScrollCheck); return; }
-    if(grid.getBoundingClientRect().top < window.innerHeight * 0.9) reveal();
-  };
-  window.addEventListener('scroll', onScrollCheck, { passive: true });
+  function go(i, restart = true) {
+    active = (i + phones.length) % phones.length;
+    if (restart) video(active).currentTime = 0;
+    layout();
+    play();
+  }
 
-  // 3. a backgrounded tab throttles rAF and observers; re-check on return
-  document.addEventListener('visibilitychange', () => {
-    if(!document.hidden) onScrollCheck();
+  phones.forEach((p, i) => {
+    video(i).addEventListener('ended', () => { if (i === active) go(active + 1); });
+    p.addEventListener('click', () => {
+      if (i !== active) return go(i);
+      if (reduce && video(i).paused) { video(i).play(); return; }
+      soundOn = !soundOn; syncSound();
+    });
   });
+  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+  soundBtn.addEventListener('click', () => { soundOn = !soundOn; syncSound(); if (video(active).paused) play(); });
 
-  // 4. last resort
-  setTimeout(reveal, 6000);
+
+  // Progress bar on the front phone.
+  (function tick() {
+    const v = video(active);
+    const bar = phones[active].querySelector('.phone__bar i');
+    if (v.duration) bar.style.transform = `scaleX(${v.currentTime / v.duration})`;
+    requestAnimationFrame(tick);
+  })();
+
+  // Only play while the phones are on screen.
+  new IntersectionObserver(([e]) => {
+    inView = e.isIntersecting;
+    if (inView) play(); else video(active).pause();
+  }, { threshold: .25 }).observe(document.getElementById('phones'));
+
+  layout(); syncSound(); play();
 })();
 
-/* ============================================================
-   PROOF CLIPS — the two video cards used to ride the generic .rv
-   fade, which read as flat sitting a section above the work grid's
-   orchestrated entrance. Here the frame wipes open from the bottom
-   while the footage inside settles back out of a slight push-in, so
-   it reads like a shot resolving rather than a box appearing.
-   ============================================================ */
-(function(){
-  const cards = gsap.utils.toArray('.proof-card');
-  if(!cards.length) return;
+/* ---------- booking quiz ---------- */
+(() => {
+  const quiz = document.getElementById('quiz');
+  const form = document.getElementById('qzForm');
+  const steps = [...form.querySelectorAll('.qz__step')];
+  const questions = steps.length - 1; // last step is the confirmation
+  const progress = document.getElementById('qzProgress');
+  const err = document.getElementById('qzErr');
+  const nav = document.getElementById('qzNav');
+  const fine = document.getElementById('qzFine');
+  const back = document.getElementById('qzBack');
+  const nextBtn = nav.querySelector('.qz__next');
+  const REELS = { player: 'One player', team: 'The whole team' };
+  let at = 0, lastFocus = null;
 
-  /* Reduced motion keeps the cards exactly as they load — static and
-     visible. They no longer carry .rv, so there is nothing to undo. */
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  cards.forEach(card => {
-    const vis  = card.querySelector('.proof-vis');
-    const vid  = vis && vis.querySelector('video');
-    const copy = card.querySelectorAll('.card-top > *, .card-body > *');
+  function show(i) {
+    at = i;
+    steps.forEach((s, n) => (s.hidden = n !== i));
+    const done = i === questions;
+    nav.hidden = fine.hidden = done;
+    back.hidden = i === 0;
+    err.textContent = '';
+    progress.style.width = `${(Math.min(i + 1, questions) / questions) * 100}%`;
+    if (!done) steps[i].querySelector('.qz__count').textContent = `${i + 1} of ${questions} · ${steps[i].dataset.label}`;
+    const last = i === questions - 1;
+    nextBtn.innerHTML = last ? 'Get my quote <kbd>↵</kbd>' : 'Next <kbd>↵</kbd>';
+    fine.textContent = last ? "I'll reply within 24 hours with your quote. No spam, no payment." : 'Takes about a minute. No payment to ask.';
+    const field = steps[i].querySelector('input:not([type=radio])') || steps[i].querySelector('input:checked') || steps[i].querySelector('input');
+    setTimeout(() => field && field.focus({ preventScroll: true }), 60);
+  }
 
-    /* The starting state is written here rather than in CSS on purpose. The
-       clip fading in on a `loadeddata` listener is the exact bug that once
-       left these permanently invisible (see .proof-vis video above); if this
-       script never runs at all, the card is simply visible instead of
-       stranded behind a clip-path nothing will ever open. */
-    if(vis) gsap.set(vis, { clipPath:'inset(0% 0% 100% 0%)' });
-    if(vid) gsap.set(vid, { scale:1.14, transformOrigin:'50% 50%' });
-    gsap.set(copy, { opacity:0, y:14 });
+  function valid(i) {
+    const s = steps[i];
+    const radios = s.querySelectorAll('input[type=radio]');
+    if (radios.length && !s.querySelector('input:checked')) { err.textContent = 'Pick one to keep going.'; return false; }
+    const req = [...s.querySelectorAll('input[required]')].find((inp) => !inp.value.trim());
+    if (req) { err.textContent = 'Fill this in to keep going.'; req.focus(); return false; }
+    return true;
+  }
 
-    let played = false;
-    function play(){
-      if(played) return;
-      played = true;
-      const tl = gsap.timeline();
-      if(vis) tl.to(vis, { clipPath:'inset(0% 0% 0% 0%)', duration:1.05, ease:'power3.inOut' }, 0);
-      /* The push-in deliberately outlasts the wipe, so the frame is still
-         settling after it is fully open. That overlap is what stops it
-         reading as two separate effects stapled together. */
-      if(vid) tl.to(vid, { scale:1, duration:1.7, ease:'power2.out',
-                           onComplete(){ gsap.set(vid, { clearProps:'transform' }); } }, 0);
-      tl.to(copy, { opacity:1, y:0, duration:0.6, stagger:0.08, ease:'power2.out',
-                    onComplete(){ gsap.set(copy, { clearProps:'opacity,transform' }); } }, 0.42);
+  /* Bookings go straight to the inbox through Web3Forms, same as the old site.
+     A lost inquiry is a lost booking: retry three times, and if it still fails,
+     keep it on the device and try again on the next visit. */
+  const W3_ENDPOINT = 'https://api.web3forms.com/submit';
+  const QUEUE_KEY = 'elm_unsent_enquiries';
+
+  async function post(payload) {
+    const res = await fetch(W3_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.message || 'HTTP ' + res.status);
+  }
+  async function postWithRetry(payload, tries = 3) {
+    for (let i = 0; i < tries; i++) {
+      try { return await post(payload); }
+      catch (err) { if (i === tries - 1) throw err; await new Promise((r) => setTimeout(r, 700 * 2 ** i)); }
     }
-
-    /* Same four independent paths the work grid uses. These start hidden, so
-       one missed trigger would cost the section its whole visual. */
-    new IntersectionObserver((es,obs)=>{
-      es.forEach(e=>{ if(e.isIntersecting){ play(); obs.disconnect(); } });
-    }, { threshold:0.2, rootMargin:'0px 0px -8% 0px' }).observe(card);
-
-    const onScrollCheck = ()=>{
-      if(played){ window.removeEventListener('scroll', onScrollCheck); return; }
-      if(card.getBoundingClientRect().top < window.innerHeight * 0.9) play();
-    };
-    window.addEventListener('scroll', onScrollCheck, { passive:true });
-    document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) onScrollCheck(); });
-    setTimeout(play, 6000);
-  });
-})();
-
-/* Tilt is deliberately gentle. A linear mapping hits full rotation right at the
-   card edge, which is what made it snap and look wonky on the way in; a sine
-   curve peaks in the middle and flattens toward the edges instead. Deeper
-   perspective and a longer ease keep it smooth rather than springy. */
-const TILT_MAX = 5;                          // degrees
-const falloff = v => Math.sin((gsap.utils.clamp(0, 1, v) - 0.5) * Math.PI);
-
-/* Touch devices fire pointermove throughout a scroll gesture, so the cards
-   were tilting and snapping back as you dragged past them — that was the
-   shake. Tilt is a cursor affordance; bind it only where a cursor exists. */
-const FINE_POINTER = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-document.querySelectorAll('[data-tilt]').forEach(card=>{
-  if(!FINE_POINTER) return;
-  card.addEventListener('pointermove', e=>{
-    /* hybrid laptops report a fine pointer but still take touch input */
-    if(e.pointerType === 'touch' || e.pointerType === 'pen') return;
-    const r = card.getBoundingClientRect();
-    const cx = (e.clientX - r.left)/r.width;
-    const cy = (e.clientY - r.top)/r.height;
-    card.style.setProperty('--mx', (cx*100)+'%');
-    card.style.setProperty('--my', (cy*100)+'%');
-    gsap.to(card,{
-      rotateY: falloff(cx) * TILT_MAX,
-      rotateX: -falloff(cy) * TILT_MAX,
-      transformPerspective: 1500,
-      duration: 1.1, ease:'power3.out', overwrite:'auto'
-    });
-  });
-  card.addEventListener('pointerleave', ()=>{
-    gsap.to(card,{rotateX:0, rotateY:0, duration:1.2, ease:'power3.out', overwrite:'auto'});
-  });
-});
-
-/* Phone counterpart to the desktop tilt: there's no cursor to drive the glow,
-   so scrolling drives it instead. Each work card lights as it comes up the
-   screen and fades back out as it leaves — no tapping required.
-   Rides the ScrollTrigger/Lenis pipeline already running on the page rather
-   than adding its own scroll listener, and only toggles a class, so the work
-   per frame is a class check rather than a layout read. */
-if(!FINE_POINTER){
-  document.querySelectorAll('.work-grid .card').forEach(card=>{
-    ScrollTrigger.create({
-      trigger: card,
-      start: 'top 75%',      // lit once it's meaningfully on screen
-      end:   'bottom 25%',   // out again as it clears off the top
-      onToggle: self => card.classList.toggle('inview', self.isActive)
-    });
-  });
-}
-
-if(window.matchMedia('(min-width: 761px)').matches) ScrollTrigger.create({
-  trigger:'#work', start:'top bottom', end:'bottom top', scrub: 0.8,
-  onUpdate: self=>{
-    document.getElementById('rail').style
-      .setProperty('--rail-y', (self.progress*220 - 110).toFixed(1)+'px');
   }
-});
+  const readQueue = () => { try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch (e) { return []; } };
+  const writeQueue = (q) => { try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q.slice(-5))); } catch (e) {} };
+  (async () => {
+    const keep = [];
+    for (const item of readQueue()) {
+      if (Date.now() - item.ts > 7 * 864e5) continue;
+      try { await post(item.payload); } catch (e) { keep.push(item); }
+    }
+    writeQueue(keep);
+  })();
 
-/* ============================================================
-   REEL — paused off-screen (decoding it constantly is its own source
-   of scroll jank, further down the page than just its own section),
-   but self-heals if anything pauses it while it's supposed to be
-   running rather than leaving a frozen frame.
-   ============================================================ */
-document.querySelectorAll('.proof-vis video').forEach(vid=>{
-  const tile = vid.closest('.proof-vis');
-  /* if playback is unavailable the poster still shows, so hide only the
-     video rather than tearing the whole visual out of the card */
-  vid.addEventListener('error', ()=>{ vid.style.display = 'none'; });
-
-  let wantsPlay = false;
-
-  /* A wide rootMargin means play/pause happens well before or after the
-     card actually crosses the viewport edge, so the state change never
-     lands in the same frame as the scroll gesture that's passing over it —
-     that overlap, not the call itself, was what read as a hitch. */
-  new IntersectionObserver(es => es.forEach(e => {
-    wantsPlay = e.isIntersecting;
-    requestAnimationFrame(() => {
-      if(wantsPlay) vid.play().catch(()=>{});
-      else vid.pause();
-    });
-  }), { threshold: 0, rootMargin: '40% 0px 40% 0px' }).observe(tile);
-
-  /* iOS will sometimes pause inline video on its own — memory pressure,
-     a media-session interruption — even while it's fully in view and
-     meant to be playing. Resume rather than leaving a dead frame. */
-  vid.addEventListener('pause', () => {
-    if(wantsPlay) requestAnimationFrame(() => vid.play().catch(()=>{}));
-  });
-
-  document.addEventListener('visibilitychange', () => {
-    if(document.hidden) vid.pause();
-    else if(wantsPlay) vid.play().catch(()=>{});
-  });
-});
-
-/* ============================================================
-   BOOKING FORM — submits straight to an inbox via Web3Forms.
-   No mail app, no mailto: — just a POST from the page itself.
-
-   A lost inquiry is a lost booking, so this deliberately does not rely on one
-   attempt landing. In order:
-     1. transient failures are retried three times with backoff — most
-        failures here are a flaky phone connection in a gym, not a dead API
-     2. anything still unsent is queued in localStorage and retried silently
-        on the next visit, so closing the tab doesn't bin the lead
-     3. only after all that does the copyable fallback appear
-   A queued retry can duplicate an inquiry if the send actually landed but the
-   response never made it back. For a booking, a duplicate is far cheaper than
-   a miss, so that trade is taken on purpose.
-   ============================================================ */
-const W3_ENDPOINT = 'https://api.web3forms.com/submit';
-const ENQ_QUEUE_KEY = 'elm_unsent_enquiries';
-const napFor = ms => new Promise(r=>setTimeout(r, ms));
-
-async function postInquiry(payload){
-  const res = await fetch(W3_ENDPOINT, {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
-    body: JSON.stringify(payload)
-  });
-  const data = await res.json().catch(()=>({}));
-  if(!res.ok || !data.success) throw new Error(data.message || ('HTTP ' + res.status));
-  return data;
-}
-
-async function postWithRetry(payload, tries = 3){
-  let last;
-  for(let i = 0; i < tries; i++){
-    try{ return await postInquiry(payload); }
-    catch(err){ last = err; if(i < tries - 1) await napFor(700 * Math.pow(2, i)); }
-  }
-  throw last;
-}
-
-function readEnqQueue(){
-  try{ return JSON.parse(localStorage.getItem(ENQ_QUEUE_KEY) || '[]'); }
-  catch(e){ return []; }
-}
-function writeEnqQueue(q){
-  try{ localStorage.setItem(ENQ_QUEUE_KEY, JSON.stringify(q.slice(-5))); }
-  catch(e){}   /* private mode / quota — nothing to do but carry on */
-}
-function queueInquiryForRetry(payload){
-  const q = readEnqQueue();
-  q.push({ payload, ts: Date.now() });
-  writeEnqQueue(q);
-}
-
-/* every load, quietly have another go at anything left behind */
-async function flushEnqQueue(){
-  const q = readEnqQueue();
-  if(!q.length) return;
-  const keep = [];
-  for(const item of q){
-    if(Date.now() - item.ts > 7*24*3600*1000) continue;    // a week stale, drop it
-    try{ await postInquiry(item.payload); }
-    catch(e){ keep.push(item); }
-  }
-  writeEnqQueue(keep);
-}
-flushEnqQueue();
-
-document.getElementById('bookForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const f = e.target;
-  const val = n => (f.elements[n].value || '').trim();
-  const name = val('name');
-  const email = val('email');
-
-  if(!name){
-    f.elements['name'].focus();
-    f.elements['name'].style.borderColor = 'var(--violet)';
-    return;
-  }
-  if(!email){
-    f.elements['email'].focus();
-    f.elements['email'].style.borderColor = 'var(--violet)';
-    return;
+  async function finish() {
+    const d = Object.fromEntries(new FormData(form));
+    const payload = { ...d, subject: `Booking — ${d.name} (${d.reel || 'Hype Video'})`, from_name: 'Ethan Long Media website' };
+    if (/@/.test(d.contact || '')) payload.email = d.contact.trim();
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Sending…';
+    let sent = true;
+    try { await postWithRetry(payload); }
+    catch (err) { sent = false; writeQueue([...readQueue(), { payload, ts: Date.now() }]); }
+    nextBtn.disabled = false;
+    document.getElementById('qzDoneHint').innerHTML = sent
+      ? "I'll reach out within 24 hours to lock in the date and send your quote."
+      : 'Your connection dropped, so this is saved and will send next time you visit. To be safe, email me at <a href="mailto:ethanlongmedia@gmail.com" style="color:#A391FF">ethanlongmedia@gmail.com</a>.';
+    const first = (d.name || '').trim().split(' ')[0];
+    document.getElementById('qzDoneTitle').textContent = `You're on the board${first ? ', ' + first : ''}.`;
+    document.getElementById('qzSum').innerHTML = [['Hype Video', d.reel], ['Level', d.level], ['Player Cuts', d.cuts], ['Filming', d.who], ['Date', d.date || 'TBD'], ['Where', d.where || 'TBD'], ['Reach you at', d.contact]]
+      .map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v || '—')}</dd></div>`).join('');
+    show(questions);
   }
 
-  const subject = 'Booking — ' + name + ' (' + val('need') + ')';
-  f.elements['subject'].value = subject;
-
-  const btn = f.querySelector('button[type="submit"]');
-  const label = btn.querySelector('span');
-  const original = label.textContent;
-  btn.disabled = true;
-  label.textContent = 'Sending…';
-
-  const payload = Object.fromEntries(new FormData(f));
-
-  try{
-    await postWithRetry(payload);
-
-    label.textContent = 'Sent — I\'ll be in touch';
-    document.getElementById('formNote').textContent =
-      'Got it — I\'ll follow up at ' + email + ', usually same day.';
-    f.reset();
-    setTimeout(()=>{ btn.disabled = false; label.textContent = original; }, 5000);
-
-  }catch(err){
-    /* Three attempts failed. Hold the inquiry on the device and retry it on
-       the next visit, then show the copyable fallback — the form is NOT reset
-       here, so nothing they typed is thrown away either. */
-    queueInquiryForRetry(payload);
-
-    const lines = [
-      'Name: '  + name,
-      'Email: ' + email,
-      'Team: '  + (val('team') || '—'),
-      'Needs: ' + val('need'),
-      'Date: '  + (val('when') || '—'),
-      '',
-      val('detail') || '(no extra detail)'
-    ];
-    document.getElementById('mailText').value =
-      'To: ethanlongmedia@gmail.com\nSubject: ' + subject + '\n\n' + lines.join('\n');
-    const fb = document.getElementById('mailFallback');
-    fb.hidden = false;
-    fb.scrollIntoView({ behavior:'smooth', block:'nearest' });
-
-    btn.disabled = false;
-    label.textContent = original;
+  function open(preset = {}) {
+    if (at === questions) form.reset();
+    if (preset.reel && REELS[preset.reel]) form.querySelector(`input[name=reel][value="${REELS[preset.reel]}"]`).checked = true;
+    if (preset.cuts === 'yes') form.querySelector('input[name=cuts][value="Yes"]').checked = true;
+    lastFocus = document.activeElement;
+    quiz.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    // Came from a package button: the reel is already picked, so start at the level question.
+    const startAt = at === questions || at === 0 ? (preset.reel && REELS[preset.reel] ? 1 : 0) : at;
+    show(startAt);
   }
-});
-
-document.getElementById('copyBtn').addEventListener('click', async ()=>{
-  const t = document.getElementById('mailText');
-  const label = document.querySelector('#copyBtn span');
-  try{
-    await navigator.clipboard.writeText(t.value);
-  }catch(err){
-    t.select();
-    try{ document.execCommand('copy'); }catch(e2){}
+  function close() {
+    quiz.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (at === questions) { form.reset(); at = 0; }
+    lastFocus && lastFocus.focus({ preventScroll: true });
   }
-  label.textContent = 'Copied';
-  setTimeout(()=>{ label.textContent = 'Copy details'; }, 2200);
-});
 
-/* ---- mobile menu ----
-   Registered *before* the shared a[href^="#"] handler below on purpose. Both
-   listeners fire on a panel link, in registration order: this one has to run
-   first so lenis.start() has already happened by the time that handler calls
-   lenis.scrollTo() — a stopped Lenis silently ignores the scroll. */
-const burger = document.getElementById('navBurger');
-const navPanel = document.getElementById('navPanel');
-function setMenu(open){
-  document.body.classList.toggle('menu-open', open);
-  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-  burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  navPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
-  /* Lenis would otherwise keep scrolling the page behind the fixed overlay */
-  if(open) lenis.stop(); else lenis.start();
-}
-burger.addEventListener('click', ()=>
-  setMenu(!document.body.classList.contains('menu-open')));
-navPanel.querySelectorAll('a').forEach(a=>
-  a.addEventListener('click', ()=> setMenu(false)));
-document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false);
-});
-/* rotating back up to desktop must never strand the panel open. Width-gated,
-   so the iOS URL-bar resize (height-only) never reaches this. */
-window.addEventListener('resize', ()=>{ if(innerWidth > 760) setMenu(false); });
-
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    const id = a.getAttribute('href');
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href="#book"]');
+    if (!a) return;
     e.preventDefault();
-    if(id.length < 2){ lenis.scrollTo(0); return; }
-    const el = document.querySelector(id);
-    if(el) lenis.scrollTo(el, {offset:0});
+    open({ reel: a.dataset.reel, cuts: a.dataset.cuts });
   });
-});
+  document.getElementById('qzClose').addEventListener('click', close);
+  document.getElementById('qzFinish').addEventListener('click', close);
+  back.addEventListener('click', () => show(Math.max(0, at - 1)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && quiz.classList.contains('is-open')) close(); });
 
-/* ============================================================
-   5. BOOT — no loader; the wordmark builds itself the moment it can
-   ============================================================ */
-let started = false;
-function start(){
-  if(started) return;
-  started = true;
-  size(); loop();
-  playIntro();
-  ScrollTrigger.refresh();
-}
-
-/* the wordmark is sampled from real type, so wait for the webfont —
-   with a fallback so a slow font never leaves the hero empty */
-(document.fonts ? document.fonts.ready : Promise.resolve()).then(start);
-setTimeout(start, 2500);
-
-window.addEventListener('load', ()=>ScrollTrigger.refresh());
+  form.addEventListener('change', (e) => {
+    if (e.target.type !== 'radio') return;
+    err.textContent = '';
+    setTimeout(() => show(at + 1), 260); // one tap moves you on
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!valid(at)) return;
+    if (at < questions - 1) show(at + 1); else finish();
+  });
 })();
+
+/* ---------- programs climb: line from the first stop to the last ---------- */
+(() => {
+  const climb = document.getElementById('climb');
+  const svg = climb.querySelector('svg');
+  const line = svg.querySelector('line');
+  const grad = svg.querySelector('linearGradient');
+  const stops = [...climb.querySelectorAll('.step__stop')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function draw() {
+    const box = climb.getBoundingClientRect();
+    const c = (el) => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top]; };
+    const [x1, y1] = c(stops[0]);
+    const [x2, y2] = c(stops[stops.length - 1]);
+    // Steps start lowered by their entrance animation; measure their resting spot.
+    const lift = climb.classList.contains('is-in') ? 0 : 18;
+    [['x1', x1], ['y1', y1 - lift], ['x2', x2], ['y2', y2 - lift]].forEach(([k, v]) => { line.setAttribute(k, v); grad.setAttribute(k, v); });
+    const len = Math.hypot(x2 - x1, y2 - y1);
+    line.style.strokeDasharray = len;
+    if (!climb.classList.contains('is-in') && !reduce) line.style.strokeDashoffset = len;
+  }
+
+  new IntersectionObserver(([e], obs) => {
+    if (!e.isIntersecting) return;
+    climb.classList.add('is-in');
+    line.style.strokeDashoffset = 0;
+    obs.disconnect();
+  }, { threshold: .35 }).observe(climb);
+
+  draw();
+  addEventListener('resize', draw);
+  addEventListener('load', draw);
+})();
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 </script>
 </body>
 </html>
