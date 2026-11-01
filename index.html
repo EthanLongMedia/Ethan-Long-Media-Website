@@ -353,20 +353,31 @@ footer { background: var(--dark); color: #8B8B95; font-size: 13px; text-align: c
 </style>
 <script>
 (() => {
+  const root = document.documentElement;
   // iPhones only show the pressed (:active) look when the page listens for touches.
   document.addEventListener('touchstart', () => {}, { passive: true });
-  // A refresh starts at the top of the page, not halfway down the hero. Some phone browsers (Chrome on iPhone,
-  // in-app browsers) put the old scroll position back on their own, so also jump to the top as the page loads,
-  // unless the visitor has already started scrolling or came in on a link to a section.
+  // A refresh starts at the top of the page, not halfway down the hero. Chrome on iPhone and in-app browsers
+  // put the old scroll position back on their own, whenever they like, so until the visitor touches the page
+  // any scroll the browser makes by itself snaps straight back to the top. On touch screens every real scroll
+  // starts with a touch, so that holds for up to 10s after load; with a mouse, 1.5s. Skipped when the visitor
+  // came in on a link to a section.
   if (!location.hash) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     let moved = false;
     for (const t of ['touchstart', 'wheel', 'keydown', 'pointerdown']) addEventListener(t, () => { moved = true; }, { passive: true, once: true });
-    const toTop = () => { if (!moved && scrollY) scrollTo({ top: 0, behavior: 'instant' }); };
+    const toTop = () => {
+      if (moved || !scrollY) return;
+      const was = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto'; // the page scrolls smoothly by default; this jump must be instant,
+      getComputedStyle(root).scrollBehavior; // and the browser only honours that once styles are recalculated
+      scrollTo(0, 0);
+      root.style.scrollBehavior = was;
+    };
+    addEventListener('scroll', toTop, { passive: true });
     addEventListener('DOMContentLoaded', toTop);
-    addEventListener('load', () => { toTop(); setTimeout(toTop, 150); setTimeout(toTop, 500); });
+    const hold = matchMedia('(pointer: coarse)').matches ? 10000 : 1500;
+    addEventListener('load', () => { toTop(); setTimeout(() => { toTop(); removeEventListener('scroll', toTop); }, hold); });
   }
-  const root = document.documentElement;
   // The hero is sized from the screen height measured once at load. Phone browsers change the height as their
   // toolbars slide in and out while scrolling, so only a width change (rotation) or a desktop window re-measures.
   const setVh = () => root.style.setProperty('--vh', `${innerHeight}px`);
